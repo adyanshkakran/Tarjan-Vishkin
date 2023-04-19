@@ -3,25 +3,31 @@ using namespace std;
 typedef long long ll;
 
 vector<vector<ll>> g;
-vector<bool> vis;
-vector<ll> low, d, mlow;
+vector<ll> low, d;
 ll timer = 0;
-bool rootArt = false;
+stack<ll> s;
+vector<vector<ll>> components;
 
-void dfs(int curr, int root) {
-    vis[curr] = true;
+void dfs(int curr, int parent) {
     low[curr] = d[curr] = timer++;
-    mlow[curr] = -1;
+    s.push(curr);
     for (int i = 0; i < g[curr].size(); i++) {
         int next = g[curr][i];
-        if (!vis[next]) {
-            if(curr == root && i != 0){
-                rootArt = true;
-            }
-            dfs(next,root);
+        if (d[next] == -1) {
+            dfs(next,curr);
             low[curr] = min(low[curr], low[next]);
-            mlow[curr] = max(mlow[curr], low[next]);
-        } else {
+            if (low[next] >= d[curr]) {
+                vector<ll> component;
+                while (!s.empty()) {
+                    ll p = s.top();
+                    s.pop();
+                    component.push_back(p);
+                    if (p == curr)
+                        break;
+                }
+                components.push_back(component);
+            }
+        } else if(next != parent) {
             low[curr] = min(low[curr], d[next]);
         }
     }
@@ -36,30 +42,20 @@ int main() {
         int u, v;
         cin >> u >> v;
         g[u].push_back(v);
+        g[v].push_back(u);
     }
-    vis.resize(n);
     low.resize(n);
-    mlow.resize(n);
-    d.resize(n);
-    set<ll> roots;
-    vector<ll> articulation;
+    d.resize(n, -1);
     for (int i = 0; i < n; i++) {
-        if (!vis[i]) {
-            roots.insert(i);
-            dfs(i,i);
-            if(rootArt){
-                articulation.push_back(i);
-                rootArt = false;
-            }
+        if (d[i] == -1) {
+            dfs(i,-1);
         }
     }
-    for(int i = 0; i < n; i++) {
-        if(roots.find(i) == roots.end() && mlow[i] != -1 && d[i] <= mlow[i]) {
-            articulation.push_back(i);
+    for (int i = 0; i < components.size(); i++) {
+        for (int j = 0; j < components[i].size(); j++) {
+            cout << components[i][j] << " ";
         }
-    }
-    for (int i = 0; i < articulation.size(); i++) {
-        cout << articulation[i] << " ";
+        cout << endl;
     }
     cout << endl;
 }
