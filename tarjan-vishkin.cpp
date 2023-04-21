@@ -179,7 +179,8 @@ graph* auxillaryGraph(graph* g, graph* t, graph *nt,vector<ll>& low, vector<ll>&
     vector<ll> num(g->m,0), pref(g->m,0);
     ll nti = 0, ti = 0;
     for(ll i = 0; i < g->m; i++){
-		if(nti >= nt->m || (g->edges[i]->v1 == t->edges[ti]->v1 && g->edges[i]->v2 == t->edges[ti]->v2))
+        cout << ti << " " << nti << endl;
+		if(nti >= nt->m || (ti < t->m && g->edges[i]->v1->id == t->edges[ti]->v1->id && g->edges[i]->v2->id == t->edges[ti]->v2->id))
 			ti++;
 		else
 		{
@@ -195,7 +196,7 @@ graph* auxillaryGraph(graph* g, graph* t, graph *nt,vector<ll>& low, vector<ll>&
     ti = 0; nti = 0;
     for(ll i = 0; i < g->m; i++) {
         ll u = g->edges[i]->v1->id, v = g->edges[i]->v2->id;
-        if( nti >= nt->edges.size() || (g->edges[i]->v1 == t->edges[ti]->v1 && g->edges[i]->v2 == t->edges[ti]->v2)){
+        if( nti >= nt->edges.size() || (ti < t->m && g->edges[i]->v1 == t->edges[ti]->v1 && g->edges[i]->v2 == t->edges[ti]->v2)){
             if(level[u] < level[v] && level[low[u]] <= level[u]){
                 edge* e = new edge();
                 e->v1 = aux->vertices[u];
