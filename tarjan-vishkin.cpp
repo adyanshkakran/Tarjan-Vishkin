@@ -323,9 +323,13 @@ int main() {
     sort(g->edges.begin(), g->edges.end(), cmp);
     sort(t->edges.begin(), t->edges.end(), cmp);
     sort(nt->edges.begin(), nt->edges.end(), cmp);
+
  
     t->m = t->edges.size();
     nt->m = nt->edges.size();
+
+    // for(ll i = 0; i < t->m; i++)
+    //     cout << t->edges[i]->v1->id << " " << t->edges[i]->v2->id << endl;
 
     euler_tour(t, succ);
 
