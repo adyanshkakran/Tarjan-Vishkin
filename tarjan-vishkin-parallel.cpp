@@ -12,6 +12,7 @@ typedef struct Vertex{
 } vertex;
 
 typedef struct Edge{
+    ll id;
     vertex *v1, *v2;
 } edge;
 
@@ -36,6 +37,20 @@ bool cmp(edge* a, edge* b) {
 
 bool cmp2(edge* a, edge* b) {
     return a->v1->id == b->v1->id && a->v2->id == b->v2->id;
+}
+
+bool findEdgeById(const vector<edge*>& edges, ll id) {
+    // Binary search for the edge with the given id
+    auto it = lower_bound(edges.begin(), edges.end(), id, [](edge* e, ll id) {
+        return e->id < id;
+    });
+
+    // Check if we found the edge
+    if (it != edges.end() && (*it)->id == id) {
+        return true;
+    } else {
+        return false; // Edge with given id not found
+    }
 }
 
 ll LCA(vector<ll>& level, vector<ll>& parent, ll u, ll v) {
@@ -69,43 +84,63 @@ void bfs(graph* g, graph* t, graph* nt, vector<ll>& parent, vector<ll>& level) {
         nt->vertices.push_back(tt);
     }
 
+#pragma omp parallel for shared(q, parent, level, discovered, visited)
     for(int i = 0; i < g->n; i++){
+        cout << "Thread " << omp_get_thread_num() << " is working on vertex " << i << endl;
         if(!visited[i]){
-            q.push(g->vertices[i]);
+            queue<vertex*> q_local;
+            vector<bool> discovered_local(g->n, false);
+            vector<ll> parent_local(g->n), level_local(g->n);
 
-            parent[g->vertices[i]->id] = g->vertices[i]->id;
-            level[g->vertices[i]->id] = 0;
-                
-            discovered[g->vertices[i]->id] = true;
-            while (!q.empty()) {
-                vertex* v = q.front();
-                q.pop();
+            q_local.push(g->vertices[i]);
+            discovered_local[g->vertices[i]->id] = true;
+
+            parent_local[g->vertices[i]->id] = g->vertices[i]->id;
+            level_local[g->vertices[i]->id] = 0;
+
+            while (!q_local.empty()) {
+                vertex* v = q_local.front();
+                q_local.pop();
 
                 if(visited[v->id])
                     continue;
-                visited[v->id] = true;
+
+#pragma omp critical
+                {
+                    visited[v->id] = true;
+                }
 
                 for (edge* e : v->edges) {
                     vertex* u = e->v1 == v ? e->v2 : e->v1;
+
                     if (!visited[u->id]) {
                         if (!discovered[u->id]) {
-                            discovered[u->id] = true;
-                            q.push(u);
+#pragma omp critical
+                            {
+                                discovered[u->id] = true;
+                                q.push(u);
+                            }
 
-                            level[u->id] = level[v->id] + 1;
-                            parent[u->id] = v->id;
+                            level_local[u->id] = level_local[v->id] + 1;
+                            parent_local[u->id] = v->id;
 
                             edge* rev = reverseEdge(e);
-                            t->edges.push_back(e);
-                            t->edges.push_back(rev);
-                            t->vertices[u->id]->edges.push_back(e);
-                            t->vertices[v->id]->edges.push_back(rev);
-                        }else{
+#pragma omp critical
+                            {
+                                t->edges.push_back(e);
+                                t->edges.push_back(rev);
+                                t->vertices[u->id]->edges.push_back(e);
+                                t->vertices[v->id]->edges.push_back(rev);
+                            }
+                        } else {
                             edge* rev = reverseEdge(e);
-                            nt->edges.push_back(e);
-                            nt->edges.push_back(rev);
-                            nt->vertices[u->id]->edges.push_back(e);
-                            nt->vertices[v->id]->edges.push_back(rev);
+#pragma omp critical
+                            {
+                                nt->edges.push_back(e);
+                                nt->edges.push_back(rev);
+                                nt->vertices[u->id]->edges.push_back(e);
+                                nt->vertices[v->id]->edges.push_back(rev);
+                            }
                         }
                     }
                 }
@@ -220,7 +255,10 @@ void findLow(graph* t, graph* nt, vector<ll>& low, vector<ll>& level){
 
 graph* auxillaryGraph(graph* g, graph* t, graph *nt,vector<ll>& low, vector<ll>& level, vector<ll>& parent, vector<ll>& pre) {
     graph* aux = new graph();
-    aux->n = g->n + nt->m;
+    aux->n = g->n + nt->m; // resizing the auxillary graph
+
+    cout << g->m << endl;
+
     for(ll i = 0; i < aux->n; i++) {
         vertex* v = new vertex();
         v->id = i;
@@ -228,6 +266,26 @@ graph* auxillaryGraph(graph* g, graph* t, graph *nt,vector<ll>& low, vector<ll>&
     }
     vector<ll> num(g->m,0), pref(g->m,0);
     ll nti = 0, ti = 0;
+
+    // Create vector to hold information on whether each edge is a tree edge or not
+    vector<bool> isTreeEdge(g->m, false);
+
+    // Identify tree edges and mark them in isTreeEdge vector
+    // #pragma omp parallel for
+    for (size_t i = 0; i < g->m/2; i++) {
+        // cout << g->edges[i]->id << " " << t->edges[i]->id << "\n";
+        if (findEdgeById(t->edges, g->edges[i]->id)) {
+            isTreeEdge[i] = true;
+        }
+    }
+
+    // print the isTreeEdge vector
+    for (size_t i = 0; i < g->m; i++) {
+        cout << isTreeEdge[i] << " ";
+    }
+    cout << "====\n";
+
+    // creating the prefix sum array pref
     for(ll i = 0; i < g->m; i++){
 		if(nti >= nt->m || (ti < t->m && g->edges[i]->v1->id == t->edges[ti]->v1->id && g->edges[i]->v2->id == t->edges[ti]->v2->id))
 			ti++;
@@ -307,6 +365,7 @@ int main() {
         edge *e = new edge();
         ll u, v;
         cin >> u >> v;
+        e->id = i;
         e->v1 = g->vertices[u];
         e->v2 = g->vertices[v];
         g->vertices[u]->edges.push_back(e);
@@ -323,6 +382,18 @@ int main() {
     sort(g->edges.begin(), g->edges.end(), cmp);
     sort(t->edges.begin(), t->edges.end(), cmp);
     sort(nt->edges.begin(), nt->edges.end(), cmp);
+
+    // print the edges of the tree
+    cout << "tree edges\n";
+    for (size_t i = 0; i < t->edges.size(); i++) {
+        cout << t->edges[i]->v1->id << " " << t->edges[i]->v2->id << endl;
+    }
+
+    // print the edges of the non-tree
+    cout << "non-tree edges\n";
+    for (size_t i = 0; i < nt->edges.size(); i++) {
+        cout << nt->edges[i]->v1->id << " " << nt->edges[i]->v2->id << endl;
+    }
  
     t->m = t->edges.size();
     nt->m = nt->edges.size();

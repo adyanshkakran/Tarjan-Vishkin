@@ -66,7 +66,6 @@ public:
         #pragma omp parallel
         {
             while (!q.empty()) {
-                cout << "h" << endl;
                 #pragma omp for
                 for (int i = 0; i < q.size(); i++) {
                     int u = q.front();
@@ -89,17 +88,17 @@ public:
     {
         cout << "BFS starting from vertex " << s << ":\n";
 
-        // auto startSeq = chrono::high_resolution_clock::now();
-        // bfsSeq(s);
-        // auto endSeq = chrono::high_resolution_clock::now();
+        auto startSeq = chrono::high_resolution_clock::now();
+        bfsSeq(s);
+        auto endSeq = chrono::high_resolution_clock::now();
 
         auto startPar = chrono::high_resolution_clock::now();
         bfsPar(s);
         auto endPar = chrono::high_resolution_clock::now();
 
-        // cout << "Sequential BFS took "
-        //      << chrono::duration_cast<chrono::microseconds>(endSeq - startSeq).count()
-        //      << " microseconds.\n";
+        cout << "Sequential BFS took "
+             << chrono::duration_cast<chrono::microseconds>(endSeq - startSeq).count()
+             << " microseconds.\n";
         cout << "Parallel BFS took "
              << chrono::duration_cast<chrono::microseconds>(endPar - startPar).count()
              << " microseconds.\n";

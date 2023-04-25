@@ -20,4 +20,4 @@ def generate_random_graph(num_vertices, num_edges):
     nx.draw(G, with_labels=True)
     plt.show()
 
-generate_random_graph(6, 8)
+generate_random_graph(15, 20)
