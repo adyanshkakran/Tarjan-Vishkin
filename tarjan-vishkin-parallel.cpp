@@ -245,7 +245,6 @@ graph* auxillaryGraph(graph* g, graph* t, graph *nt,vector<ll>& low, vector<ll>&
         aux->vertices.push_back(v);
     }
     vector<ll> num(g->m,0), pref(g->m,0);
-    ll nti = 0, ti = 0;
 
     // Create vector to hold information on whether each edge is a tree edge or not
     vector<bool> isTreeEdge(g->m, false);
@@ -260,10 +259,10 @@ graph* auxillaryGraph(graph* g, graph* t, graph *nt,vector<ll>& low, vector<ll>&
     }
 
     // print the isTreeEdge vector
-    for (size_t i = 0; i < g->m; i++) {
-        cout << isTreeEdge[i] << " ";
-    }
-    cout << "====\n";
+    // for (size_t i = 0; i < g->m; i++) {
+    //     cout << isTreeEdge[i] << " ";
+    // }
+    // cout << "====\n";
 
     // creating the prefix sum array pref
     for (size_t i = 0; i < g->m; i++) {
@@ -274,38 +273,51 @@ graph* auxillaryGraph(graph* g, graph* t, graph *nt,vector<ll>& low, vector<ll>&
 
     partial_sum(num.begin(), num.end(), pref.begin());
     
-    ti = 0; nti = 0;
+    #pragma omp parallel for
     for(ll i = 0; i < g->m; i++) {
-        ll u = g->edges[i]->v1->id, v = g->edges[i]->v2->id;
-        if( nti >= nt->edges.size() || (ti < t->m && g->edges[i]->v1 == t->edges[ti]->v1 && g->edges[i]->v2 == t->edges[ti]->v2)){
-            if(level[u] < level[v] && level[low[v]] <= level[u]){
+        if(isTreeEdge[i]) {
+            ll u = g->edges[i]->v1->id, v = g->edges[i]->v2->id;
+            if(level[u] < level[v] && level[low[v]] <= level[u]){ // CASE 3
                 edge* e = new edge();
                 e->v1 = aux->vertices[u];
                 e->v2 = aux->vertices[v];
-                aux->edges.push_back(e);
-                aux->vertices[u]->edges.push_back(e);
-                aux->vertices[v]->edges.push_back(e);
+                #pragma omp critical
+                {
+                    aux->edges.push_back(e);
+                    aux->vertices[u]->edges.push_back(e);
+                    aux->vertices[v]->edges.push_back(e);
+                }
             }
-            ti++;   
-        }else{
+        }
+    }
+
+    #pragma omp parallel for
+    for(ll i = 0; i < g->m; i++) {
+        if(!isTreeEdge[i]) {
+            ll u = g->edges[i]->v1->id, v = g->edges[i]->v2->id;
             ll p = LCA(level,parent, u, v);
             if(pre[v] < pre[u]) { // CASE 1
                 edge* e = new edge();
                 e->v1 = aux->vertices[u];
                 e->v2 = aux->vertices[pref[i] + g->n -1];
-                aux->edges.push_back(e);
-                aux->vertices[u]->edges.push_back(e);
-                aux->vertices[pref[i] + g->n -1]->edges.push_back(e);
+                #pragma omp critical
+                {
+                    aux->edges.push_back(e);
+                    aux->vertices[u]->edges.push_back(e);
+                    aux->vertices[pref[i] + g->n -1]->edges.push_back(e);
+                }
             }
-            if(u < v && p != u && p != v){
+            if(u < v && p != u && p != v){ // CASE 2
                 edge* e = new edge();
                 e->v1 = aux->vertices[u];
                 e->v2 = aux->vertices[v];
-                aux->edges.push_back(e);
-                aux->vertices[u]->edges.push_back(e);
-                aux->vertices[v]->edges.push_back(e);
+                #pragma omp critical
+                {
+                    aux->edges.push_back(e);
+                    aux->vertices[u]->edges.push_back(e);
+                    aux->vertices[v]->edges.push_back(e);
+                }
             }
-            nti++;
         }
     }
     return aux;
@@ -313,6 +325,7 @@ graph* auxillaryGraph(graph* g, graph* t, graph *nt,vector<ll>& low, vector<ll>&
 
 void remapAuxGraph(graph* t, vector<set<ll>>& bi, vector<vector<ll>>& components, vector<ll>& parent) {
     bi.resize(components.size() - 1);
+    // #pragma omp parallel for
 	for(ll i = 1; i < components.size(); i++)
 	{
 		for(ll j = 0; j < components[i].size(); j++)
@@ -386,13 +399,22 @@ int main() {
     graph* aux = auxillaryGraph(g, t, nt, low, level, parent, pre);
 
     // print aux graph edges
-    cout << "aux edges\n";
-    for (size_t i = 0; i < aux->edges.size(); i++) {
-        cout << aux->edges[i]->v1->id << " " << aux->edges[i]->v2->id << endl;
-    }
+    // cout << "aux edges\n";
+    // for (size_t i = 0; i < aux->edges.size(); i++) {
+    //     cout << aux->edges[i]->v1->id << " " << aux->edges[i]->v2->id << endl;
+    // }
 
     vector<vector<ll>> connected;
     findConnectedComponents(aux, connected);
+
+    // print components
+    // cout << "components\n";
+    // for (size_t i = 0; i < connected.size(); i++) {
+    //     for (size_t j = 0; j < connected[i].size(); j++) {
+    //         cout << connected[i][j] << " ";
+    //     }
+    //     cout << endl;
+    // }
 
     vector<set<ll>> biconnected;
     remapAuxGraph(t, biconnected, connected, parent);
