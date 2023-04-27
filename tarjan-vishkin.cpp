@@ -295,6 +295,8 @@ void remapAuxGraph(graph* t, vector<set<ll>>& bi, vector<vector<ll>>& components
 }
 
 int main() {
+
+
     ifstream cin("datasets/graph1.txt");
     graph *g = new graph();
     cin >> g->n >> g->m;
@@ -319,12 +321,15 @@ int main() {
     t->n = g->n;
     nt->n = g->n;
     vector<ll> pre, succ, low, parent(g->n, -1), level(g->n, -1);
+
+    auto start = chrono::high_resolution_clock::now();
+
+
     bfs(g,t,nt, parent, level);
     sort(g->edges.begin(), g->edges.end(), cmp);
     sort(t->edges.begin(), t->edges.end(), cmp);
     sort(nt->edges.begin(), nt->edges.end(), cmp);
 
- 
     t->m = t->edges.size();
     nt->m = nt->edges.size();
 
@@ -351,13 +356,19 @@ int main() {
             i--;
         }
     }
+
+    auto end = chrono::high_resolution_clock::now();
+
+
     // cout << t->n << " " << t->m << endl;
     // cout << nt->n << " " << nt->m << endl;
     // cout << aux->n << " " << aux->m << endl;
-    for (set<ll> s : biconnected) {
-        for (ll i : s)
-            cout << i << " ";
-        cout << endl;
-    }
+    // for (set<ll> s : biconnected) {
+    //     for (ll i : s)
+    //         cout << i << " ";
+    //     cout << endl;
+    // }
+
+    cout << "Sequential Time: " << chrono::duration_cast<chrono::nanoseconds>(end - start).count()/1e9 << "s" << endl;
     return 0;
 }
