@@ -167,6 +167,8 @@ void findConnectedComponents(graph* g, vector<vector<ll>>& component) {
 
 void euler_tour(graph* t, vector<ll>& succ) {
     vector<ll> first(t->n, -1), next(t->m, -1), twin(t->m, -1);
+
+    #pragma omp parallel for
     for(ll i = 0; i < t->m; i++) {
         twin[distance(t->edges.begin(), lower_bound(t->edges.begin(), t->edges.end(), reverseEdge(t->edges[i], -1), cmp))] = i;
 
@@ -176,6 +178,8 @@ void euler_tour(graph* t, vector<ll>& succ) {
 			next[i-1] = i;
     }
     succ.resize(t->m, -1);
+
+    #pragma omp parallel for
     for(ll i = 0; i < t->m; i++) {
         if(next[twin[i]] != -1)
             succ[i] = next[twin[i]];
@@ -202,6 +206,7 @@ void preOrderVertices(graph* t, vector<ll>& pre, vector<ll>& succ) {
 void findLow(graph* t, graph* nt, vector<ll>& low, vector<ll>& level){
     low.resize(nt->n);
 
+    #pragma omp parallel for
     for(ll i = 0; i < nt->n; i++)
         low[i] = i;
 
@@ -209,6 +214,7 @@ void findLow(graph* t, graph* nt, vector<ll>& low, vector<ll>& level){
     while(changed) {
         changed = false;
 
+        #pragma omp parallel for
         for(ll i = 0; i < nt->n; i++) {
             for (edge* e : t->vertices[i]->edges) {
 
@@ -236,8 +242,6 @@ void findLow(graph* t, graph* nt, vector<ll>& low, vector<ll>& level){
 graph* auxillaryGraph(graph* g, graph* t, graph *nt,vector<ll>& low, vector<ll>& level, vector<ll>& parent, vector<ll>& pre) {
     graph* aux = new graph();
     aux->n = g->n + nt->m; // resizing the auxillary graph
-
-    cout << g->m << endl;
 
     for(ll i = 0; i < aux->n; i++) {
         vertex* v = new vertex();
@@ -340,6 +344,8 @@ void remapAuxGraph(graph* t, vector<set<ll>>& bi, vector<vector<ll>>& components
 }
 
 int main() {
+
+
     ifstream cin("datasets/graph1.txt");
     graph *g = new graph();
     cin >> g->n >> g->m;
@@ -365,6 +371,11 @@ int main() {
     t->n = g->n;
     nt->n = g->n;
     vector<ll> pre, succ, low, parent(g->n, -1), level(g->n, -1);
+
+
+    auto start = chrono::high_resolution_clock::now();
+
+    
     bfs(g,t,nt, parent, level);
     sort(g->edges.begin(), g->edges.end(), cmp);
     sort(t->edges.begin(), t->edges.end(), cmp);
@@ -425,13 +436,23 @@ int main() {
             i--;
         }
     }
+
+    auto end = chrono::high_resolution_clock::now();
+
+
     // cout << t->n << " " << t->m << endl;
     // cout << nt->n << " " << nt->m << endl;
-    // cout << aux->n << " " << aux->m << endl;
-    for (set<ll> s : biconnected) {
-        for (ll i : s)
-            cout << i << " ";
-        cout << endl;
-    }
+    // cout << aux->n << " " << aux->m << endl
+
+    // int count = 1;
+    // for (set<ll> s : biconnected) {
+    //     cout << count << ": ";
+    //     for (ll i : s)
+    //         cout << i << " ";
+    //     cout << endl;
+    //     count++;
+    // }
+
+    cout << "Parallel time: " << (chrono::duration_cast<chrono::nanoseconds>(end - start).count())/ 1e9 << "s" << endl;
     return 0;
 }
