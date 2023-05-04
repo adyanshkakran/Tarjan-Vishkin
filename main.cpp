@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include "utils.h"
 #include "tarjan-vishkin.h"
 #include "tarjan-vishkin-uf.h"
 #include "tarjan.h"
@@ -10,18 +11,22 @@ using namespace std;
 
 int main(int argc, char **argv)
 {
-
-    if (argc < 2)
+    if (argc < 3)
     {
-        cout << "Usage: ./main <graph.txt>" << endl;
+        std::cout << "Usage: ./main <n> <m>" << endl;
         return 0;
     }
 
-    // prepare graph and other required data structures
-    ifstream cin(argv[1]);
+    int n = stoi(argv[1]), m = stoi(argv[2]);
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<> dis(0, n-1);
+
 
     graph *g = new graph();
-    cin >> g->n >> g->m;
+    g->n = n;
+    g->m = m;
+    // cin >> g->n >> g->m;
     for (int i = 0; i < g->n; i++)
     {
         vertex *v = new vertex();
@@ -31,22 +36,60 @@ int main(int argc, char **argv)
     for (int i = 0; i < 2 * g->m; i += 2)
     {
         edge *e = new edge();
-        ll u, v;
-        cin >> u >> v;
-        e->id = i;
+        ll u = dis(gen), v = dis(gen);
+        bool corr = false;
+        while(!corr){
+            corr = true;
+            while (u == v)
+            {
+                v = dis(gen);
+            }
+            for (int j = 0; j < g->vertices[u]->edges.size(); j++)
+            {
+                if (g->vertices[u]->edges[j]->v2->id == v || g->vertices[u]->edges[j]->v1->id == v)
+                {
+                    v = dis(gen);
+                    while(u == v)
+                        v = dis(gen);
+                    corr = false;
+                    break;
+                }
+            }
+        }
         e->v1 = g->vertices[u];
         e->v2 = g->vertices[v];
         g->vertices[u]->edges.push_back(e);
         g->vertices[v]->edges.push_back(e);
         g->edges.push_back(e);
-        g->edges.push_back(reverseEdge(e, i + 1));
+        g->edges.push_back(reverseEdge(e));
     }
     g->m *= 2;
-    graph *t = new graph(), *nt = new graph();
-    t->n = g->n;
-    nt->n = g->n;
-    vector<ll> pre, succ, low, parent(g->n, -1), level(g->n, -1);
 
-    // run Tarjan-Vishkin
-    tarjan_vishkin(g, t, nt, pre, succ, low, parent, level);
+    std::cout << "Generated Graph" << endl;
+    // print graph
+    // for (int i = 0; i < g->n; i++)
+    // {
+    //     std::cout << g->vertices[i]->id << ": ";
+    //     for (int j = 0; j < g->vertices[i]->edges.size(); j++)
+    //     {
+    //         std::cout << (g->vertices[i]->edges[j]->v2->id == g->vertices[i]->id ? g->vertices[i]->edges[j]->v1->id : g->vertices[i]->edges[j]->v2->id) << " ";
+    //     }
+    //     std::cout << endl;
+    // }
+    double tv = 0, tvp = 0, tvuf = 0, tvpuf = 0;
+
+    for(int i = 0; i < 50; i++){
+        tv += tarjan_vishkin(g);
+
+        tvp += tarjan_vishkin_parallel(g);
+
+        tvuf += tarjan_vishkin_uf(g);
+
+        tvpuf += tarjan_vishkin_parallel_uf(g);
+        cout << "Iteration " << i << " done." << endl;
+    }
+    std::cout << "tarjan-vishkin: " << tv/50 << endl;
+    std::cout << "tarjan-vishkin-parallel: " << tvp/50 << endl;
+    std::cout << "tarjan-vishkin-uf: " << tvuf/50 << endl;
+    std::cout << "tarjan-vishkin-parallel-uf: " << tvpuf/50 << endl;
 }

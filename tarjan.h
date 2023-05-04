@@ -12,3 +12,5 @@ stack<ll> s;
 vector<vector<ll>> components;
 
 void dfs(int curr, int parent);
+
+#endif
