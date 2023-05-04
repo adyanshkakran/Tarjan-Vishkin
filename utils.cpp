@@ -1,5 +1,17 @@
 #include "utils.h"
 
+void destroyGraph(Graph* g) {
+    for (int i = 0; i < g->n; i++) {
+        delete g->vertices[i];
+    }
+    g->vertices.clear();
+    for (int i = 0; i < g->m; i++) {
+        delete g->edges[i];
+    }
+    g->edges.clear();
+    delete g;
+}
+
 edge *reverseEdge(edge *e)
 {
     edge *rev = new edge();
@@ -184,23 +196,30 @@ void euler_tour(graph* t, vector<ll>& succ) {
 void euler_tour_parallel(graph* t, vector<ll>& succ) {
     vector<ll> first(t->n, -1), next(t->m, -1), twin(t->m, -1);
 
+    // cout << t->m << endl;
     #pragma omp parallel for
-    for(ll i = 0; i < t->m; i++) {
-        twin[distance(t->edges.begin(), lower_bound(t->edges.begin(), t->edges.end(), reverseEdge(t->edges[i]), cmp))] = i;
+    for(ll x = 0; x < t->m/2; x++) {
+        for(ll j = 0; j < 2; j++){
+            ll i = 2*x + j;
+            twin[distance(t->edges.begin(), lower_bound(t->edges.begin(), t->edges.end(), reverseEdge(t->edges[i]), cmp))] = i;
 
-        if(i == 0 || t->edges[i]->v1->id != t->edges[i-1]->v1->id)
-			first[t->edges[i]->v1->id] = i;
-		else if(t->edges[i]->v1->id == t->edges[i-1]->v1->id)
-			next[i-1] = i;
+            if(i == 0 || t->edges[i]->v1->id != t->edges[i-1]->v1->id)
+                first[t->edges[i]->v1->id] = i;
+            else if(t->edges[i]->v1->id == t->edges[i-1]->v1->id)
+                next[i-1] = i;
+        }
     }
     succ.resize(t->m, -1);
 
     #pragma omp parallel for
-    for(ll i = 0; i < t->m; i++) {
-        if(next[twin[i]] != -1)
-            succ[i] = next[twin[i]];
-        else
-            succ[i] = first[t->edges[i]->v2->id];
+    for(ll x = 0; x < t->m/2; x++) {
+        for(ll j = 0; j < 2; j++){
+            ll i = 2*x + j;
+            if(next[twin[i]] != -1)
+                succ[i] = next[twin[i]];
+            else
+                succ[i] = first[t->edges[i]->v2->id];
+        }
     }
 }
 
@@ -389,6 +408,7 @@ void remap_aux_graph_parallel(graph* t, vector<set<ll>>& bi, vector<vector<ll>>&
 			}
 		}
 	}
+    cout << bi.size() << "\n";
 }
 
 graph* auxillary_graph(graph* g, graph* t, graph *nt,vector<ll>& low, vector<ll>& level, vector<ll>& parent, vector<ll>& pre) {
@@ -571,10 +591,12 @@ graph *auxillary_graph_parallel_uf(graph *g, graph *t, graph *nt, vector<ll> &lo
 #pragma omp parallel for
     for (size_t i = 0; i < g->m; i++)
     {
-        // cout << g->edges[i]->v1->id << " " << g->edges[i]->v2->id << " ";
         if (findEdgeById(t->edges, g->edges[i]))
         {
+            #pragma omp critical
+            {
             isTreeEdge[i] = true;
+            }
         }
     }
 
@@ -592,7 +614,7 @@ graph *auxillary_graph_parallel_uf(graph *g, graph *t, graph *nt, vector<ll> &lo
             num[i] = 1;
         }
     }
-
+    
     partial_sum(num.begin(), num.end(), pref.begin());
 
 #pragma omp parallel for
@@ -640,8 +662,13 @@ graph *auxillary_graph_parallel_uf(graph *g, graph *t, graph *nt, vector<ll> &lo
                 // check if u and pref[i] + g->n - 1 are in the same component using union find
                 if (union_find->find(u) != union_find->find(pref[i] + g->n - 1))
                 {
+                    
 #pragma omp critical
                     {
+
+// cout << "u: " << u << " v: " << pref[i] + g->n - 1 << "\n";
+// cout << "u: " << union_find->find(u) << " v: " << union_find->find(v) << "\n";
+// cout << "====\n";
                         union_find->unite(u, pref[i] + g->n - 1);
                         aux->edges.push_back(e);
                         aux->vertices[u]->edges.push_back(e);
@@ -686,4 +713,5 @@ void remap_aux_graph(graph* t, vector<set<ll>>& bi, vector<vector<ll>>& componen
 			}
 		}
 	}
+    cout << bi.size() << "\n";
 }

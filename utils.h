@@ -68,6 +68,7 @@ private:
     std::vector<int> rank;
 };
 
+void destroyGraph(Graph* g);
 edge* reverseEdge(edge* e);
 bool cmp(edge* a, edge* b);
 bool cmp2(edge* a, edge* b);

@@ -37,7 +37,7 @@ double tarjan_vishkin_parallel(graph* g) {
     t->m = t->edges.size();
     nt->m = nt->edges.size();
 
-    euler_tour(t, succ);
+    euler_tour_parallel(t, succ);
 
     preOrderVertices(t, pre, succ);
  

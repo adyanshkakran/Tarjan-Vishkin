@@ -37,13 +37,13 @@ double tarjan_vishkin_parallel_uf(graph* g) {
     t->m = t->edges.size();
     nt->m = nt->edges.size();
 
-    euler_tour(t, succ);
+    euler_tour_parallel(t, succ);
 
     preOrderVertices(t, pre, succ);
  
     find_low_parallel(t, nt, low, level);
 
-    graph* aux = auxillary_graph_parallel(g, t, nt, low, level, parent, pre);
+    graph* aux = auxillary_graph_parallel_uf(g, t, nt, low, level, parent, pre);
 
     // print aux graph edges
     // cout << "aux edges\n";

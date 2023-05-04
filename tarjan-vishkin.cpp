@@ -47,11 +47,14 @@ double tarjan_vishkin(graph* g){
     // cout << t->n << " " << t->m << endl;
     // cout << nt->n << " " << nt->m << endl;
     // cout << aux->n << " " << aux->m << endl;
+    // int count = 0;
     // for (set<ll> s : biconnected) {
-    //     for (ll i : s)
-    //         cout << i << " ";
-    //     cout << endl;
+    //     count++;
+    //     // for (ll i : s)
+    //     //     cout << i << " ";
+    //     // cout << endl;
     // }
+    // cout << count << endl;
 
     // cout << "Sequential Time: " << chrono::duration_cast<chrono::nanoseconds>(end - start).count()/1e9 << "s" << endl;
     return (chrono::duration_cast<chrono::nanoseconds>(end - start).count())/ 1e9;
