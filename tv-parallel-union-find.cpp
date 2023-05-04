@@ -1,5 +1,4 @@
 #include <bits/stdc++.h>
-#include <omp.h>
 #include "utils.h"
 
 using namespace std;
@@ -86,7 +85,7 @@ double tarjan_vishkin_parallel_uf(graph* g) {
     //     // cout << endl;
     //     count++;
     // }
-    // // cout << count << endl;
+    // cout << count << endl;
 
     // cout << "Parallel time: " << (chrono::duration_cast<chrono::nanoseconds>(end - start).count())/ 1e9 << "s" << endl;
     return (chrono::duration_cast<chrono::nanoseconds>(end - start).count())/ 1e9;

@@ -5,12 +5,13 @@
 using namespace std;
 
 double tarjan_vishkin(graph* g){
-    auto start = chrono::high_resolution_clock::now();
 
     graph *t = new graph(), *nt = new graph();
     t->n = g->n;
     nt->n = g->n;
     vector<ll> pre, succ, low, parent(g->n, -1), level(g->n, -1);
+    
+    auto start = chrono::high_resolution_clock::now();
 
     bfs(g,t,nt, parent, level);
     sort(g->edges.begin(), g->edges.end(), cmp);

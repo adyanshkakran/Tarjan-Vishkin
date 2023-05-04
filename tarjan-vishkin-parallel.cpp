@@ -1,5 +1,4 @@
 #include <bits/stdc++.h>
-#include <omp.h>
 #include "utils.h"
 
 using namespace std;

@@ -101,7 +101,7 @@ int main(int argc, char **argv)
         }
         double tv = 0, tvp = 0, tvuf = 0, tvpuf = 0;
 
-        for (int i = 0; i < 1; i++)
+        for (int i = 0; i < 20; i++)
         {
             tv += tarjan_vishkin(g);
 

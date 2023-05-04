@@ -1,2 +1,2 @@
 Vertices, Edges, Average Degree, Tarjan Vishkin, Tarjan Vishkin with Union Find, Tarjan Vishkin Parallel, Tarjan Vishkin Parallel with Union Find
-10000,20000,4,0.000725431,0.000729674,0.00200793,0.000819058
+1000,2000,4,0.000989376,0.000982286,0.0010994,0.00127285

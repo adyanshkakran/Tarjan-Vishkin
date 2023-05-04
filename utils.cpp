@@ -408,7 +408,6 @@ void remap_aux_graph_parallel(graph* t, vector<set<ll>>& bi, vector<vector<ll>>&
 			}
 		}
 	}
-    cout << bi.size() << "\n";
 }
 
 graph* auxillary_graph(graph* g, graph* t, graph *nt,vector<ll>& low, vector<ll>& level, vector<ll>& parent, vector<ll>& pre) {
@@ -713,5 +712,4 @@ void remap_aux_graph(graph* t, vector<set<ll>>& bi, vector<vector<ll>>& componen
 			}
 		}
 	}
-    cout << bi.size() << "\n";
 }
