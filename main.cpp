@@ -10,6 +10,9 @@
 
 using namespace std;
 
+int THREADS = 8;
+int PER_THREAD = 500;
+
 string get_file_path(const char *path, const char *file_name)
 {
     /* Only open .in files */
@@ -170,6 +173,11 @@ int main(int argc, char **argv)
 
     if (strcmp(argv[1], "random") == 0)
     {
+        if(argc < 4){
+            cout << "Usage: ./main random <number of threads> <iterations per thread>" << endl;
+            return 0;
+        }
+
         int n;
         cout << "enter number of vertices" << endl;
         cin >> n;

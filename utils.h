@@ -5,6 +5,9 @@
 #include <omp.h>
 using namespace std;
 
+extern inline int PER_THREAD;
+extern inline int THREADS;
+
 typedef long long ll;
 
 typedef struct Edge edge;
