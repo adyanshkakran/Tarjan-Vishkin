@@ -25,6 +25,7 @@ struct Graph {
     ll n, m;
     vector<Vertex*> vertices;
     vector<Edge*> edges;
+    double avgDegree;
 };
 
 class UnionFind {
