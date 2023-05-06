@@ -1,6 +1,6 @@
 #include "utils.h"
 
-const int PER_THREAD = 10;
+const int PER_THREAD = 500;
 const int THREADS = 8;
 
 ll ceil(ll a, ll b)

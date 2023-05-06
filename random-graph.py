@@ -16,11 +16,13 @@ def generate_random_graph(num_vertices, num_edges):
     # Display the graph
     # print(G.number_of_nodes(), G.number_of_edges())
     
-    
+    with open("graph.in", "w") as f:
+        # Write number of vertices and edges
+        f.write(str(G.number_of_nodes()) + " " + str(G.number_of_edges()) + "\n")
 
-    for edge in G.edges():
-        print(edge[0], edge[1])
+        for edge in G.edges():
+            f.write(str(edge[0]) + " " + str(edge[1]) + "\n")
     # nx.draw(G, with_labels=True)
     # plt.show()
 
-generate_random_graph(10, 20)
+generate_random_graph(10000, 20000)
