@@ -39,7 +39,7 @@ double tarjan_vishkin_parallel(graph* g) {
     euler_tour_parallel(t, succ);
 
     preOrderVertices(t, pre, succ);
- 
+
     find_low_parallel(t, nt, low, level);
 
     graph* aux = auxillary_graph_parallel(g, t, nt, low, level, parent, pre);
