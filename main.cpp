@@ -43,6 +43,7 @@ void addEdgesFromFile(graph *g, ifstream &input, vector<int> &degrees)
         g->vertices[u]->edges.push_back(e);
         g->vertices[v]->edges.push_back(e);
         g->edges.push_back(e);
+        g->edges.push_back(reverseEdge(e));
     }
 }
 

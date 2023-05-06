@@ -218,11 +218,11 @@ void euler_tour_parallel(graph *t, vector<ll> &succ)
     vector<ll> first(t->n, -1), next(t->m, -1), twin(t->m, -1);
 
 #pragma omp parallel for num_threads(THREADS)
-    for (ll x = 0; x < ceil(t->m, PER_THREAD); x++)
+    for (ll x = 0; x < ceil(t->m, PER_THREAD/10); x++)
     {
-        for (ll j = 0; j < PER_THREAD; j++)
+        for (ll j = 0; j < PER_THREAD/10; j++)
         {
-            ll i = PER_THREAD * x + j;
+            ll i = PER_THREAD/10 * x + j;
             if (i >= t->m)
                 break;
             twin[distance(t->edges.begin(), lower_bound(t->edges.begin(), t->edges.end(), reverseEdge(t->edges[i]), cmp))] = i;
@@ -236,11 +236,11 @@ void euler_tour_parallel(graph *t, vector<ll> &succ)
     succ.resize(t->m, -1);
 
 #pragma omp parallel for num_threads(THREADS)
-    for (ll x = 0; x < ceil(t->m, PER_THREAD); x++)
+    for (ll x = 0; x < ceil(t->m, PER_THREAD/10); x++)
     {
-        for (ll j = 0; j < PER_THREAD; j++)
+        for (ll j = 0; j < PER_THREAD/10; j++)
         {
-            ll i = PER_THREAD * x + j;
+            ll i = PER_THREAD/10 * x + j;
             if (i >= t->m)
                 break;
             if (next[twin[i]] != -1)
@@ -489,7 +489,7 @@ void remap_aux_graph_parallel(graph *t, vector<set<ll>> &bi, vector<vector<ll>> 
 {
     bi.resize(components.size() - 1);
 #pragma omp parallel for num_threads(THREADS)
-    for (ll k = 1; k < components.size(); k++)
+    for (ll k = 1; k < ceil(components.size(), PER_THREAD); k++)
     {
         for (ll x = 0; x < PER_THREAD; x++)
         {
