@@ -14,14 +14,13 @@ def generate_random_graph(num_vertices, num_edges):
         if u != v and not G.has_edge(u, v):
             G.add_edge(u, v)
     # Display the graph
+    # print(G.number_of_nodes(), G.number_of_edges())
     
-    with open("datasets/graph1.txt", "w") as f:
-        f.write(str(num_vertices) + " " + str(num_edges) + "\n")
-        # print the edges
-        
-        for(u, v) in G.edges():
-            f.write(str(u) + " " + str(v) + "\n")
-        
+    
+
+    for edge in G.edges():
+        print(edge[0], edge[1])
     # nx.draw(G, with_labels=True)
     # plt.show()
+
 generate_random_graph(5000, 10000)

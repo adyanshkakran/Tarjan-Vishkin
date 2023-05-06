@@ -12,7 +12,7 @@ def printList(list):
     for data in list:
         print(data)
 
-def edges_vs_time():
+def degree_vs_time():
     with open("plot_datas/data1.csv") as f:
         # read csv file
         csv_reader = csv.reader(f, delimiter=',')
@@ -52,7 +52,7 @@ def edges_vs_time():
         # sns.catplot(data=df, x="Edges", y="Time", hue="Algorithm", kind="bar", ci=None)
         
         # add tooltips
-        fig = px.bar(df, x="Edges", y="Time (s)", color="Algorithm", barmode="group", hover_data=["Vertices", "Edges", "Average Degree", "Time (s)"])
+        fig = px.bar(df, x="Average Degree", y="Time (s)", color="Algorithm", barmode="group", hover_data=["Vertices", "Edges", "Average Degree", "Time (s)"])
         fig.update_layout(title="Time taken by Tarjan-Vishkin and its variants")
         fig.show()
         
@@ -104,4 +104,5 @@ def vertices_vs_time():
         
         # plt.show()
 
-vertices_vs_time()
+# vertices_vs_time()
+degree_vs_time()
