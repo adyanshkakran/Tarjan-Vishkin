@@ -1,11 +1,24 @@
 #include "utils.h"
 
-void destroyGraph(Graph* g) {
-    for (int i = 0; i < g->n; i++) {
+const int PER_THREAD = 10;
+const int THREADS = 8;
+
+ll ceil(ll a, ll b)
+{
+    if (b == 0)
+        return -1;
+    return a % b == 0 ? a / b : a / b + 1;
+}
+
+void destroyGraph(Graph *g)
+{
+    for (int i = 0; i < g->n; i++)
+    {
         delete g->vertices[i];
     }
     g->vertices.clear();
-    for (int i = 0; i < g->m; i++) {
+    for (int i = 0; i < g->m; i++)
+    {
         delete g->edges[i];
     }
     g->edges.clear();
@@ -164,58 +177,73 @@ void findConnectedComponents(graph *g, vector<vector<ll>> &component)
     }
 }
 
-bool findEdgeById(const vector<edge*>& edges, edge* e) {
+bool findEdgeById(const vector<edge *> &edges, edge *e)
+{
     auto it = lower_bound(edges.begin(), edges.end(), e, cmp);
 
-    if (it != edges.end() && (*it)->v1->id == e->v1->id && (*it)->v2->id == e->v2->id) {
+    if (it != edges.end() && (*it)->v1->id == e->v1->id && (*it)->v2->id == e->v2->id)
+    {
         return true;
-    } else {
+    }
+    else
+    {
         return false; // Edge with given id not found
     }
 }
 
-void euler_tour(graph* t, vector<ll>& succ) {
+void euler_tour(graph *t, vector<ll> &succ)
+{
     vector<ll> first(t->n, -1), next(t->m, -1), twin(t->m, -1);
-    for(ll i = 0; i < t->m; i++) {
+    for (ll i = 0; i < t->m; i++)
+    {
         twin[distance(t->edges.begin(), lower_bound(t->edges.begin(), t->edges.end(), reverseEdge(t->edges[i]), cmp))] = i;
 
-        if(i == 0 || t->edges[i]->v1->id != t->edges[i-1]->v1->id)
-			first[t->edges[i]->v1->id] = i;
-		else if(t->edges[i]->v1->id == t->edges[i-1]->v1->id)
-			next[i-1] = i;
+        if (i == 0 || t->edges[i]->v1->id != t->edges[i - 1]->v1->id)
+            first[t->edges[i]->v1->id] = i;
+        else if (t->edges[i]->v1->id == t->edges[i - 1]->v1->id)
+            next[i - 1] = i;
     }
     succ.resize(t->m, -1);
-    for(ll i = 0; i < t->m; i++) {
-        if(next[twin[i]] != -1)
+    for (ll i = 0; i < t->m; i++)
+    {
+        if (next[twin[i]] != -1)
             succ[i] = next[twin[i]];
         else
             succ[i] = first[t->edges[i]->v2->id];
     }
 }
 
-void euler_tour_parallel(graph* t, vector<ll>& succ) {
+void euler_tour_parallel(graph *t, vector<ll> &succ)
+{
     vector<ll> first(t->n, -1), next(t->m, -1), twin(t->m, -1);
 
-    // cout << t->m << endl;
-    #pragma omp parallel for
-    for(ll x = 0; x < t->m/2; x++) {
-        for(ll j = 0; j < 2; j++){
-            ll i = 2*x + j;
+#pragma omp parallel for num_threads(THREADS)
+    for (ll x = 0; x < ceil(t->m, PER_THREAD); x++)
+    {
+        for (ll j = 0; j < PER_THREAD; j++)
+        {
+            ll i = PER_THREAD * x + j;
+            if (i >= t->m)
+                break;
             twin[distance(t->edges.begin(), lower_bound(t->edges.begin(), t->edges.end(), reverseEdge(t->edges[i]), cmp))] = i;
 
-            if(i == 0 || t->edges[i]->v1->id != t->edges[i-1]->v1->id)
+            if (i == 0 || t->edges[i]->v1->id != t->edges[i - 1]->v1->id)
                 first[t->edges[i]->v1->id] = i;
-            else if(t->edges[i]->v1->id == t->edges[i-1]->v1->id)
-                next[i-1] = i;
+            else if (t->edges[i]->v1->id == t->edges[i - 1]->v1->id)
+                next[i - 1] = i;
         }
     }
     succ.resize(t->m, -1);
 
-    #pragma omp parallel for
-    for(ll x = 0; x < t->m/2; x++) {
-        for(ll j = 0; j < 2; j++){
-            ll i = 2*x + j;
-            if(next[twin[i]] != -1)
+#pragma omp parallel for num_threads(THREADS)
+    for (ll x = 0; x < ceil(t->m, PER_THREAD); x++)
+    {
+        for (ll j = 0; j < PER_THREAD; j++)
+        {
+            ll i = PER_THREAD * x + j;
+            if (i >= t->m)
+                break;
+            if (next[twin[i]] != -1)
                 succ[i] = next[twin[i]];
             else
                 succ[i] = first[t->edges[i]->v2->id];
@@ -223,7 +251,8 @@ void euler_tour_parallel(graph* t, vector<ll>& succ) {
     }
 }
 
-void preOrderVertices(graph* t, vector<ll>& pre, vector<ll>& succ) {
+void preOrderVertices(graph *t, vector<ll> &pre, vector<ll> &succ)
+{
     pre.resize(t->n, -1);
     pre[t->edges[0]->v1->id] = 0;
     pre[t->edges[0]->v2->id] = 1;
@@ -238,34 +267,94 @@ void preOrderVertices(graph* t, vector<ll>& pre, vector<ll>& succ) {
     } while (i != 0);
 }
 
-void find_low_parallel(graph* t, graph* nt, vector<ll>& low, vector<ll>& level){
+void find_low_parallel(graph *t, graph *nt, vector<ll> &low, vector<ll> &level)
+{
     low.resize(nt->n);
 
-    #pragma omp parallel for
-    for(ll i = 0; i < nt->n; i++)
+#pragma omp parallel for num_threads(THREADS)
+    for (ll i = 0; i < ceil(nt->n, PER_THREAD); i++)
+        for (ll j = 0; j < PER_THREAD; j++)
+        {
+            if (i >= nt->n)
+                break;
+            low[i] = i;
+        }
+
+    bool changed = true;
+    while (changed)
+    {
+        changed = false;
+
+#pragma omp parallel for num_threads(THREADS)
+        for (ll y = 0; y < ceil(nt->n, PER_THREAD); y++)
+        {
+            for (ll x = 0; x < PER_THREAD; x++)
+            {
+                ll i = PER_THREAD * y + x;
+                if (i >= nt->n)
+                    break;
+
+                for (edge *e : t->vertices[i]->edges)
+                {
+
+                    ll j = e->v1->id == i ? e->v2->id : e->v1->id;
+
+                    if (level[i] < level[j] && level[low[j]] < level[low[i]])
+                    {
+                        low[i] = low[j];
+                        changed = true;
+                    }
+                }
+
+                for (edge *e : nt->vertices[i]->edges)
+                {
+
+                    ll j = e->v1->id == i ? e->v2->id : e->v1->id;
+
+                    if (level[low[j]] < level[low[i]])
+                    {
+                        low[i] = low[j];
+                        changed = true;
+                    }
+                }
+            }
+        }
+    }
+}
+
+void find_low(graph *t, graph *nt, vector<ll> &low, vector<ll> &level)
+{
+    low.resize(nt->n);
+
+    for (ll i = 0; i < nt->n; i++)
         low[i] = i;
 
     bool changed = true;
-    while(changed) {
+    while (changed)
+    {
         changed = false;
 
-        #pragma omp parallel for
-        for(ll i = 0; i < nt->n; i++) {
-            for (edge* e : t->vertices[i]->edges) {
+        for (ll i = 0; i < nt->n; i++)
+        {
+            for (edge *e : t->vertices[i]->edges)
+            {
 
                 ll j = e->v1->id == i ? e->v2->id : e->v1->id;
 
-                if (level[i] < level[j] && level[low[j]] < level[low[i]]) {
+                if (level[i] < level[j] && level[low[j]] < level[low[i]])
+                {
                     low[i] = low[j];
                     changed = true;
                 }
             }
 
-            for(edge* e : nt->vertices[i]->edges) {
+            for (edge *e : nt->vertices[i]->edges)
+            {
 
                 ll j = e->v1->id == i ? e->v2->id : e->v1->id;
 
-                if (level[low[j]] < level[low[i]]) {
+                if (level[low[j]] < level[low[i]])
+                {
                     low[i] = low[j];
                     changed = true;
                 }
@@ -274,116 +363,121 @@ void find_low_parallel(graph* t, graph* nt, vector<ll>& low, vector<ll>& level){
     }
 }
 
-void find_low(graph* t, graph* nt, vector<ll>& low, vector<ll>& level){
-    low.resize(nt->n);
-
-    for(ll i = 0; i < nt->n; i++)
-        low[i] = i;
-
-    bool changed = true;
-    while(changed) {
-        changed = false;
-
-        for(ll i = 0; i < nt->n; i++) {
-            for (edge* e : t->vertices[i]->edges) {
-
-                ll j = e->v1->id == i ? e->v2->id : e->v1->id;
-
-                if (level[i] < level[j] && level[low[j]] < level[low[i]]) {
-                    low[i] = low[j];
-                    changed = true;
-                }
-            }
-
-            for(edge* e : nt->vertices[i]->edges) {
-
-                ll j = e->v1->id == i ? e->v2->id : e->v1->id;
-
-                if (level[low[j]] < level[low[i]]) {
-                    low[i] = low[j];
-                    changed = true;
-                }
-            }
-        }
-    }
-}
-
-graph* auxillary_graph_parallel(graph* g, graph* t, graph *nt,vector<ll>& low, vector<ll>& level, vector<ll>& parent, vector<ll>& pre) {
-    graph* aux = new graph();
+graph *auxillary_graph_parallel(graph *g, graph *t, graph *nt, vector<ll> &low, vector<ll> &level, vector<ll> &parent, vector<ll> &pre)
+{
+    graph *aux = new graph();
     aux->n = g->n + nt->m; // resizing the auxillary graph
+    aux->vertices.resize(aux->n);
 
-    for(ll i = 0; i < aux->n; i++) {
-        vertex* v = new vertex();
-        v->id = i;
-        aux->vertices.push_back(v);
+#pragma omp parallel for num_threads(THREADS)
+    for (ll i = 0; i < ceil(aux->n, PER_THREAD); i++)
+    {
+        for (ll j = 0; j < PER_THREAD; j++)
+        {
+            ll k = PER_THREAD * i + j;
+            if (k >= aux->n)
+                break;
+            vertex *v = new vertex();
+            v->id = k;
+            aux->vertices[k] = v;
+        }
     }
-    vector<ll> num(g->m,0), pref(g->m,0);
+    vector<ll> num(g->m, 0), pref(g->m, 0);
 
-    // Create vector to hold information on whether each edge is a tree edge or not
     vector<bool> isTreeEdge(g->m, false);
 
-    // Identify tree edges and mark them in isTreeEdge vector
-    #pragma omp parallel for
-    for (size_t i = 0; i < g->m; i++) {
-        if (findEdgeById(t->edges, g->edges[i])) {
-            #pragma omp critical
+#pragma omp parallel for num_threads(THREADS)
+    for (ll i = 0; i < ceil(g->m, PER_THREAD); i++)
+    {
+        for (ll j = 0; j < PER_THREAD; j++)
+        {
+            ll k = PER_THREAD * i + j;
+            if (k >= g->m)
+                break;
+            if (findEdgeById(t->edges, g->edges[k]))
             {
-                isTreeEdge[i] = true;
+                isTreeEdge[k] = true;
             }
         }
     }
 
-    for (size_t i = 0; i < g->m; i++) {
-        if (!isTreeEdge[i]) {
-            num[i] = 1;
+#pragma omp parallel for num_threads(THREADS)
+    for (ll i = 0; i < ceil(g->m, PER_THREAD); i++)
+    {
+        for (ll j = 0; j < PER_THREAD; j++)
+        {
+            ll k = PER_THREAD * i + j;
+            if (k >= g->m)
+                break;
+            if (!isTreeEdge[k])
+                num[k] = 1;
         }
     }
 
     partial_sum(num.begin(), num.end(), pref.begin());
-    
-    #pragma omp parallel for
-    for(ll i = 0; i < g->m; i++) {
-        if(isTreeEdge[i]) {
-            ll u = g->edges[i]->v1->id, v = g->edges[i]->v2->id;
-            if(level[u] < level[v] && level[low[v]] <= level[u]){ // CASE 3
-                edge* e = new edge();
-                e->v1 = aux->vertices[u];
-                e->v2 = aux->vertices[v];
-                #pragma omp critical
-                {
-                    aux->edges.push_back(e);
-                    aux->vertices[u]->edges.push_back(e);
-                    aux->vertices[v]->edges.push_back(e);
+
+#pragma omp parallel for num_threads(THREADS)
+    for (ll k = 0; k < ceil(g->m, PER_THREAD); k++)
+    {
+        for (ll j = 0; j < PER_THREAD; j++)
+        {
+            ll i = PER_THREAD * k + j;
+            if (i >= g->m)
+                break;
+            if (isTreeEdge[i])
+            {
+                ll u = g->edges[i]->v1->id, v = g->edges[i]->v2->id;
+                if (level[u] < level[v] && level[low[v]] <= level[u])
+                { // CASE 3
+                    edge *e = new edge();
+                    e->v1 = aux->vertices[u];
+                    e->v2 = aux->vertices[v];
+#pragma omp critical
+                    {
+                        aux->edges.push_back(e);
+                        aux->vertices[u]->edges.push_back(e);
+                        aux->vertices[v]->edges.push_back(e);
+                    }
                 }
             }
         }
     }
 
-    #pragma omp parallel for
-    for(ll i = 0; i < g->m; i++) {
-        if(!isTreeEdge[i]) {
-            ll u = g->edges[i]->v1->id, v = g->edges[i]->v2->id;
-            ll p = LCA(level,parent, u, v);
-            if(pre[v] < pre[u]) { // CASE 1
-                edge* e = new edge();
-                e->v1 = aux->vertices[u];
-                e->v2 = aux->vertices[pref[i] + g->n -1];
-                #pragma omp critical
-                {
-                    aux->edges.push_back(e);
-                    aux->vertices[u]->edges.push_back(e);
-                    aux->vertices[pref[i] + g->n -1]->edges.push_back(e);
+#pragma omp parallel for num_threads(THREADS)
+    for (ll k = 0; k < ceil(g->m, PER_THREAD); k++)
+    {
+        for (ll j = 0; j < PER_THREAD; j++)
+        {
+            ll i = k * PER_THREAD + j;
+            if (i >= g->m)
+                break;
+            if (!isTreeEdge[i])
+            {
+                ll u = g->edges[i]->v1->id, v = g->edges[i]->v2->id;
+                ll p = LCA(level, parent, u, v);
+                if (pre[v] < pre[u])
+                { // CASE 1
+                    edge *e = new edge();
+                    e->v1 = aux->vertices[u];
+                    e->v2 = aux->vertices[pref[i] + g->n - 1];
+#pragma omp critical
+                    {
+                        aux->edges.push_back(e);
+                        aux->vertices[u]->edges.push_back(e);
+                        aux->vertices[pref[i] + g->n - 1]->edges.push_back(e);
+                    }
                 }
-            }
-            if(u < v && p != u && p != v){ // CASE 2
-                edge* e = new edge();
-                e->v1 = aux->vertices[u];
-                e->v2 = aux->vertices[v];
-                #pragma omp critical
-                {
-                    aux->edges.push_back(e);
-                    aux->vertices[u]->edges.push_back(e);
-                    aux->vertices[v]->edges.push_back(e);
+                if (u < v && p != u && p != v)
+                { // CASE 2
+                    edge *e = new edge();
+                    e->v1 = aux->vertices[u];
+                    e->v2 = aux->vertices[v];
+#pragma omp critical
+                    {
+                        aux->edges.push_back(e);
+                        aux->vertices[u]->edges.push_back(e);
+                        aux->vertices[v]->edges.push_back(e);
+                    }
                 }
             }
         }
@@ -391,74 +485,92 @@ graph* auxillary_graph_parallel(graph* g, graph* t, graph *nt,vector<ll>& low, v
     return aux;
 }
 
-void remap_aux_graph_parallel(graph* t, vector<set<ll>>& bi, vector<vector<ll>>& components, vector<ll>& parent) {
+void remap_aux_graph_parallel(graph *t, vector<set<ll>> &bi, vector<vector<ll>> &components, vector<ll> &parent)
+{
     bi.resize(components.size() - 1);
-    #pragma omp parallel for
-	for(ll i = 1; i < components.size(); i++)
-	{
-		for(ll j = 0; j < components[i].size(); j++)
-		{
-			if(components[i][j] < t->n)
-			{
-                #pragma omp critical
+#pragma omp parallel for num_threads(THREADS)
+    for (ll k = 1; k < components.size(); k++)
+    {
+        for (ll x = 0; x < PER_THREAD; x++)
+        {
+            ll i = PER_THREAD * k + x;
+            if (i >= components.size())
+                break;
+            for (ll j = 0; j < components[i].size(); j++)
+            {
+                if (components[i][j] < t->n)
                 {
-                    bi[i-1].insert(components[i][j]);
-                    bi[i-1].insert(parent[components[i][j]]);
+#pragma omp critical
+                    {
+                        bi[i - 1].insert(components[i][j]);
+                        bi[i - 1].insert(parent[components[i][j]]);
+                    }
                 }
-			}
-		}
-	}
+            }
+        }
+    }
 }
 
-graph* auxillary_graph(graph* g, graph* t, graph *nt,vector<ll>& low, vector<ll>& level, vector<ll>& parent, vector<ll>& pre) {
-    graph* aux = new graph();
+graph *auxillary_graph(graph *g, graph *t, graph *nt, vector<ll> &low, vector<ll> &level, vector<ll> &parent, vector<ll> &pre)
+{
+    graph *aux = new graph();
     aux->n = g->n + nt->m;
-    for(ll i = 0; i < aux->n; i++) {
-        vertex* v = new vertex();
+    for (ll i = 0; i < aux->n; i++)
+    {
+        vertex *v = new vertex();
         v->id = i;
         aux->vertices.push_back(v);
     }
-    vector<ll> num(g->m,0), pref(g->m,0);
+    vector<ll> num(g->m, 0), pref(g->m, 0);
     ll nti = 0, ti = 0;
-    for(ll i = 0; i < g->m; i++){
-		if(nti >= nt->m || (ti < t->m && g->edges[i]->v1->id == t->edges[ti]->v1->id && g->edges[i]->v2->id == t->edges[ti]->v2->id))
-			ti++;
-		else
-		{
-			num[i] = 1;
-			nti++;
-		}
-	}
+    for (ll i = 0; i < g->m; i++)
+    {
+        if (nti >= nt->m || (ti < t->m && g->edges[i]->v1->id == t->edges[ti]->v1->id && g->edges[i]->v2->id == t->edges[ti]->v2->id))
+            ti++;
+        else
+        {
+            num[i] = 1;
+            nti++;
+        }
+    }
 
     pref[0] = num[0];
-    for(ll i = 1; i < g->m; i++)
-        pref[i] = pref[i-1] + num[i];
-    
-    ti = 0; nti = 0;
-    for(ll i = 0; i < g->m; i++) {
+    for (ll i = 1; i < g->m; i++)
+        pref[i] = pref[i - 1] + num[i];
+
+    ti = 0;
+    nti = 0;
+    for (ll i = 0; i < g->m; i++)
+    {
         ll u = g->edges[i]->v1->id, v = g->edges[i]->v2->id;
-        if( nti >= nt->edges.size() || (ti < t->m && g->edges[i]->v1 == t->edges[ti]->v1 && g->edges[i]->v2 == t->edges[ti]->v2)){
-            if(level[u] < level[v] && level[low[v]] <= level[u]){
-                edge* e = new edge();
+        if (nti >= nt->edges.size() || (ti < t->m && g->edges[i]->v1 == t->edges[ti]->v1 && g->edges[i]->v2 == t->edges[ti]->v2))
+        {
+            if (level[u] < level[v] && level[low[v]] <= level[u])
+            {
+                edge *e = new edge();
                 e->v1 = aux->vertices[u];
                 e->v2 = aux->vertices[v];
                 aux->edges.push_back(e);
                 aux->vertices[u]->edges.push_back(e);
                 aux->vertices[v]->edges.push_back(e);
             }
-            ti++;   
-        }else{
-            ll p = LCA(level,parent, u, v);
-            if(pre[v] < pre[u]) {
-                edge* e = new edge();
+            ti++;
+        }
+        else
+        {
+            ll p = LCA(level, parent, u, v);
+            if (pre[v] < pre[u])
+            {
+                edge *e = new edge();
                 e->v1 = aux->vertices[u];
-                e->v2 = aux->vertices[pref[i] + g->n -1];
+                e->v2 = aux->vertices[pref[i] + g->n - 1];
                 aux->edges.push_back(e);
                 aux->vertices[u]->edges.push_back(e);
-                aux->vertices[pref[i] + g->n -1]->edges.push_back(e);
+                aux->vertices[pref[i] + g->n - 1]->edges.push_back(e);
             }
-            if(u < v && p != u && p != v){
-                edge* e = new edge();
+            if (u < v && p != u && p != v)
+            {
+                edge *e = new edge();
                 e->v1 = aux->vertices[u];
                 e->v2 = aux->vertices[v];
                 aux->edges.push_back(e);
@@ -572,125 +684,130 @@ graph *auxillary_graph_parallel_uf(graph *g, graph *t, graph *nt, vector<ll> &lo
 {
     graph *aux = new graph();
     aux->n = g->n + nt->m; // resizing the auxillary graph
-    // initialise union find data structure
+    aux->vertices.resize(aux->n);
     UnionFind *union_find = new UnionFind(aux->n);
 
-    for (ll i = 0; i < aux->n; i++)
+#pragma omp parallel for num_threads(THREADS)
+    for (ll i = 0; i < ceil(aux->n, PER_THREAD); i++)
     {
-        vertex *v = new vertex();
-        v->id = i;
-        aux->vertices.push_back(v);
+        for (ll j = 0; j < PER_THREAD; j++)
+        {
+            ll k = PER_THREAD * i + j;
+            if (k >= aux->n)
+                break;
+            vertex *v = new vertex();
+            v->id = k;
+            aux->vertices[k] = v;
+        }
     }
     vector<ll> num(g->m, 0), pref(g->m, 0);
 
-    // Create vector to hold information on whether each edge is a tree edge or not
     vector<bool> isTreeEdge(g->m, false);
 
-// Identify tree edges and mark them in isTreeEdge vector
-#pragma omp parallel for
-    for (size_t i = 0; i < g->m; i++)
+#pragma omp parallel for num_threads(THREADS)
+    for (ll i = 0; i < ceil(g->m, PER_THREAD); i++)
     {
-        if (findEdgeById(t->edges, g->edges[i]))
+        for (ll j = 0; j < PER_THREAD; j++)
         {
-            #pragma omp critical
+            ll k = PER_THREAD * i + j;
+            if (k >= g->m)
+                break;
+            if (findEdgeById(t->edges, g->edges[k]))
             {
-            isTreeEdge[i] = true;
+                isTreeEdge[k] = true;
             }
         }
     }
 
-    // print the isTreeEdge vector
-    // for (size_t i = 0; i < g->m; i++) {
-    //     cout << isTreeEdge[i] << " ";
-    // }
-    // cout << "====\n";
-
-    // creating the prefix sum array pref
-    for (size_t i = 0; i < g->m; i++)
+#pragma omp parallel for num_threads(THREADS)
+    for (ll i = 0; i < ceil(g->m, PER_THREAD); i++)
     {
-        if (!isTreeEdge[i])
+        for (ll j = 0; j < PER_THREAD; j++)
         {
-            num[i] = 1;
+            ll k = PER_THREAD * i + j;
+            if (k >= g->m)
+                break;
+            if (!isTreeEdge[k])
+                num[k] = 1;
         }
     }
-    
+
     partial_sum(num.begin(), num.end(), pref.begin());
 
-#pragma omp parallel for
-    for (ll i = 0; i < g->m; i++)
+#pragma omp parallel for num_threads(THREADS)
+    for (ll k = 0; k < ceil(g->m, PER_THREAD); k++)
     {
-        if (isTreeEdge[i])
+        for (ll j = 0; j < PER_THREAD; j++)
         {
-            ll u = g->edges[i]->v1->id, v = g->edges[i]->v2->id;
-            if (level[u] < level[v] && level[low[v]] <= level[u])
-            { // CASE 3
-                edge *e = new edge();
-                e->v1 = aux->vertices[u];
-                e->v2 = aux->vertices[v];
-                // check if u and v are in the same component using union find
-
-                if (union_find->find(u) != union_find->find(v))
-                {
-// cout << "u: " << u << " v: " << v << "\n";
-// cout << "u: " << union_find.find(u) << " v: " << union_find.find(v) << "\n";
-// cout << "====\n";
-#pragma omp critical
+            ll i = k * PER_THREAD + j;
+            if (i >= g->m)
+                break;
+            if (isTreeEdge[i])
+            {
+                ll u = g->edges[i]->v1->id, v = g->edges[i]->v2->id;
+                if (level[u] < level[v] && level[low[v]] <= level[u])
+                { // CASE 3
+                    edge *e = new edge();
+                    e->v1 = aux->vertices[u];
+                    e->v2 = aux->vertices[v];
+                    if (union_find->find(u) != union_find->find(v))
                     {
-                        union_find->unite(u, v);
-                        aux->edges.push_back(e);
-                        aux->vertices[u]->edges.push_back(e);
-                        aux->vertices[v]->edges.push_back(e);
+#pragma omp critical
+                        {
+                            union_find->unite(u, v);
+                            aux->edges.push_back(e);
+                            aux->vertices[u]->edges.push_back(e);
+                            aux->vertices[v]->edges.push_back(e);
+                        }
                     }
                 }
             }
         }
     }
 
-#pragma omp parallel for
-    for (ll i = 0; i < g->m; i++)
+#pragma omp parallel for num_threads(THREADS)
+    for (ll k = 0; k < ceil(g->m, PER_THREAD); k++)
     {
-        if (!isTreeEdge[i])
+        for (ll j = 0; j < PER_THREAD; j++)
         {
-            ll u = g->edges[i]->v1->id, v = g->edges[i]->v2->id;
-            ll p = LCA(level, parent, u, v);
-            if (pre[v] < pre[u])
-            { // CASE 1
-                edge *e = new edge();
-                e->v1 = aux->vertices[u];
-                e->v2 = aux->vertices[pref[i] + g->n - 1];
-                // check if u and pref[i] + g->n - 1 are in the same component using union find
-                if (union_find->find(u) != union_find->find(pref[i] + g->n - 1))
-                {
-                    
-#pragma omp critical
+            ll i = k * PER_THREAD + j;
+            if (i >= g->m)
+                break;
+            if (!isTreeEdge[i])
+            {
+                ll u = g->edges[i]->v1->id, v = g->edges[i]->v2->id;
+                ll p = LCA(level, parent, u, v);
+                if (pre[v] < pre[u])
+                { // CASE 1
+                    edge *e = new edge();
+                    e->v1 = aux->vertices[u];
+                    e->v2 = aux->vertices[pref[i] + g->n - 1];
+                    if (union_find->find(u) != union_find->find(pref[i] + g->n - 1))
                     {
 
-// cout << "u: " << u << " v: " << pref[i] + g->n - 1 << "\n";
-// cout << "u: " << union_find->find(u) << " v: " << union_find->find(v) << "\n";
-// cout << "====\n";
-                        union_find->unite(u, pref[i] + g->n - 1);
-                        aux->edges.push_back(e);
-                        aux->vertices[u]->edges.push_back(e);
-                        aux->vertices[pref[i] + g->n - 1]->edges.push_back(e);
+#pragma omp critical
+                        {
+                            union_find->unite(u, pref[i] + g->n - 1);
+                            aux->edges.push_back(e);
+                            aux->vertices[u]->edges.push_back(e);
+                            aux->vertices[pref[i] + g->n - 1]->edges.push_back(e);
+                        }
                     }
                 }
-            }
-            if (u < v && p != u && p != v)
-            { // CASE 2
-                edge *e = new edge();
-                e->v1 = aux->vertices[u];
-                e->v2 = aux->vertices[v];
-                if (union_find->find(u) != union_find->find(v))
-                {
-                    // cout << "u: " << u << " v: " << v << "\n";
-                    // cout << "u: " << union_find.find(u) << " v: " << union_find.find(v) << "\n";
-                    // cout << "====\n";
-#pragma omp critical
+                if (u < v && p != u && p != v)
+                { // CASE 2
+                    edge *e = new edge();
+                    e->v1 = aux->vertices[u];
+                    e->v2 = aux->vertices[v];
+                    if (union_find->find(u) != union_find->find(v))
                     {
-                        union_find->unite(u, v);
-                        aux->edges.push_back(e);
-                        aux->vertices[u]->edges.push_back(e);
-                        aux->vertices[v]->edges.push_back(e);
+#pragma omp critical
+                        {
+                            union_find->unite(u, v);
+                            aux->edges.push_back(e);
+                            aux->vertices[u]->edges.push_back(e);
+                            aux->vertices[v]->edges.push_back(e);
+                        }
                     }
                 }
             }
@@ -699,17 +816,18 @@ graph *auxillary_graph_parallel_uf(graph *g, graph *t, graph *nt, vector<ll> &lo
     return aux;
 }
 
-void remap_aux_graph(graph* t, vector<set<ll>>& bi, vector<vector<ll>>& components, vector<ll>& parent) {
+void remap_aux_graph(graph *t, vector<set<ll>> &bi, vector<vector<ll>> &components, vector<ll> &parent)
+{
     bi.resize(components.size() - 1);
-	for(ll i = 1; i < components.size(); i++)
-	{
-		for(ll j = 0; j < components[i].size(); j++)
-		{
-			if(components[i][j] < t->n)
-			{
-				bi[i-1].insert(components[i][j]);
-				bi[i-1].insert(parent[components[i][j]]);
-			}
-		}
-	}
+    for (ll i = 1; i < components.size(); i++)
+    {
+        for (ll j = 0; j < components[i].size(); j++)
+        {
+            if (components[i][j] < t->n)
+            {
+                bi[i - 1].insert(components[i][j]);
+                bi[i - 1].insert(parent[components[i][j]]);
+            }
+        }
+    }
 }

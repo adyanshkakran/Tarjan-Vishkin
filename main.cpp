@@ -11,11 +11,11 @@ using namespace std;
 
 int main(int argc, char **argv)
 {
-    if (argc < 2)
-    {
-        std::cout << "Usage: ./main <n>" << endl;
-        return 0;
-    }
+    // if (argc < 2)
+    // {
+    //     std::cout << "Usage: ./main <n>" << endl;
+    //     return 0;
+    // }
 
 
     ofstream myfile;
@@ -23,11 +23,11 @@ int main(int argc, char **argv)
     myfile.open("results.csv", ios::trunc);
     myfile << "Vertices, Edges, Average Degree, Tarjan Vishkin, Tarjan Vishkin with Union Find, Tarjan Vishkin Parallel, Tarjan Vishkin Parallel with Union Find" << endl;
 
-    // for (int graphN = 0; graphN < 11; graphN++)
-    // {
-        int n = 1000;
-        int m = 1500;
-        cin >> n >> m;
+    int n = 50000;
+    for (int graphN = 0; graphN < 10; graphN++)
+    {
+        int m = graphN * 10000 + n;
+        // cin >> n >> m;
 
         // fill(degrees.begin(), degrees.end(), 0);
 
@@ -101,7 +101,7 @@ int main(int argc, char **argv)
         }
         double tv = 0, tvp = 0, tvuf = 0, tvpuf = 0;
 
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < 1; i++)
         {
             tv += tarjan_vishkin(g);
 
@@ -118,5 +118,5 @@ int main(int argc, char **argv)
         // std::cout << "tarjan-vishkin-parallel-uf: " << tvpuf / 50 << endl;
         myfile << n << "," << m << "," << avg << "," << tv / 50 << "," << tvuf / 50 << "," << tvp / 50 << "," << tvpuf / 50 << endl;
         destroyGraph(g);
-    // }
+    }
 }
