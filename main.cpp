@@ -166,9 +166,9 @@ void degree()
     cout << "enter number of vertices" << endl;
     cin >> n;
 
-    for (int graphN = 0; graphN < 2; graphN++)
+    for (int graphN = 0; graphN < 10; graphN++)
     {
-        int m = graphN * 1000 + n;
+        int m = graphN * 50000 + n;
 
         random_device rd;
         mt19937 gen(rd());
@@ -182,7 +182,7 @@ void degree()
         generateRandomGraph(g, gen, dis, degrees);
 
         double tv = 0, tvp = 0, tvuf = 0, tvpuf = 0;
-        int iterations = 1;
+        int iterations = 20;
 
         runAlgorithms(g, tv, tvp, tvuf, tvpuf, iterations);
 
@@ -287,10 +287,10 @@ int main(int argc, char **argv)
 
     /* if argv is 1, we generate a random graph */
 
-    if (argc > 4)
-        THREADS = atoi(argv[3]);
     if (strcmp(argv[1], "random") == 0)
     {
+        if (argc > 4)
+            THREADS = atoi(argv[3]);
         if(argc < 3){
             std::cout << "Usage: ./main random <random-operation>" << endl;
             return 0;
@@ -308,6 +308,9 @@ int main(int argc, char **argv)
         }
         return 0;
     }
+
+    if (argc > 3)
+            THREADS = atoi(argv[3]);
 
     fileRead(argv[1]);
 
