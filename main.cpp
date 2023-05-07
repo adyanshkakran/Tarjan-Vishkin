@@ -129,7 +129,7 @@ void generateRandomGraph(graph *g, mt19937 &gen, uniform_int_distribution<> &dis
 
 void printGraph(graph *g)
 {
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < g->n; i++)
     {
         cout << g->vertices[i]->id << ": ";
         for (int j = 0; j < g->vertices[i]->edges.size(); j++)
@@ -187,6 +187,8 @@ void degree()
         runAlgorithms(g, tv, tvp, tvuf, tvpuf, iterations);
 
         myfile << n << "," << m << "," << g->avgDegree << "," << tv / iterations << "," << tvuf / iterations << "," << tvp / iterations << "," << tvpuf / iterations << endl;
+
+        destroyGraph(g);
     }
 }
 
@@ -225,12 +227,14 @@ void threads()
 
         myfile << n << "," << m << "," << g->avgDegree << "," << threads << "," << tv / iterations << "," << tvuf / iterations << "," << tvp / iterations << "," << tvpuf / iterations << endl;
     }
+
+    destroyGraph(g);
 }
 
 void fileRead(char* path) {
     ofstream myfile;
     myfile.open("results.csv", ios::trunc);
-    myfile << "Vertices, Edges, Average Degree, Tarjan Vishkin, Tarjan Vishkin with Union Find, Tarjan Vishkin Parallel, Tarjan Vishkin Parallel with Union Find, Graph Name" << endl;
+    myfile << "Vertices, Edges, Average Degree, File Name, Tarjan Vishkin, Tarjan Vishkin with Union Find, Tarjan Vishkin Parallel, Tarjan Vishkin Parallel with Union Find, Graph Name" << endl;
 
     DIR *dir;
     struct dirent *ent;
@@ -249,6 +253,7 @@ void fileRead(char* path) {
         string file_path = get_file_path(path, ent->d_name);
         if (file_path == "")
             continue;
+        cout << "Reading file: " << file_path << endl;
         ifstream input(file_path);
 
         /* Read number of vertices and edges */
@@ -267,10 +272,8 @@ void fileRead(char* path) {
         double tv = 0, tvp = 0, tvuf = 0, tvpuf = 0;
         int iterations = 20;
 
-        printGraph(g);
-
         runAlgorithms(g, tv, tvp, tvuf, tvpuf, iterations);
-        myfile << n << "," << m << "," << g->avgDegree << "," << tv / iterations << "," << tvuf / iterations << "," << tvp / iterations << "," << tvpuf / iterations << endl;
+        myfile << n << "," << m << "," << g->avgDegree << "," << file_path << "," << tv / iterations << "," << tvuf / iterations << "," << tvp / iterations << "," << tvpuf / iterations << endl;
         destroyGraph(g);
     }
     closedir(dir);

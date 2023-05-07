@@ -1,313 +1,422 @@
-==72957== Memcheck, a memory error detector
-==72957== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
-==72957== Using Valgrind-3.20.0 and LibVEX; rerun with -h for copyright info
-==72957== Command: ./main random 1
-==72957== Parent PID: 66539
-==72957== 
-==72957== Invalid read of size 8
-==72957==    at 0x408CC4: euler_tour(Graph*, std::vector<long long, std::allocator<long long> >&) (utils.cpp:230)
-==72957==    by 0x416B49: tarjan_vishkin(Graph*) (tarjan-vishkin.cpp:26)
-==72957==    by 0x402F9E: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:147)
-==72957==    by 0x403268: degree() (main.cpp:187)
-==72957==    by 0x403E31: main (main.cpp:300)
-==72957==  Address 0x4df8c58 is 8 bytes before a block of size 1,360 alloc'd
-==72957==    at 0x4843FF5: operator new(unsigned long) (vg_replace_malloc.c:434)
-==72957==    by 0x407261: std::__new_allocator<long long>::allocate(unsigned long, void const*) (new_allocator.h:137)
-==72957==    by 0x4070F6: std::allocator_traits<std::allocator<long long> >::allocate(std::allocator<long long>&, unsigned long) (alloc_traits.h:464)
-==72957==    by 0x411CFF: std::_Vector_base<long long, std::allocator<long long> >::_M_allocate(unsigned long) (stl_vector.h:378)
-==72957==    by 0x4118FC: std::_Vector_base<long long, std::allocator<long long> >::_M_create_storage(unsigned long) (stl_vector.h:395)
-==72957==    by 0x40F99C: std::_Vector_base<long long, std::allocator<long long> >::_Vector_base(unsigned long, std::allocator<long long> const&) (stl_vector.h:332)
-==72957==    by 0x40E728: std::vector<long long, std::allocator<long long> >::vector(unsigned long, long long const&, std::allocator<long long> const&) (stl_vector.h:566)
-==72957==    by 0x40893F: euler_tour(Graph*, std::vector<long long, std::allocator<long long> >&) (utils.cpp:212)
-==72957==    by 0x416B49: tarjan_vishkin(Graph*) (tarjan-vishkin.cpp:26)
-==72957==    by 0x402F9E: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:147)
-==72957==    by 0x403268: degree() (main.cpp:187)
-==72957==    by 0x403E31: main (main.cpp:300)
-==72957== 
-==72957== Invalid read of size 8
-==72957==    at 0x408D00: euler_tour(Graph*, std::vector<long long, std::allocator<long long> >&) (utils.cpp:231)
-==72957==    by 0x416B49: tarjan_vishkin(Graph*) (tarjan-vishkin.cpp:26)
-==72957==    by 0x402F9E: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:147)
-==72957==    by 0x403268: degree() (main.cpp:187)
-==72957==    by 0x403E31: main (main.cpp:300)
-==72957==  Address 0x4df8c58 is 8 bytes before a block of size 1,360 alloc'd
-==72957==    at 0x4843FF5: operator new(unsigned long) (vg_replace_malloc.c:434)
-==72957==    by 0x407261: std::__new_allocator<long long>::allocate(unsigned long, void const*) (new_allocator.h:137)
-==72957==    by 0x4070F6: std::allocator_traits<std::allocator<long long> >::allocate(std::allocator<long long>&, unsigned long) (alloc_traits.h:464)
-==72957==    by 0x411CFF: std::_Vector_base<long long, std::allocator<long long> >::_M_allocate(unsigned long) (stl_vector.h:378)
-==72957==    by 0x4118FC: std::_Vector_base<long long, std::allocator<long long> >::_M_create_storage(unsigned long) (stl_vector.h:395)
-==72957==    by 0x40F99C: std::_Vector_base<long long, std::allocator<long long> >::_Vector_base(unsigned long, std::allocator<long long> const&) (stl_vector.h:332)
-==72957==    by 0x40E728: std::vector<long long, std::allocator<long long> >::vector(unsigned long, long long const&, std::allocator<long long> const&) (stl_vector.h:566)
-==72957==    by 0x40893F: euler_tour(Graph*, std::vector<long long, std::allocator<long long> >&) (utils.cpp:212)
-==72957==    by 0x416B49: tarjan_vishkin(Graph*) (tarjan-vishkin.cpp:26)
-==72957==    by 0x402F9E: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:147)
-==72957==    by 0x403268: degree() (main.cpp:187)
-==72957==    by 0x403E31: main (main.cpp:300)
-==72957== 
-==72957== Invalid read of size 8
-==72957==    at 0x40B9AF: euler_tour_parallel(Graph*, std::vector<long long, std::allocator<long long> >&) [clone ._omp_fn.1] (utils.cpp:272)
-==72957==    by 0x4B90765: GOMP_parallel (in /usr/lib64/libgomp.so.1.0.0)
-==72957==    by 0x408FF8: euler_tour_parallel(Graph*, std::vector<long long, std::allocator<long long> >&) (utils.cpp:264)
-==72957==    by 0x41846D: tarjan_vishkin_parallel(Graph*) (tarjan-vishkin-parallel.cpp:39)
-==72957==    by 0x402FBE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:149)
-==72957==    by 0x403268: degree() (main.cpp:187)
-==72957==    by 0x403E31: main (main.cpp:300)
-==72957==  Address 0x4e1b6e8 is 8 bytes before a block of size 1,360 alloc'd
-==72957==    at 0x4843FF5: operator new(unsigned long) (vg_replace_malloc.c:434)
-==72957==    by 0x407261: std::__new_allocator<long long>::allocate(unsigned long, void const*) (new_allocator.h:137)
-==72957==    by 0x4070F6: std::allocator_traits<std::allocator<long long> >::allocate(std::allocator<long long>&, unsigned long) (alloc_traits.h:464)
-==72957==    by 0x411CFF: std::_Vector_base<long long, std::allocator<long long> >::_M_allocate(unsigned long) (stl_vector.h:378)
-==72957==    by 0x4118FC: std::_Vector_base<long long, std::allocator<long long> >::_M_create_storage(unsigned long) (stl_vector.h:395)
-==72957==    by 0x40F99C: std::_Vector_base<long long, std::allocator<long long> >::_Vector_base(unsigned long, std::allocator<long long> const&) (stl_vector.h:332)
-==72957==    by 0x40E728: std::vector<long long, std::allocator<long long> >::vector(unsigned long, long long const&, std::allocator<long long> const&) (stl_vector.h:566)
-==72957==    by 0x408ED7: euler_tour_parallel(Graph*, std::vector<long long, std::allocator<long long> >&) (utils.cpp:239)
-==72957==    by 0x41846D: tarjan_vishkin_parallel(Graph*) (tarjan-vishkin-parallel.cpp:39)
-==72957==    by 0x402FBE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:149)
-==72957==    by 0x403268: degree() (main.cpp:187)
-==72957==    by 0x403E31: main (main.cpp:300)
-==72957== 
-==72957== Invalid read of size 8
-==72957==    at 0x40BA4F: euler_tour_parallel(Graph*, std::vector<long long, std::allocator<long long> >&) [clone ._omp_fn.1] (utils.cpp:273)
-==72957==    by 0x4B90765: GOMP_parallel (in /usr/lib64/libgomp.so.1.0.0)
-==72957==    by 0x408FF8: euler_tour_parallel(Graph*, std::vector<long long, std::allocator<long long> >&) (utils.cpp:264)
-==72957==    by 0x41846D: tarjan_vishkin_parallel(Graph*) (tarjan-vishkin-parallel.cpp:39)
-==72957==    by 0x402FBE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:149)
-==72957==    by 0x403268: degree() (main.cpp:187)
-==72957==    by 0x403E31: main (main.cpp:300)
-==72957==  Address 0x4e1b6e8 is 8 bytes before a block of size 1,360 alloc'd
-==72957==    at 0x4843FF5: operator new(unsigned long) (vg_replace_malloc.c:434)
-==72957==    by 0x407261: std::__new_allocator<long long>::allocate(unsigned long, void const*) (new_allocator.h:137)
-==72957==    by 0x4070F6: std::allocator_traits<std::allocator<long long> >::allocate(std::allocator<long long>&, unsigned long) (alloc_traits.h:464)
-==72957==    by 0x411CFF: std::_Vector_base<long long, std::allocator<long long> >::_M_allocate(unsigned long) (stl_vector.h:378)
-==72957==    by 0x4118FC: std::_Vector_base<long long, std::allocator<long long> >::_M_create_storage(unsigned long) (stl_vector.h:395)
-==72957==    by 0x40F99C: std::_Vector_base<long long, std::allocator<long long> >::_Vector_base(unsigned long, std::allocator<long long> const&) (stl_vector.h:332)
-==72957==    by 0x40E728: std::vector<long long, std::allocator<long long> >::vector(unsigned long, long long const&, std::allocator<long long> const&) (stl_vector.h:566)
-==72957==    by 0x408ED7: euler_tour_parallel(Graph*, std::vector<long long, std::allocator<long long> >&) (utils.cpp:239)
-==72957==    by 0x41846D: tarjan_vishkin_parallel(Graph*) (tarjan-vishkin-parallel.cpp:39)
-==72957==    by 0x402FBE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:149)
-==72957==    by 0x403268: degree() (main.cpp:187)
-==72957==    by 0x403E31: main (main.cpp:300)
-==72957== 
-==72957== Invalid read of size 8
-==72957==    at 0x408CC4: euler_tour(Graph*, std::vector<long long, std::allocator<long long> >&) (utils.cpp:230)
-==72957==    by 0x4189FC: tarjan_vishkin_uf(Graph*) (tarjan-vishkin-uf.cpp:26)
-==72957==    by 0x402FDE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:151)
-==72957==    by 0x403268: degree() (main.cpp:187)
-==72957==    by 0x403E31: main (main.cpp:300)
-==72957==  Address 0x4e40a08 is 8 bytes before a block of size 1,360 alloc'd
-==72957==    at 0x4843FF5: operator new(unsigned long) (vg_replace_malloc.c:434)
-==72957==    by 0x407261: std::__new_allocator<long long>::allocate(unsigned long, void const*) (new_allocator.h:137)
-==72957==    by 0x4070F6: std::allocator_traits<std::allocator<long long> >::allocate(std::allocator<long long>&, unsigned long) (alloc_traits.h:464)
-==72957==    by 0x411CFF: std::_Vector_base<long long, std::allocator<long long> >::_M_allocate(unsigned long) (stl_vector.h:378)
-==72957==    by 0x4118FC: std::_Vector_base<long long, std::allocator<long long> >::_M_create_storage(unsigned long) (stl_vector.h:395)
-==72957==    by 0x40F99C: std::_Vector_base<long long, std::allocator<long long> >::_Vector_base(unsigned long, std::allocator<long long> const&) (stl_vector.h:332)
-==72957==    by 0x40E728: std::vector<long long, std::allocator<long long> >::vector(unsigned long, long long const&, std::allocator<long long> const&) (stl_vector.h:566)
-==72957==    by 0x40893F: euler_tour(Graph*, std::vector<long long, std::allocator<long long> >&) (utils.cpp:212)
-==72957==    by 0x4189FC: tarjan_vishkin_uf(Graph*) (tarjan-vishkin-uf.cpp:26)
-==72957==    by 0x402FDE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:151)
-==72957==    by 0x403268: degree() (main.cpp:187)
-==72957==    by 0x403E31: main (main.cpp:300)
-==72957== 
-==72957== Invalid read of size 8
-==72957==    at 0x408D00: euler_tour(Graph*, std::vector<long long, std::allocator<long long> >&) (utils.cpp:231)
-==72957==    by 0x4189FC: tarjan_vishkin_uf(Graph*) (tarjan-vishkin-uf.cpp:26)
-==72957==    by 0x402FDE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:151)
-==72957==    by 0x403268: degree() (main.cpp:187)
-==72957==    by 0x403E31: main (main.cpp:300)
-==72957==  Address 0x4e40a08 is 8 bytes before a block of size 1,360 alloc'd
-==72957==    at 0x4843FF5: operator new(unsigned long) (vg_replace_malloc.c:434)
-==72957==    by 0x407261: std::__new_allocator<long long>::allocate(unsigned long, void const*) (new_allocator.h:137)
-==72957==    by 0x4070F6: std::allocator_traits<std::allocator<long long> >::allocate(std::allocator<long long>&, unsigned long) (alloc_traits.h:464)
-==72957==    by 0x411CFF: std::_Vector_base<long long, std::allocator<long long> >::_M_allocate(unsigned long) (stl_vector.h:378)
-==72957==    by 0x4118FC: std::_Vector_base<long long, std::allocator<long long> >::_M_create_storage(unsigned long) (stl_vector.h:395)
-==72957==    by 0x40F99C: std::_Vector_base<long long, std::allocator<long long> >::_Vector_base(unsigned long, std::allocator<long long> const&) (stl_vector.h:332)
-==72957==    by 0x40E728: std::vector<long long, std::allocator<long long> >::vector(unsigned long, long long const&, std::allocator<long long> const&) (stl_vector.h:566)
-==72957==    by 0x40893F: euler_tour(Graph*, std::vector<long long, std::allocator<long long> >&) (utils.cpp:212)
-==72957==    by 0x4189FC: tarjan_vishkin_uf(Graph*) (tarjan-vishkin-uf.cpp:26)
-==72957==    by 0x402FDE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:151)
-==72957==    by 0x403268: degree() (main.cpp:187)
-==72957==    by 0x403E31: main (main.cpp:300)
-==72957== 
-==72957== Invalid read of size 8
-==72957==    at 0x40B9AF: euler_tour_parallel(Graph*, std::vector<long long, std::allocator<long long> >&) [clone ._omp_fn.1] (utils.cpp:272)
-==72957==    by 0x4B90765: GOMP_parallel (in /usr/lib64/libgomp.so.1.0.0)
-==72957==    by 0x408FF8: euler_tour_parallel(Graph*, std::vector<long long, std::allocator<long long> >&) (utils.cpp:264)
-==72957==    by 0x418F8B: tarjan_vishkin_parallel_uf(Graph*) (tv-parallel-union-find.cpp:39)
-==72957==    by 0x402FFE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:153)
-==72957==    by 0x403268: degree() (main.cpp:187)
-==72957==    by 0x403E31: main (main.cpp:300)
-==72957==  Address 0x4e639a8 is 8 bytes before a block of size 1,360 alloc'd
-==72957==    at 0x4843FF5: operator new(unsigned long) (vg_replace_malloc.c:434)
-==72957==    by 0x407261: std::__new_allocator<long long>::allocate(unsigned long, void const*) (new_allocator.h:137)
-==72957==    by 0x4070F6: std::allocator_traits<std::allocator<long long> >::allocate(std::allocator<long long>&, unsigned long) (alloc_traits.h:464)
-==72957==    by 0x411CFF: std::_Vector_base<long long, std::allocator<long long> >::_M_allocate(unsigned long) (stl_vector.h:378)
-==72957==    by 0x4118FC: std::_Vector_base<long long, std::allocator<long long> >::_M_create_storage(unsigned long) (stl_vector.h:395)
-==72957==    by 0x40F99C: std::_Vector_base<long long, std::allocator<long long> >::_Vector_base(unsigned long, std::allocator<long long> const&) (stl_vector.h:332)
-==72957==    by 0x40E728: std::vector<long long, std::allocator<long long> >::vector(unsigned long, long long const&, std::allocator<long long> const&) (stl_vector.h:566)
-==72957==    by 0x408ED7: euler_tour_parallel(Graph*, std::vector<long long, std::allocator<long long> >&) (utils.cpp:239)
-==72957==    by 0x418F8B: tarjan_vishkin_parallel_uf(Graph*) (tv-parallel-union-find.cpp:39)
-==72957==    by 0x402FFE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:153)
-==72957==    by 0x403268: degree() (main.cpp:187)
-==72957==    by 0x403E31: main (main.cpp:300)
-==72957== 
-==72957== Invalid read of size 8
-==72957==    at 0x40BA4F: euler_tour_parallel(Graph*, std::vector<long long, std::allocator<long long> >&) [clone ._omp_fn.1] (utils.cpp:273)
-==72957==    by 0x4B90765: GOMP_parallel (in /usr/lib64/libgomp.so.1.0.0)
-==72957==    by 0x408FF8: euler_tour_parallel(Graph*, std::vector<long long, std::allocator<long long> >&) (utils.cpp:264)
-==72957==    by 0x418F8B: tarjan_vishkin_parallel_uf(Graph*) (tv-parallel-union-find.cpp:39)
-==72957==    by 0x402FFE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:153)
-==72957==    by 0x403268: degree() (main.cpp:187)
-==72957==    by 0x403E31: main (main.cpp:300)
-==72957==  Address 0x4e639a8 is 8 bytes before a block of size 1,360 alloc'd
-==72957==    at 0x4843FF5: operator new(unsigned long) (vg_replace_malloc.c:434)
-==72957==    by 0x407261: std::__new_allocator<long long>::allocate(unsigned long, void const*) (new_allocator.h:137)
-==72957==    by 0x4070F6: std::allocator_traits<std::allocator<long long> >::allocate(std::allocator<long long>&, unsigned long) (alloc_traits.h:464)
-==72957==    by 0x411CFF: std::_Vector_base<long long, std::allocator<long long> >::_M_allocate(unsigned long) (stl_vector.h:378)
-==72957==    by 0x4118FC: std::_Vector_base<long long, std::allocator<long long> >::_M_create_storage(unsigned long) (stl_vector.h:395)
-==72957==    by 0x40F99C: std::_Vector_base<long long, std::allocator<long long> >::_Vector_base(unsigned long, std::allocator<long long> const&) (stl_vector.h:332)
-==72957==    by 0x40E728: std::vector<long long, std::allocator<long long> >::vector(unsigned long, long long const&, std::allocator<long long> const&) (stl_vector.h:566)
-==72957==    by 0x408ED7: euler_tour_parallel(Graph*, std::vector<long long, std::allocator<long long> >&) (utils.cpp:239)
-==72957==    by 0x418F8B: tarjan_vishkin_parallel_uf(Graph*) (tv-parallel-union-find.cpp:39)
-==72957==    by 0x402FFE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:153)
-==72957==    by 0x403268: degree() (main.cpp:187)
-==72957==    by 0x403E31: main (main.cpp:300)
-==72957== 
-==72957== 
-==72957== HEAP SUMMARY:
-==72957==     in use at exit: 52,240 bytes in 1,595 blocks
-==72957==   total heap usage: 13,697 allocs, 12,102 frees, 956,648 bytes allocated
-==72957== 
-==72957== 64 bytes in 4 blocks are definitely lost in loss record 2 of 29
-==72957==    at 0x4843FF5: operator new(unsigned long) (vg_replace_malloc.c:434)
-==72957==    by 0x40A0DA: auxillary_graph(Graph*, Graph*, Graph*, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&) (utils.cpp:589)
-==72957==    by 0x416BB6: tarjan_vishkin(Graph*) (tarjan-vishkin.cpp:32)
-==72957==    by 0x402F9E: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:147)
-==72957==    by 0x403268: degree() (main.cpp:187)
-==72957==    by 0x403E31: main (main.cpp:300)
-==72957== 
-==72957== 64 bytes in 4 blocks are definitely lost in loss record 3 of 29
-==72957==    at 0x4843FF5: operator new(unsigned long) (vg_replace_malloc.c:434)
-==72957==    by 0x40C63C: auxillary_graph_parallel(Graph*, Graph*, Graph*, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&) [clone ._omp_fn.2] (utils.cpp:475)
-==72957==    by 0x4B90765: GOMP_parallel (in /usr/lib64/libgomp.so.1.0.0)
-==72957==    by 0x40993B: auxillary_graph_parallel(Graph*, Graph*, Graph*, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&) (utils.cpp:436)
-==72957==    by 0x4184DA: tarjan_vishkin_parallel(Graph*) (tarjan-vishkin-parallel.cpp:45)
-==72957==    by 0x402FBE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:149)
-==72957==    by 0x403268: degree() (main.cpp:187)
-==72957==    by 0x403E31: main (main.cpp:300)
-==72957== 
-==72957== 64 bytes in 4 blocks are definitely lost in loss record 4 of 29
-==72957==    at 0x4843FF5: operator new(unsigned long) (vg_replace_malloc.c:434)
-==72957==    by 0x40AAC2: auxillary_graph_uf(Graph*, Graph*, Graph*, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&) (utils.cpp:672)
-==72957==    by 0x418A69: tarjan_vishkin_uf(Graph*) (tarjan-vishkin-uf.cpp:32)
-==72957==    by 0x402FDE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:151)
-==72957==    by 0x403268: degree() (main.cpp:187)
-==72957==    by 0x403E31: main (main.cpp:300)
-==72957== 
-==72957== 64 bytes in 4 blocks are definitely lost in loss record 5 of 29
-==72957==    at 0x4843FF5: operator new(unsigned long) (vg_replace_malloc.c:434)
-==72957==    by 0x40D41F: auxillary_graph_parallel_uf(Graph*, Graph*, Graph*, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&) [clone ._omp_fn.2] (utils.cpp:796)
-==72957==    by 0x4B90765: GOMP_parallel (in /usr/lib64/libgomp.so.1.0.0)
-==72957==    by 0x40B1CB: auxillary_graph_parallel_uf(Graph*, Graph*, Graph*, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&) (utils.cpp:753)
-==72957==    by 0x418FF8: tarjan_vishkin_parallel_uf(Graph*) (tv-parallel-union-find.cpp:45)
-==72957==    by 0x402FFE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:153)
-==72957==    by 0x403268: degree() (main.cpp:187)
-==72957==    by 0x403E31: main (main.cpp:300)
-==72957== 
-==72957== 1,312 bytes in 82 blocks are definitely lost in loss record 8 of 29
-==72957==    at 0x4843FF5: operator new(unsigned long) (vg_replace_malloc.c:434)
-==72957==    by 0x40A233: auxillary_graph(Graph*, Graph*, Graph*, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&) (utils.cpp:598)
-==72957==    by 0x416BB6: tarjan_vishkin(Graph*) (tarjan-vishkin.cpp:32)
-==72957==    by 0x402F9E: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:147)
-==72957==    by 0x403268: degree() (main.cpp:187)
-==72957==    by 0x403E31: main (main.cpp:300)
-==72957== 
-==72957== 1,312 bytes in 82 blocks are definitely lost in loss record 9 of 29
-==72957==    at 0x4843FF5: operator new(unsigned long) (vg_replace_malloc.c:434)
-==72957==    by 0x409F91: auxillary_graph(Graph*, Graph*, Graph*, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&) (utils.cpp:575)
-==72957==    by 0x416BB6: tarjan_vishkin(Graph*) (tarjan-vishkin.cpp:32)
-==72957==    by 0x402F9E: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:147)
-==72957==    by 0x403268: degree() (main.cpp:187)
-==72957==    by 0x403E31: main (main.cpp:300)
-==72957== 
-==72957== 1,312 bytes in 82 blocks are definitely lost in loss record 10 of 29
-==72957==    at 0x4843FF5: operator new(unsigned long) (vg_replace_malloc.c:434)
-==72957==    by 0x40ACB6: auxillary_graph_uf(Graph*, Graph*, Graph*, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&) (utils.cpp:688)
-==72957==    by 0x418A69: tarjan_vishkin_uf(Graph*) (tarjan-vishkin-uf.cpp:32)
-==72957==    by 0x402FDE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:151)
-==72957==    by 0x403268: degree() (main.cpp:187)
-==72957==    by 0x403E31: main (main.cpp:300)
-==72957== 
-==72957== 1,312 bytes in 82 blocks are definitely lost in loss record 11 of 29
-==72957==    at 0x4843FF5: operator new(unsigned long) (vg_replace_malloc.c:434)
-==72957==    by 0x40A928: auxillary_graph_uf(Graph*, Graph*, Graph*, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&) (utils.cpp:651)
-==72957==    by 0x418A69: tarjan_vishkin_uf(Graph*) (tarjan-vishkin-uf.cpp:32)
-==72957==    by 0x402FDE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:151)
-==72957==    by 0x403268: degree() (main.cpp:187)
-==72957==    by 0x403E31: main (main.cpp:300)
-==72957== 
-==72957== 1,872 bytes in 117 blocks are definitely lost in loss record 16 of 29
-==72957==    at 0x4843FF5: operator new(unsigned long) (vg_replace_malloc.c:434)
-==72957==    by 0x40C55F: auxillary_graph_parallel(Graph*, Graph*, Graph*, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&) [clone ._omp_fn.2] (utils.cpp:486)
-==72957==    by 0x4B90765: GOMP_parallel (in /usr/lib64/libgomp.so.1.0.0)
-==72957==    by 0x40993B: auxillary_graph_parallel(Graph*, Graph*, Graph*, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&) (utils.cpp:436)
-==72957==    by 0x4184DA: tarjan_vishkin_parallel(Graph*) (tarjan-vishkin-parallel.cpp:45)
-==72957==    by 0x402FBE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:149)
-==72957==    by 0x403268: degree() (main.cpp:187)
-==72957==    by 0x403E31: main (main.cpp:300)
-==72957== 
-==72957== 1,872 bytes in 117 blocks are definitely lost in loss record 17 of 29
-==72957==    at 0x4843FF5: operator new(unsigned long) (vg_replace_malloc.c:434)
-==72957==    by 0x40D2EF: auxillary_graph_parallel_uf(Graph*, Graph*, Graph*, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&) [clone ._omp_fn.2] (utils.cpp:811)
-==72957==    by 0x4B90765: GOMP_parallel (in /usr/lib64/libgomp.so.1.0.0)
-==72957==    by 0x40B1CB: auxillary_graph_parallel_uf(Graph*, Graph*, Graph*, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&) (utils.cpp:753)
-==72957==    by 0x418FF8: tarjan_vishkin_parallel_uf(Graph*) (tv-parallel-union-find.cpp:45)
-==72957==    by 0x402FFE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:153)
-==72957==    by 0x403268: degree() (main.cpp:187)
-==72957==    by 0x403E31: main (main.cpp:300)
-==72957== 
-==72957== 2,128 bytes in 7 blocks are possibly lost in loss record 19 of 29
-==72957==    at 0x4848464: calloc (vg_replace_malloc.c:1340)
-==72957==    by 0x4011412: UnknownInlinedFun (rtld-malloc.h:44)
-==72957==    by 0x4011412: allocate_dtv (dl-tls.c:375)
-==72957==    by 0x4011E11: _dl_allocate_tls (dl-tls.c:634)
-==72957==    by 0x4C71CFE: pthread_create@@GLIBC_2.34 (in /usr/lib64/libc.so.6)
-==72957==    by 0x4B99C5F: ??? (in /usr/lib64/libgomp.so.1.0.0)
-==72957==    by 0x4B90760: GOMP_parallel (in /usr/lib64/libgomp.so.1.0.0)
-==72957==    by 0x408F79: euler_tour_parallel(Graph*, std::vector<long long, std::allocator<long long> >&) (utils.cpp:241)
-==72957==    by 0x41846D: tarjan_vishkin_parallel(Graph*) (tarjan-vishkin-parallel.cpp:39)
-==72957==    by 0x402FBE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:149)
-==72957==    by 0x403268: degree() (main.cpp:187)
-==72957==    by 0x403E31: main (main.cpp:300)
-==72957== 
-==72957== 3,568 (96 direct, 3,472 indirect) bytes in 2 blocks are definitely lost in loss record 23 of 29
-==72957==    at 0x4843FF5: operator new(unsigned long) (vg_replace_malloc.c:434)
-==72957==    by 0x40A443: auxillary_graph_uf(Graph*, Graph*, Graph*, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&) (utils.cpp:617)
-==72957==    by 0x418A69: tarjan_vishkin_uf(Graph*) (tarjan-vishkin-uf.cpp:32)
-==72957==    by 0x402FDE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:151)
-==72957==    by 0x403268: degree() (main.cpp:187)
-==72957==    by 0x403E31: main (main.cpp:300)
-==72957== 
-==72957== 3,568 (96 direct, 3,472 indirect) bytes in 2 blocks are definitely lost in loss record 24 of 29
-==72957==    at 0x4843FF5: operator new(unsigned long) (vg_replace_malloc.c:434)
-==72957==    by 0x40AF5F: auxillary_graph_parallel_uf(Graph*, Graph*, Graph*, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&) (utils.cpp:713)
-==72957==    by 0x418FF8: tarjan_vishkin_parallel_uf(Graph*) (tv-parallel-union-find.cpp:45)
-==72957==    by 0x402FFE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:153)
-==72957==    by 0x403268: degree() (main.cpp:187)
-==72957==    by 0x403E31: main (main.cpp:300)
-==72957== 
-==72957== 30,320 (144 direct, 30,176 indirect) bytes in 2 blocks are definitely lost in loss record 29 of 29
-==72957==    at 0x4843FF5: operator new(unsigned long) (vg_replace_malloc.c:434)
-==72957==    by 0x403199: degree() (main.cpp:178)
-==72957==    by 0x403E31: main (main.cpp:300)
-==72957== 
-==72957== LEAK SUMMARY:
-==72957==    definitely lost: 9,584 bytes in 584 blocks
-==72957==    indirectly lost: 37,120 bytes in 1,000 blocks
-==72957==      possibly lost: 2,128 bytes in 7 blocks
-==72957==    still reachable: 3,408 bytes in 4 blocks
-==72957==         suppressed: 0 bytes in 0 blocks
-==72957== Reachable blocks (those to which a pointer was found) are not shown.
-==72957== To see them, rerun with: --leak-check=full --show-leak-kinds=all
-==72957== 
-==72957== For lists of detected and suppressed errors, rerun with: -s
-==72957== ERROR SUMMARY: 1078 errors from 22 contexts (suppressed: 0 from 0)
+==108726== Memcheck, a memory error detector
+==108726== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==108726== Using Valgrind-3.20.0 and LibVEX; rerun with -h for copyright info
+==108726== Command: ./main random 1
+==108726== Parent PID: 95454
+==108726== 
+==108726== Invalid read of size 8
+==108726==    at 0x408CFD: euler_tour(Graph*, std::vector<long long, std::allocator<long long> >&) (utils.cpp:230)
+==108726==    by 0x416D43: tarjan_vishkin(Graph*) (tarjan-vishkin.cpp:26)
+==108726==    by 0x402F9E: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:147)
+==108726==    by 0x403268: degree() (main.cpp:187)
+==108726==    by 0x403E4C: main (main.cpp:304)
+==108726==  Address 0x4df8bd8 is 8 bytes before a block of size 1,360 alloc'd
+==108726==    at 0x4843FF5: operator new(unsigned long) (vg_replace_malloc.c:434)
+==108726==    by 0x40729B: std::__new_allocator<long long>::allocate(unsigned long, void const*) (new_allocator.h:137)
+==108726==    by 0x407130: std::allocator_traits<std::allocator<long long> >::allocate(std::allocator<long long>&, unsigned long) (alloc_traits.h:464)
+==108726==    by 0x411EF9: std::_Vector_base<long long, std::allocator<long long> >::_M_allocate(unsigned long) (stl_vector.h:378)
+==108726==    by 0x411AF6: std::_Vector_base<long long, std::allocator<long long> >::_M_create_storage(unsigned long) (stl_vector.h:395)
+==108726==    by 0x40FB96: std::_Vector_base<long long, std::allocator<long long> >::_Vector_base(unsigned long, std::allocator<long long> const&) (stl_vector.h:332)
+==108726==    by 0x40E922: std::vector<long long, std::allocator<long long> >::vector(unsigned long, long long const&, std::allocator<long long> const&) (stl_vector.h:566)
+==108726==    by 0x408979: euler_tour(Graph*, std::vector<long long, std::allocator<long long> >&) (utils.cpp:212)
+==108726==    by 0x416D43: tarjan_vishkin(Graph*) (tarjan-vishkin.cpp:26)
+==108726==    by 0x402F9E: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:147)
+==108726==    by 0x403268: degree() (main.cpp:187)
+==108726==    by 0x403E4C: main (main.cpp:304)
+==108726== 
+==108726== Invalid read of size 8
+==108726==    at 0x408D39: euler_tour(Graph*, std::vector<long long, std::allocator<long long> >&) (utils.cpp:231)
+==108726==    by 0x416D43: tarjan_vishkin(Graph*) (tarjan-vishkin.cpp:26)
+==108726==    by 0x402F9E: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:147)
+==108726==    by 0x403268: degree() (main.cpp:187)
+==108726==    by 0x403E4C: main (main.cpp:304)
+==108726==  Address 0x4df8bd8 is 8 bytes before a block of size 1,360 alloc'd
+==108726==    at 0x4843FF5: operator new(unsigned long) (vg_replace_malloc.c:434)
+==108726==    by 0x40729B: std::__new_allocator<long long>::allocate(unsigned long, void const*) (new_allocator.h:137)
+==108726==    by 0x407130: std::allocator_traits<std::allocator<long long> >::allocate(std::allocator<long long>&, unsigned long) (alloc_traits.h:464)
+==108726==    by 0x411EF9: std::_Vector_base<long long, std::allocator<long long> >::_M_allocate(unsigned long) (stl_vector.h:378)
+==108726==    by 0x411AF6: std::_Vector_base<long long, std::allocator<long long> >::_M_create_storage(unsigned long) (stl_vector.h:395)
+==108726==    by 0x40FB96: std::_Vector_base<long long, std::allocator<long long> >::_Vector_base(unsigned long, std::allocator<long long> const&) (stl_vector.h:332)
+==108726==    by 0x40E922: std::vector<long long, std::allocator<long long> >::vector(unsigned long, long long const&, std::allocator<long long> const&) (stl_vector.h:566)
+==108726==    by 0x408979: euler_tour(Graph*, std::vector<long long, std::allocator<long long> >&) (utils.cpp:212)
+==108726==    by 0x416D43: tarjan_vishkin(Graph*) (tarjan-vishkin.cpp:26)
+==108726==    by 0x402F9E: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:147)
+==108726==    by 0x403268: degree() (main.cpp:187)
+==108726==    by 0x403E4C: main (main.cpp:304)
+==108726== 
+==108726== Invalid read of size 8
+==108726==    at 0x40BA3B: euler_tour_parallel(Graph*, std::vector<long long, std::allocator<long long> >&) [clone ._omp_fn.1] (utils.cpp:272)
+==108726==    by 0x4B90765: GOMP_parallel (in /usr/lib64/libgomp.so.1.0.0)
+==108726==    by 0x409031: euler_tour_parallel(Graph*, std::vector<long long, std::allocator<long long> >&) (utils.cpp:264)
+==108726==    by 0x418667: tarjan_vishkin_parallel(Graph*) (tarjan-vishkin-parallel.cpp:39)
+==108726==    by 0x402FBE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:149)
+==108726==    by 0x403268: degree() (main.cpp:187)
+==108726==    by 0x403E4C: main (main.cpp:304)
+==108726==  Address 0x4e1c158 is 8 bytes before a block of size 1,360 alloc'd
+==108726==    at 0x4843FF5: operator new(unsigned long) (vg_replace_malloc.c:434)
+==108726==    by 0x40729B: std::__new_allocator<long long>::allocate(unsigned long, void const*) (new_allocator.h:137)
+==108726==    by 0x407130: std::allocator_traits<std::allocator<long long> >::allocate(std::allocator<long long>&, unsigned long) (alloc_traits.h:464)
+==108726==    by 0x411EF9: std::_Vector_base<long long, std::allocator<long long> >::_M_allocate(unsigned long) (stl_vector.h:378)
+==108726==    by 0x411AF6: std::_Vector_base<long long, std::allocator<long long> >::_M_create_storage(unsigned long) (stl_vector.h:395)
+==108726==    by 0x40FB96: std::_Vector_base<long long, std::allocator<long long> >::_Vector_base(unsigned long, std::allocator<long long> const&) (stl_vector.h:332)
+==108726==    by 0x40E922: std::vector<long long, std::allocator<long long> >::vector(unsigned long, long long const&, std::allocator<long long> const&) (stl_vector.h:566)
+==108726==    by 0x408F10: euler_tour_parallel(Graph*, std::vector<long long, std::allocator<long long> >&) (utils.cpp:239)
+==108726==    by 0x418667: tarjan_vishkin_parallel(Graph*) (tarjan-vishkin-parallel.cpp:39)
+==108726==    by 0x402FBE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:149)
+==108726==    by 0x403268: degree() (main.cpp:187)
+==108726==    by 0x403E4C: main (main.cpp:304)
+==108726== 
+==108726== Invalid read of size 8
+==108726==    at 0x40BADB: euler_tour_parallel(Graph*, std::vector<long long, std::allocator<long long> >&) [clone ._omp_fn.1] (utils.cpp:273)
+==108726==    by 0x4B90765: GOMP_parallel (in /usr/lib64/libgomp.so.1.0.0)
+==108726==    by 0x409031: euler_tour_parallel(Graph*, std::vector<long long, std::allocator<long long> >&) (utils.cpp:264)
+==108726==    by 0x418667: tarjan_vishkin_parallel(Graph*) (tarjan-vishkin-parallel.cpp:39)
+==108726==    by 0x402FBE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:149)
+==108726==    by 0x403268: degree() (main.cpp:187)
+==108726==    by 0x403E4C: main (main.cpp:304)
+==108726==  Address 0x4e1c158 is 8 bytes before a block of size 1,360 alloc'd
+==108726==    at 0x4843FF5: operator new(unsigned long) (vg_replace_malloc.c:434)
+==108726==    by 0x40729B: std::__new_allocator<long long>::allocate(unsigned long, void const*) (new_allocator.h:137)
+==108726==    by 0x407130: std::allocator_traits<std::allocator<long long> >::allocate(std::allocator<long long>&, unsigned long) (alloc_traits.h:464)
+==108726==    by 0x411EF9: std::_Vector_base<long long, std::allocator<long long> >::_M_allocate(unsigned long) (stl_vector.h:378)
+==108726==    by 0x411AF6: std::_Vector_base<long long, std::allocator<long long> >::_M_create_storage(unsigned long) (stl_vector.h:395)
+==108726==    by 0x40FB96: std::_Vector_base<long long, std::allocator<long long> >::_Vector_base(unsigned long, std::allocator<long long> const&) (stl_vector.h:332)
+==108726==    by 0x40E922: std::vector<long long, std::allocator<long long> >::vector(unsigned long, long long const&, std::allocator<long long> const&) (stl_vector.h:566)
+==108726==    by 0x408F10: euler_tour_parallel(Graph*, std::vector<long long, std::allocator<long long> >&) (utils.cpp:239)
+==108726==    by 0x418667: tarjan_vishkin_parallel(Graph*) (tarjan-vishkin-parallel.cpp:39)
+==108726==    by 0x402FBE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:149)
+==108726==    by 0x403268: degree() (main.cpp:187)
+==108726==    by 0x403E4C: main (main.cpp:304)
+==108726== 
+==108726== Invalid read of size 8
+==108726==    at 0x4085D0: findConnectedComponents(Graph*, std::vector<std::vector<long long, std::allocator<long long> >, std::allocator<std::vector<long long, std::allocator<long long> > > >&) (utils.cpp:180)
+==108726==    by 0x418701: tarjan_vishkin_parallel(Graph*) (tarjan-vishkin-parallel.cpp:54)
+==108726==    by 0x402FBE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:149)
+==108726==    by 0x403268: degree() (main.cpp:187)
+==108726==    by 0x403E4C: main (main.cpp:304)
+==108726==  Address 0x4e240e0 is 0 bytes inside a block of size 16 free'd
+==108726==    at 0x48468DD: operator delete(void*, unsigned long) (vg_replace_malloc.c:947)
+==108726==    by 0x40CB2C: auxillary_graph_parallel(Graph*, Graph*, Graph*, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&) [clone ._omp_fn.2] (utils.cpp:508)
+==108726==    by 0x4B90765: GOMP_parallel (in /usr/lib64/libgomp.so.1.0.0)
+==108726==    by 0x409989: auxillary_graph_parallel(Graph*, Graph*, Graph*, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&) (utils.cpp:436)
+==108726==    by 0x4186D4: tarjan_vishkin_parallel(Graph*) (tarjan-vishkin-parallel.cpp:45)
+==108726==    by 0x402FBE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:149)
+==108726==    by 0x403268: degree() (main.cpp:187)
+==108726==    by 0x403E4C: main (main.cpp:304)
+==108726==  Block was alloc'd at
+==108726==    at 0x4843FF5: operator new(unsigned long) (vg_replace_malloc.c:434)
+==108726==    by 0x40C898: auxillary_graph_parallel(Graph*, Graph*, Graph*, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&) [clone ._omp_fn.2] (utils.cpp:459)
+==108726==    by 0x4B90765: GOMP_parallel (in /usr/lib64/libgomp.so.1.0.0)
+==108726==    by 0x409989: auxillary_graph_parallel(Graph*, Graph*, Graph*, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&) (utils.cpp:436)
+==108726==    by 0x4186D4: tarjan_vishkin_parallel(Graph*) (tarjan-vishkin-parallel.cpp:45)
+==108726==    by 0x402FBE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:149)
+==108726==    by 0x403268: degree() (main.cpp:187)
+==108726==    by 0x403E4C: main (main.cpp:304)
+==108726== 
+==108726== Invalid read of size 8
+==108726==    at 0x4085DD: findConnectedComponents(Graph*, std::vector<std::vector<long long, std::allocator<long long> >, std::allocator<std::vector<long long, std::allocator<long long> > > >&) (utils.cpp:180)
+==108726==    by 0x418701: tarjan_vishkin_parallel(Graph*) (tarjan-vishkin-parallel.cpp:54)
+==108726==    by 0x402FBE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:149)
+==108726==    by 0x403268: degree() (main.cpp:187)
+==108726==    by 0x403E4C: main (main.cpp:304)
+==108726==  Address 0x4e240e8 is 8 bytes inside a block of size 16 free'd
+==108726==    at 0x48468DD: operator delete(void*, unsigned long) (vg_replace_malloc.c:947)
+==108726==    by 0x40CB2C: auxillary_graph_parallel(Graph*, Graph*, Graph*, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&) [clone ._omp_fn.2] (utils.cpp:508)
+==108726==    by 0x4B90765: GOMP_parallel (in /usr/lib64/libgomp.so.1.0.0)
+==108726==    by 0x409989: auxillary_graph_parallel(Graph*, Graph*, Graph*, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&) (utils.cpp:436)
+==108726==    by 0x4186D4: tarjan_vishkin_parallel(Graph*) (tarjan-vishkin-parallel.cpp:45)
+==108726==    by 0x402FBE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:149)
+==108726==    by 0x403268: degree() (main.cpp:187)
+==108726==    by 0x403E4C: main (main.cpp:304)
+==108726==  Block was alloc'd at
+==108726==    at 0x4843FF5: operator new(unsigned long) (vg_replace_malloc.c:434)
+==108726==    by 0x40C898: auxillary_graph_parallel(Graph*, Graph*, Graph*, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&) [clone ._omp_fn.2] (utils.cpp:459)
+==108726==    by 0x4B90765: GOMP_parallel (in /usr/lib64/libgomp.so.1.0.0)
+==108726==    by 0x409989: auxillary_graph_parallel(Graph*, Graph*, Graph*, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&) (utils.cpp:436)
+==108726==    by 0x4186D4: tarjan_vishkin_parallel(Graph*) (tarjan-vishkin-parallel.cpp:45)
+==108726==    by 0x402FBE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:149)
+==108726==    by 0x403268: degree() (main.cpp:187)
+==108726==    by 0x403E4C: main (main.cpp:304)
+==108726== 
+==108726== Invalid read of size 8
+==108726==    at 0x4085E7: findConnectedComponents(Graph*, std::vector<std::vector<long long, std::allocator<long long> >, std::allocator<std::vector<long long, std::allocator<long long> > > >&) (utils.cpp:180)
+==108726==    by 0x418701: tarjan_vishkin_parallel(Graph*) (tarjan-vishkin-parallel.cpp:54)
+==108726==    by 0x402FBE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:149)
+==108726==    by 0x403268: degree() (main.cpp:187)
+==108726==    by 0x403E4C: main (main.cpp:304)
+==108726==  Address 0x4e240e0 is 0 bytes inside a block of size 16 free'd
+==108726==    at 0x48468DD: operator delete(void*, unsigned long) (vg_replace_malloc.c:947)
+==108726==    by 0x40CB2C: auxillary_graph_parallel(Graph*, Graph*, Graph*, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&) [clone ._omp_fn.2] (utils.cpp:508)
+==108726==    by 0x4B90765: GOMP_parallel (in /usr/lib64/libgomp.so.1.0.0)
+==108726==    by 0x409989: auxillary_graph_parallel(Graph*, Graph*, Graph*, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&) (utils.cpp:436)
+==108726==    by 0x4186D4: tarjan_vishkin_parallel(Graph*) (tarjan-vishkin-parallel.cpp:45)
+==108726==    by 0x402FBE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:149)
+==108726==    by 0x403268: degree() (main.cpp:187)
+==108726==    by 0x403E4C: main (main.cpp:304)
+==108726==  Block was alloc'd at
+==108726==    at 0x4843FF5: operator new(unsigned long) (vg_replace_malloc.c:434)
+==108726==    by 0x40C898: auxillary_graph_parallel(Graph*, Graph*, Graph*, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&) [clone ._omp_fn.2] (utils.cpp:459)
+==108726==    by 0x4B90765: GOMP_parallel (in /usr/lib64/libgomp.so.1.0.0)
+==108726==    by 0x409989: auxillary_graph_parallel(Graph*, Graph*, Graph*, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&) (utils.cpp:436)
+==108726==    by 0x4186D4: tarjan_vishkin_parallel(Graph*) (tarjan-vishkin-parallel.cpp:45)
+==108726==    by 0x402FBE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:149)
+==108726==    by 0x403268: degree() (main.cpp:187)
+==108726==    by 0x403E4C: main (main.cpp:304)
+==108726== 
+==108726== Invalid read of size 8
+==108726==    at 0x408CFD: euler_tour(Graph*, std::vector<long long, std::allocator<long long> >&) (utils.cpp:230)
+==108726==    by 0x418BF6: tarjan_vishkin_uf(Graph*) (tarjan-vishkin-uf.cpp:26)
+==108726==    by 0x402FDE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:151)
+==108726==    by 0x403268: degree() (main.cpp:187)
+==108726==    by 0x403E4C: main (main.cpp:304)
+==108726==  Address 0x4e45d78 is 8 bytes before a block of size 1,360 alloc'd
+==108726==    at 0x4843FF5: operator new(unsigned long) (vg_replace_malloc.c:434)
+==108726==    by 0x40729B: std::__new_allocator<long long>::allocate(unsigned long, void const*) (new_allocator.h:137)
+==108726==    by 0x407130: std::allocator_traits<std::allocator<long long> >::allocate(std::allocator<long long>&, unsigned long) (alloc_traits.h:464)
+==108726==    by 0x411EF9: std::_Vector_base<long long, std::allocator<long long> >::_M_allocate(unsigned long) (stl_vector.h:378)
+==108726==    by 0x411AF6: std::_Vector_base<long long, std::allocator<long long> >::_M_create_storage(unsigned long) (stl_vector.h:395)
+==108726==    by 0x40FB96: std::_Vector_base<long long, std::allocator<long long> >::_Vector_base(unsigned long, std::allocator<long long> const&) (stl_vector.h:332)
+==108726==    by 0x40E922: std::vector<long long, std::allocator<long long> >::vector(unsigned long, long long const&, std::allocator<long long> const&) (stl_vector.h:566)
+==108726==    by 0x408979: euler_tour(Graph*, std::vector<long long, std::allocator<long long> >&) (utils.cpp:212)
+==108726==    by 0x418BF6: tarjan_vishkin_uf(Graph*) (tarjan-vishkin-uf.cpp:26)
+==108726==    by 0x402FDE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:151)
+==108726==    by 0x403268: degree() (main.cpp:187)
+==108726==    by 0x403E4C: main (main.cpp:304)
+==108726== 
+==108726== Invalid read of size 8
+==108726==    at 0x408D39: euler_tour(Graph*, std::vector<long long, std::allocator<long long> >&) (utils.cpp:231)
+==108726==    by 0x418BF6: tarjan_vishkin_uf(Graph*) (tarjan-vishkin-uf.cpp:26)
+==108726==    by 0x402FDE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:151)
+==108726==    by 0x403268: degree() (main.cpp:187)
+==108726==    by 0x403E4C: main (main.cpp:304)
+==108726==  Address 0x4e45d78 is 8 bytes before a block of size 1,360 alloc'd
+==108726==    at 0x4843FF5: operator new(unsigned long) (vg_replace_malloc.c:434)
+==108726==    by 0x40729B: std::__new_allocator<long long>::allocate(unsigned long, void const*) (new_allocator.h:137)
+==108726==    by 0x407130: std::allocator_traits<std::allocator<long long> >::allocate(std::allocator<long long>&, unsigned long) (alloc_traits.h:464)
+==108726==    by 0x411EF9: std::_Vector_base<long long, std::allocator<long long> >::_M_allocate(unsigned long) (stl_vector.h:378)
+==108726==    by 0x411AF6: std::_Vector_base<long long, std::allocator<long long> >::_M_create_storage(unsigned long) (stl_vector.h:395)
+==108726==    by 0x40FB96: std::_Vector_base<long long, std::allocator<long long> >::_Vector_base(unsigned long, std::allocator<long long> const&) (stl_vector.h:332)
+==108726==    by 0x40E922: std::vector<long long, std::allocator<long long> >::vector(unsigned long, long long const&, std::allocator<long long> const&) (stl_vector.h:566)
+==108726==    by 0x408979: euler_tour(Graph*, std::vector<long long, std::allocator<long long> >&) (utils.cpp:212)
+==108726==    by 0x418BF6: tarjan_vishkin_uf(Graph*) (tarjan-vishkin-uf.cpp:26)
+==108726==    by 0x402FDE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:151)
+==108726==    by 0x403268: degree() (main.cpp:187)
+==108726==    by 0x403E4C: main (main.cpp:304)
+==108726== 
+==108726== Invalid read of size 8
+==108726==    at 0x40BA3B: euler_tour_parallel(Graph*, std::vector<long long, std::allocator<long long> >&) [clone ._omp_fn.1] (utils.cpp:272)
+==108726==    by 0x4B90765: GOMP_parallel (in /usr/lib64/libgomp.so.1.0.0)
+==108726==    by 0x409031: euler_tour_parallel(Graph*, std::vector<long long, std::allocator<long long> >&) (utils.cpp:264)
+==108726==    by 0x419185: tarjan_vishkin_parallel_uf(Graph*) (tv-parallel-union-find.cpp:39)
+==108726==    by 0x402FFE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:153)
+==108726==    by 0x403268: degree() (main.cpp:187)
+==108726==    by 0x403E4C: main (main.cpp:304)
+==108726==  Address 0x4e696a8 is 8 bytes before a block of size 1,360 alloc'd
+==108726==    at 0x4843FF5: operator new(unsigned long) (vg_replace_malloc.c:434)
+==108726==    by 0x40729B: std::__new_allocator<long long>::allocate(unsigned long, void const*) (new_allocator.h:137)
+==108726==    by 0x407130: std::allocator_traits<std::allocator<long long> >::allocate(std::allocator<long long>&, unsigned long) (alloc_traits.h:464)
+==108726==    by 0x411EF9: std::_Vector_base<long long, std::allocator<long long> >::_M_allocate(unsigned long) (stl_vector.h:378)
+==108726==    by 0x411AF6: std::_Vector_base<long long, std::allocator<long long> >::_M_create_storage(unsigned long) (stl_vector.h:395)
+==108726==    by 0x40FB96: std::_Vector_base<long long, std::allocator<long long> >::_Vector_base(unsigned long, std::allocator<long long> const&) (stl_vector.h:332)
+==108726==    by 0x40E922: std::vector<long long, std::allocator<long long> >::vector(unsigned long, long long const&, std::allocator<long long> const&) (stl_vector.h:566)
+==108726==    by 0x408F10: euler_tour_parallel(Graph*, std::vector<long long, std::allocator<long long> >&) (utils.cpp:239)
+==108726==    by 0x419185: tarjan_vishkin_parallel_uf(Graph*) (tv-parallel-union-find.cpp:39)
+==108726==    by 0x402FFE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:153)
+==108726==    by 0x403268: degree() (main.cpp:187)
+==108726==    by 0x403E4C: main (main.cpp:304)
+==108726== 
+==108726== Invalid read of size 8
+==108726==    at 0x40BADB: euler_tour_parallel(Graph*, std::vector<long long, std::allocator<long long> >&) [clone ._omp_fn.1] (utils.cpp:273)
+==108726==    by 0x4B90765: GOMP_parallel (in /usr/lib64/libgomp.so.1.0.0)
+==108726==    by 0x409031: euler_tour_parallel(Graph*, std::vector<long long, std::allocator<long long> >&) (utils.cpp:264)
+==108726==    by 0x419185: tarjan_vishkin_parallel_uf(Graph*) (tv-parallel-union-find.cpp:39)
+==108726==    by 0x402FFE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:153)
+==108726==    by 0x403268: degree() (main.cpp:187)
+==108726==    by 0x403E4C: main (main.cpp:304)
+==108726==  Address 0x4e696a8 is 8 bytes before a block of size 1,360 alloc'd
+==108726==    at 0x4843FF5: operator new(unsigned long) (vg_replace_malloc.c:434)
+==108726==    by 0x40729B: std::__new_allocator<long long>::allocate(unsigned long, void const*) (new_allocator.h:137)
+==108726==    by 0x407130: std::allocator_traits<std::allocator<long long> >::allocate(std::allocator<long long>&, unsigned long) (alloc_traits.h:464)
+==108726==    by 0x411EF9: std::_Vector_base<long long, std::allocator<long long> >::_M_allocate(unsigned long) (stl_vector.h:378)
+==108726==    by 0x411AF6: std::_Vector_base<long long, std::allocator<long long> >::_M_create_storage(unsigned long) (stl_vector.h:395)
+==108726==    by 0x40FB96: std::_Vector_base<long long, std::allocator<long long> >::_Vector_base(unsigned long, std::allocator<long long> const&) (stl_vector.h:332)
+==108726==    by 0x40E922: std::vector<long long, std::allocator<long long> >::vector(unsigned long, long long const&, std::allocator<long long> const&) (stl_vector.h:566)
+==108726==    by 0x408F10: euler_tour_parallel(Graph*, std::vector<long long, std::allocator<long long> >&) (utils.cpp:239)
+==108726==    by 0x419185: tarjan_vishkin_parallel_uf(Graph*) (tv-parallel-union-find.cpp:39)
+==108726==    by 0x402FFE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:153)
+==108726==    by 0x403268: degree() (main.cpp:187)
+==108726==    by 0x403E4C: main (main.cpp:304)
+==108726== 
+==108726== Invalid read of size 8
+==108726==    at 0x4085D0: findConnectedComponents(Graph*, std::vector<std::vector<long long, std::allocator<long long> >, std::allocator<std::vector<long long, std::allocator<long long> > > >&) (utils.cpp:180)
+==108726==    by 0x41921F: tarjan_vishkin_parallel_uf(Graph*) (tv-parallel-union-find.cpp:54)
+==108726==    by 0x402FFE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:153)
+==108726==    by 0x403268: degree() (main.cpp:187)
+==108726==    by 0x403E4C: main (main.cpp:304)
+==108726==  Address 0x4e702a0 is 0 bytes inside a block of size 16 free'd
+==108726==    at 0x48468DD: operator delete(void*, unsigned long) (vg_replace_malloc.c:947)
+==108726==    by 0x40DAA0: auxillary_graph_parallel_uf(Graph*, Graph*, Graph*, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&) [clone ._omp_fn.2] (utils.cpp:842)
+==108726==    by 0x4B90765: GOMP_parallel (in /usr/lib64/libgomp.so.1.0.0)
+==108726==    by 0x40B23A: auxillary_graph_parallel_uf(Graph*, Graph*, Graph*, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&) (utils.cpp:758)
+==108726==    by 0x4191F2: tarjan_vishkin_parallel_uf(Graph*) (tv-parallel-union-find.cpp:45)
+==108726==    by 0x402FFE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:153)
+==108726==    by 0x403268: degree() (main.cpp:187)
+==108726==    by 0x403E4C: main (main.cpp:304)
+==108726==  Block was alloc'd at
+==108726==    at 0x4843FF5: operator new(unsigned long) (vg_replace_malloc.c:434)
+==108726==    by 0x40D7B0: auxillary_graph_parallel_uf(Graph*, Graph*, Graph*, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&) [clone ._omp_fn.2] (utils.cpp:781)
+==108726==    by 0x4B90765: GOMP_parallel (in /usr/lib64/libgomp.so.1.0.0)
+==108726==    by 0x40B23A: auxillary_graph_parallel_uf(Graph*, Graph*, Graph*, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&) (utils.cpp:758)
+==108726==    by 0x4191F2: tarjan_vishkin_parallel_uf(Graph*) (tv-parallel-union-find.cpp:45)
+==108726==    by 0x402FFE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:153)
+==108726==    by 0x403268: degree() (main.cpp:187)
+==108726==    by 0x403E4C: main (main.cpp:304)
+==108726== 
+==108726== Invalid read of size 8
+==108726==    at 0x4085DD: findConnectedComponents(Graph*, std::vector<std::vector<long long, std::allocator<long long> >, std::allocator<std::vector<long long, std::allocator<long long> > > >&) (utils.cpp:180)
+==108726==    by 0x41921F: tarjan_vishkin_parallel_uf(Graph*) (tv-parallel-union-find.cpp:54)
+==108726==    by 0x402FFE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:153)
+==108726==    by 0x403268: degree() (main.cpp:187)
+==108726==    by 0x403E4C: main (main.cpp:304)
+==108726==  Address 0x4e702a8 is 8 bytes inside a block of size 16 free'd
+==108726==    at 0x48468DD: operator delete(void*, unsigned long) (vg_replace_malloc.c:947)
+==108726==    by 0x40DAA0: auxillary_graph_parallel_uf(Graph*, Graph*, Graph*, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&) [clone ._omp_fn.2] (utils.cpp:842)
+==108726==    by 0x4B90765: GOMP_parallel (in /usr/lib64/libgomp.so.1.0.0)
+==108726==    by 0x40B23A: auxillary_graph_parallel_uf(Graph*, Graph*, Graph*, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&) (utils.cpp:758)
+==108726==    by 0x4191F2: tarjan_vishkin_parallel_uf(Graph*) (tv-parallel-union-find.cpp:45)
+==108726==    by 0x402FFE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:153)
+==108726==    by 0x403268: degree() (main.cpp:187)
+==108726==    by 0x403E4C: main (main.cpp:304)
+==108726==  Block was alloc'd at
+==108726==    at 0x4843FF5: operator new(unsigned long) (vg_replace_malloc.c:434)
+==108726==    by 0x40D7B0: auxillary_graph_parallel_uf(Graph*, Graph*, Graph*, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&) [clone ._omp_fn.2] (utils.cpp:781)
+==108726==    by 0x4B90765: GOMP_parallel (in /usr/lib64/libgomp.so.1.0.0)
+==108726==    by 0x40B23A: auxillary_graph_parallel_uf(Graph*, Graph*, Graph*, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&) (utils.cpp:758)
+==108726==    by 0x4191F2: tarjan_vishkin_parallel_uf(Graph*) (tv-parallel-union-find.cpp:45)
+==108726==    by 0x402FFE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:153)
+==108726==    by 0x403268: degree() (main.cpp:187)
+==108726==    by 0x403E4C: main (main.cpp:304)
+==108726== 
+==108726== Invalid read of size 8
+==108726==    at 0x4085E7: findConnectedComponents(Graph*, std::vector<std::vector<long long, std::allocator<long long> >, std::allocator<std::vector<long long, std::allocator<long long> > > >&) (utils.cpp:180)
+==108726==    by 0x41921F: tarjan_vishkin_parallel_uf(Graph*) (tv-parallel-union-find.cpp:54)
+==108726==    by 0x402FFE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:153)
+==108726==    by 0x403268: degree() (main.cpp:187)
+==108726==    by 0x403E4C: main (main.cpp:304)
+==108726==  Address 0x4e702a0 is 0 bytes inside a block of size 16 free'd
+==108726==    at 0x48468DD: operator delete(void*, unsigned long) (vg_replace_malloc.c:947)
+==108726==    by 0x40DAA0: auxillary_graph_parallel_uf(Graph*, Graph*, Graph*, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&) [clone ._omp_fn.2] (utils.cpp:842)
+==108726==    by 0x4B90765: GOMP_parallel (in /usr/lib64/libgomp.so.1.0.0)
+==108726==    by 0x40B23A: auxillary_graph_parallel_uf(Graph*, Graph*, Graph*, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&) (utils.cpp:758)
+==108726==    by 0x4191F2: tarjan_vishkin_parallel_uf(Graph*) (tv-parallel-union-find.cpp:45)
+==108726==    by 0x402FFE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:153)
+==108726==    by 0x403268: degree() (main.cpp:187)
+==108726==    by 0x403E4C: main (main.cpp:304)
+==108726==  Block was alloc'd at
+==108726==    at 0x4843FF5: operator new(unsigned long) (vg_replace_malloc.c:434)
+==108726==    by 0x40D7B0: auxillary_graph_parallel_uf(Graph*, Graph*, Graph*, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&) [clone ._omp_fn.2] (utils.cpp:781)
+==108726==    by 0x4B90765: GOMP_parallel (in /usr/lib64/libgomp.so.1.0.0)
+==108726==    by 0x40B23A: auxillary_graph_parallel_uf(Graph*, Graph*, Graph*, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&) (utils.cpp:758)
+==108726==    by 0x4191F2: tarjan_vishkin_parallel_uf(Graph*) (tv-parallel-union-find.cpp:45)
+==108726==    by 0x402FFE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:153)
+==108726==    by 0x403268: degree() (main.cpp:187)
+==108726==    by 0x403E4C: main (main.cpp:304)
+==108726== 
+==108726== 
+==108726== HEAP SUMMARY:
+==108726==     in use at exit: 14,768 bytes in 588 blocks
+==108726==   total heap usage: 14,705 allocs, 14,117 frees, 972,976 bytes allocated
+==108726== 
+==108726== 352 bytes in 22 blocks are definitely lost in loss record 4 of 13
+==108726==    at 0x4843FF5: operator new(unsigned long) (vg_replace_malloc.c:434)
+==108726==    by 0x40A12B: auxillary_graph(Graph*, Graph*, Graph*, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&) (utils.cpp:591)
+==108726==    by 0x416DB0: tarjan_vishkin(Graph*) (tarjan-vishkin.cpp:32)
+==108726==    by 0x402F9E: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:147)
+==108726==    by 0x403268: degree() (main.cpp:187)
+==108726==    by 0x403E4C: main (main.cpp:304)
+==108726== 
+==108726== 352 bytes in 22 blocks are definitely lost in loss record 5 of 13
+==108726==    at 0x4843FF5: operator new(unsigned long) (vg_replace_malloc.c:434)
+==108726==    by 0x40AB13: auxillary_graph_uf(Graph*, Graph*, Graph*, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&) (utils.cpp:674)
+==108726==    by 0x418C63: tarjan_vishkin_uf(Graph*) (tarjan-vishkin-uf.cpp:32)
+==108726==    by 0x402FDE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:151)
+==108726==    by 0x403268: degree() (main.cpp:187)
+==108726==    by 0x403E4C: main (main.cpp:304)
+==108726== 
+==108726== 688 bytes in 43 blocks are definitely lost in loss record 6 of 13
+==108726==    at 0x4843FF5: operator new(unsigned long) (vg_replace_malloc.c:434)
+==108726==    by 0x40D41C: auxillary_graph_parallel_uf(Graph*, Graph*, Graph*, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&) [clone ._omp_fn.2] (utils.cpp:816)
+==108726==    by 0x4B90765: GOMP_parallel (in /usr/lib64/libgomp.so.1.0.0)
+==108726==    by 0x40B23A: auxillary_graph_parallel_uf(Graph*, Graph*, Graph*, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&) (utils.cpp:758)
+==108726==    by 0x4191F2: tarjan_vishkin_parallel_uf(Graph*) (tv-parallel-union-find.cpp:45)
+==108726==    by 0x402FFE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:153)
+==108726==    by 0x403268: degree() (main.cpp:187)
+==108726==    by 0x403E4C: main (main.cpp:304)
+==108726== 
+==108726== 1,184 bytes in 74 blocks are definitely lost in loss record 7 of 13
+==108726==    at 0x4843FF5: operator new(unsigned long) (vg_replace_malloc.c:434)
+==108726==    by 0x40D7B0: auxillary_graph_parallel_uf(Graph*, Graph*, Graph*, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&) [clone ._omp_fn.2] (utils.cpp:781)
+==108726==    by 0x4B90765: GOMP_parallel (in /usr/lib64/libgomp.so.1.0.0)
+==108726==    by 0x40B23A: auxillary_graph_parallel_uf(Graph*, Graph*, Graph*, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&) (utils.cpp:758)
+==108726==    by 0x4191F2: tarjan_vishkin_parallel_uf(Graph*) (tv-parallel-union-find.cpp:45)
+==108726==    by 0x402FFE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:153)
+==108726==    by 0x403268: degree() (main.cpp:187)
+==108726==    by 0x403E4C: main (main.cpp:304)
+==108726== 
+==108726== 1,456 bytes in 91 blocks are definitely lost in loss record 8 of 13
+==108726==    at 0x4843FF5: operator new(unsigned long) (vg_replace_malloc.c:434)
+==108726==    by 0x409FE2: auxillary_graph(Graph*, Graph*, Graph*, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&) (utils.cpp:577)
+==108726==    by 0x416DB0: tarjan_vishkin(Graph*) (tarjan-vishkin.cpp:32)
+==108726==    by 0x402F9E: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:147)
+==108726==    by 0x403268: degree() (main.cpp:187)
+==108726==    by 0x403E4C: main (main.cpp:304)
+==108726== 
+==108726== 1,456 bytes in 91 blocks are definitely lost in loss record 9 of 13
+==108726==    at 0x4843FF5: operator new(unsigned long) (vg_replace_malloc.c:434)
+==108726==    by 0x40A979: auxillary_graph_uf(Graph*, Graph*, Graph*, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&) (utils.cpp:653)
+==108726==    by 0x418C63: tarjan_vishkin_uf(Graph*) (tarjan-vishkin-uf.cpp:32)
+==108726==    by 0x402FDE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:151)
+==108726==    by 0x403268: degree() (main.cpp:187)
+==108726==    by 0x403E4C: main (main.cpp:304)
+==108726== 
+==108726== 1,872 bytes in 117 blocks are definitely lost in loss record 10 of 13
+==108726==    at 0x4843FF5: operator new(unsigned long) (vg_replace_malloc.c:434)
+==108726==    by 0x40A284: auxillary_graph(Graph*, Graph*, Graph*, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&) (utils.cpp:600)
+==108726==    by 0x416DB0: tarjan_vishkin(Graph*) (tarjan-vishkin.cpp:32)
+==108726==    by 0x402F9E: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:147)
+==108726==    by 0x403268: degree() (main.cpp:187)
+==108726==    by 0x403E4C: main (main.cpp:304)
+==108726== 
+==108726== 1,872 bytes in 117 blocks are definitely lost in loss record 11 of 13
+==108726==    at 0x4843FF5: operator new(unsigned long) (vg_replace_malloc.c:434)
+==108726==    by 0x40AD07: auxillary_graph_uf(Graph*, Graph*, Graph*, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&, std::vector<long long, std::allocator<long long> >&) (utils.cpp:690)
+==108726==    by 0x418C63: tarjan_vishkin_uf(Graph*) (tarjan-vishkin-uf.cpp:32)
+==108726==    by 0x402FDE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:151)
+==108726==    by 0x403268: degree() (main.cpp:187)
+==108726==    by 0x403E4C: main (main.cpp:304)
+==108726== 
+==108726== 2,128 bytes in 7 blocks are possibly lost in loss record 12 of 13
+==108726==    at 0x4848464: calloc (vg_replace_malloc.c:1340)
+==108726==    by 0x4011412: UnknownInlinedFun (rtld-malloc.h:44)
+==108726==    by 0x4011412: allocate_dtv (dl-tls.c:375)
+==108726==    by 0x4011E11: _dl_allocate_tls (dl-tls.c:634)
+==108726==    by 0x4C71CFE: pthread_create@@GLIBC_2.34 (in /usr/lib64/libc.so.6)
+==108726==    by 0x4B99C5F: ??? (in /usr/lib64/libgomp.so.1.0.0)
+==108726==    by 0x4B90760: GOMP_parallel (in /usr/lib64/libgomp.so.1.0.0)
+==108726==    by 0x408FB2: euler_tour_parallel(Graph*, std::vector<long long, std::allocator<long long> >&) (utils.cpp:241)
+==108726==    by 0x418667: tarjan_vishkin_parallel(Graph*) (tarjan-vishkin-parallel.cpp:39)
+==108726==    by 0x402FBE: runAlgorithms(Graph*, double&, double&, double&, double&, int) (main.cpp:149)
+==108726==    by 0x403268: degree() (main.cpp:187)
+==108726==    by 0x403E4C: main (main.cpp:304)
+==108726== 
+==108726== LEAK SUMMARY:
+==108726==    definitely lost: 9,232 bytes in 577 blocks
+==108726==    indirectly lost: 0 bytes in 0 blocks
+==108726==      possibly lost: 2,128 bytes in 7 blocks
+==108726==    still reachable: 3,408 bytes in 4 blocks
+==108726==         suppressed: 0 bytes in 0 blocks
+==108726== Reachable blocks (those to which a pointer was found) are not shown.
+==108726== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==108726== 
+==108726== For lists of detected and suppressed errors, rerun with: -s
+==108726== ERROR SUMMARY: 2165 errors from 23 contexts (suppressed: 0 from 0)

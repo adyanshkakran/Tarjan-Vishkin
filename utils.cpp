@@ -25,16 +25,6 @@ void destroyGraph(Graph *g)
     delete g;
 }
 
-void destroyGraph2(Graph *g)
-{
-    for (int i = 0; i < g->n; i++)
-    {
-        delete g->vertices[i];
-    }
-    g->vertices.clear();
-    delete g;
-}
-
 edge *reverseEdge(edge *e)
 {
     edge *rev = new edge();
@@ -123,18 +113,24 @@ void bfs(graph *g, graph *t, graph *nt, vector<ll> &parent, vector<ll> &level)
                             level[u->id] = level[v->id] + 1;
                             parent[u->id] = v->id;
 
-                            edge *rev = reverseEdge(e);
-                            t->edges.push_back(e);
+                            edge *ee = new edge();
+                            ee->v1 = e->v1;
+                            ee->v2 = e->v2;
+                            edge *rev = reverseEdge(ee);
+                            t->edges.push_back(ee);
                             t->edges.push_back(rev);
-                            t->vertices[u->id]->edges.push_back(e);
+                            t->vertices[u->id]->edges.push_back(ee);
                             t->vertices[v->id]->edges.push_back(rev);
                         }
                         else
                         {
-                            edge *rev = reverseEdge(e);
-                            nt->edges.push_back(e);
+                            edge *ee = new edge();
+                            ee->v1 = e->v1;
+                            ee->v2 = e->v2;
+                            edge *rev = reverseEdge(ee);
+                            nt->edges.push_back(ee);
                             nt->edges.push_back(rev);
-                            nt->vertices[u->id]->edges.push_back(e);
+                            nt->vertices[u->id]->edges.push_back(ee);
                             nt->vertices[v->id]->edges.push_back(rev);
                         }
                     }
@@ -206,7 +202,10 @@ void euler_tour(graph *t, vector<ll> &succ)
     vector<ll> first(t->n, -1), next(t->m, -1), twin(t->m, -1);
     for (ll i = 0; i < t->m; i++)
     {
-        twin[distance(t->edges.begin(), lower_bound(t->edges.begin(), t->edges.end(), reverseEdge(t->edges[i]), cmp))] = i;
+        vertex *temp = t->edges[i]->v1;
+        edge *rev = reverseEdge(t->edges[i]);
+        twin[distance(t->edges.begin(), lower_bound(t->edges.begin(), t->edges.end(), rev, cmp))] = i;
+        delete (rev);
 
         if (i == 0 || t->edges[i]->v1->id != t->edges[i - 1]->v1->id)
             first[t->edges[i]->v1->id] = i;
@@ -235,7 +234,9 @@ void euler_tour_parallel(graph *t, vector<ll> &succ)
             ll i = PER_THREAD / 10 * x + j;
             if (i >= t->m)
                 break;
-            twin[distance(t->edges.begin(), lower_bound(t->edges.begin(), t->edges.end(), reverseEdge(t->edges[i]), cmp))] = i;
+            edge *rev = reverseEdge(t->edges[i]);
+            twin[distance(t->edges.begin(), lower_bound(t->edges.begin(), t->edges.end(), rev, cmp))] = i;
+            delete (rev);
 
             if (i == 0 || t->edges[i]->v1->id != t->edges[i - 1]->v1->id)
                 first[t->edges[i]->v1->id] = i;
@@ -686,6 +687,9 @@ graph *auxillary_graph_uf(graph *g, graph *t, graph *nt, vector<ll> &low, vector
             nti++;
         }
     }
+
+    delete (union_find);
+
     return aux;
 }
 
@@ -819,6 +823,8 @@ graph *auxillary_graph_parallel_uf(graph *g, graph *t, graph *nt, vector<ll> &lo
             }
         }
     }
+
+    delete (union_find);
 
     return aux;
 }
