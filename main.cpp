@@ -216,6 +216,7 @@ void threads()
     generateRandomGraph(g, gen, dis, degrees);
 
     for (int threads : numThreads){
+        cout << "Running with " << threads << " threads." << endl;
         THREADS = threads;
         double tv = 0, tvp = 0, tvuf = 0, tvpuf = 0;
         int iterations = 20;

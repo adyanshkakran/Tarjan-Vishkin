@@ -88,7 +88,7 @@ double tarjan_vishkin_parallel(graph* g) {
     // cout << count << endl;
 
     // cout << "Parallel time: " << (chrono::duration_cast<chrono::nanoseconds>(end - start).count())/ 1e9 << "s" << endl;
-    destroyGraph(t);
-    destroyGraph(nt);
+    delete t;
+    delete nt;
     return (chrono::duration_cast<chrono::nanoseconds>(end - start).count())/ 1e9;
 }

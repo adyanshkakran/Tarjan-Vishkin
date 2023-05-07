@@ -5,7 +5,6 @@
 using namespace std;
 
 double tarjan_vishkin(graph* g){
-
     graph *t = new graph(), *nt = new graph();
     t->n = g->n;
     nt->n = g->n;
@@ -58,7 +57,7 @@ double tarjan_vishkin(graph* g){
     // cout << count << endl;
 
     // cout << "Sequential Time: " << chrono::duration_cast<chrono::nanoseconds>(end - start).count()/1e9 << "s" << endl;
-    destroyGraph(t);
-    destroyGraph(nt);
+    delete t;
+    delete nt;
     return (chrono::duration_cast<chrono::nanoseconds>(end - start).count())/ 1e9;
 }
