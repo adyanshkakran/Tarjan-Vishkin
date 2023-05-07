@@ -202,7 +202,7 @@ void threads()
     cout << "enter number of edges" << endl;
     cin >> m;
 
-    int numThreads[8] = {1, 2, 4, 8, 16, 24, 32, 48};
+    int numThreads[9] = {1, 2, 4, 8, 12, 16, 24, 32, 48};
 
     random_device rd;
     mt19937 gen(rd());

@@ -58,5 +58,7 @@ double tarjan_vishkin(graph* g){
     // cout << count << endl;
 
     // cout << "Sequential Time: " << chrono::duration_cast<chrono::nanoseconds>(end - start).count()/1e9 << "s" << endl;
+    destroyGraph(t);
+    destroyGraph(nt);
     return (chrono::duration_cast<chrono::nanoseconds>(end - start).count())/ 1e9;
 }
