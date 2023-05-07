@@ -53,7 +53,7 @@ double tarjan_vishkin_uf(graph *g){
     // }
 
     // cout << "UF Sequential Time: " << chrono::duration_cast<chrono::nanoseconds>(end - start).count() / 1e9 << "s" << endl;
-    delete t;
-    delete nt;
+    destroyGraph2(t);
+    destroyGraph2(nt);
     return (chrono::duration_cast<chrono::nanoseconds>(end - start).count())/ 1e9;
 }

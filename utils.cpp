@@ -25,6 +25,16 @@ void destroyGraph(Graph *g)
     delete g;
 }
 
+void destroyGraph2(Graph *g)
+{
+    for (int i = 0; i < g->n; i++)
+    {
+        delete g->vertices[i];
+    }
+    g->vertices.clear();
+    delete g;
+}
+
 edge *reverseEdge(edge *e)
 {
     edge *rev = new edge();

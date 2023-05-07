@@ -166,9 +166,9 @@ void degree()
     cout << "enter number of vertices" << endl;
     cin >> n;
 
-    for (int graphN = 0; graphN < 10; graphN++)
+    for (int graphN = 0; graphN < 2; graphN++)
     {
-        int m = graphN * 50000 + n;
+        int m = graphN * 1000 + n;
 
         random_device rd;
         mt19937 gen(rd());
@@ -182,7 +182,7 @@ void degree()
         generateRandomGraph(g, gen, dis, degrees);
 
         double tv = 0, tvp = 0, tvuf = 0, tvpuf = 0;
-        int iterations = 20;
+        int iterations = 1;
 
         runAlgorithms(g, tv, tvp, tvuf, tvpuf, iterations);
 

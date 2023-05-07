@@ -73,6 +73,7 @@ private:
 };
 
 void destroyGraph(Graph* g);
+void destroyGraph2(Graph *g);
 edge* reverseEdge(edge* e);
 bool cmp(edge* a, edge* b);
 bool cmp2(edge* a, edge* b);
