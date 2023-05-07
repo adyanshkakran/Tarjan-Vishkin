@@ -289,7 +289,7 @@ int main(int argc, char **argv)
 
     if (strcmp(argv[1], "random") == 0)
     {
-        if (argc > 4)
+        if (argc > 3)
             THREADS = atoi(argv[3]);
         if(argc < 3){
             std::cout << "Usage: ./main random <random-operation>" << endl;
@@ -309,8 +309,8 @@ int main(int argc, char **argv)
         return 0;
     }
 
-    if (argc > 3)
-            THREADS = atoi(argv[3]);
+    if (argc > 2)
+            THREADS = atoi(argv[2]);
 
     fileRead(argv[1]);
 
