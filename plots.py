@@ -105,7 +105,7 @@ def vertices_vs_time():
         # plt.show()
 
 def threads_vs_time():
-    with open("results.csv") as f:
+    with open("plot_datas/threads_300k.csv") as f: # also try threads_50k.csv
         # read csv file
         csv_reader = csv.reader(f, delimiter=',')
         # skip the header
@@ -120,7 +120,7 @@ def threads_vs_time():
             num_vertices = int(row[0])
             num_edges = int(row[1])
             avg_degree = float(row[2])
-            thread_count = int(row[3])
+            thread_count = row[3]
             
             # create a dictionary to store the data in the format we want
             # for each type of time, we have a dictionary

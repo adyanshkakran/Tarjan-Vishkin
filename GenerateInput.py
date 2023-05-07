@@ -2,19 +2,13 @@
 Usage: python GenerateInput.py file_path.mtx
 Output goes to: file_path.in
 
-Converts matrix market files to directed graphs of the following format:
+Converts matrix market files to directed graphs of the following format
 
-1. The first line has N, the number of vertices.
-2. Each of the following N lines have the vertices that are connected to that vertex. If there are none, the line is empty.
-
-In other words:
-
-N
-vertices that vertex 1 has outgoing edges towards
-vertices that vertex 2 has outgoing edges towards
+N M
+u1 v1
+u2 v2
 ...
-vertices that vertex N has outgoing edges towards
-
+uM vM
 '''
 
 import os
@@ -57,9 +51,22 @@ def WriteOutput(inputFilePath: str, graph: List[str]):
     outputFilePath = inputFilePath[:len(inputFilePath) - 4] + '.in'
     print(f'Writing to {outputFilePath}')
     with open(outputFilePath, 'w') as f:
-        print(len(graph), file=f)
+        # print(len(graph), file=f)
+        numVertices = len(graph)
+        numEdges = 0
+        edges = []
         for i, node in enumerate(graph):
-            print(*node, sep=' ', end='\n', file=f)
+            # print(i,*node,file=f)
+            for j in node:
+                edges.append((i, j))
+                print(i, j)
+                numEdges += 1
+                
+        # go to the beginning of the file, write the number of edges
+        f.seek(0, 0)
+        print(len(graph), numEdges, file=f)
+        for edge in edges:
+            print(edge[0], edge[1], file=f)
     print('Done')
 
 
