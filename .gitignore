@@ -1,3 +1,4 @@
 /OpenCilk-10.0.1-Darwin
 *.out
 *.in
+*.mtx

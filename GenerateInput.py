@@ -1,6 +1,6 @@
 '''
-Usage: python GenerateInput.py file_path.mtx
-Output goes to: file_path.in
+Usage: python GenerateInput.py directory_path <starting_string:optional>
+Output goes to: directory_path/*.in (same name as input file, but with .in extension)
 
 Converts matrix market files to directed graphs of the following format
 
@@ -17,14 +17,31 @@ from colorama import Fore, Back, Style
 from typing import List
 #from icecream import ic
 
-
 def GetFilePath() -> str:
-    if len(sys.argv) != 2:
-        sys.exit(f'Usage: python GenerateInput.py file_path.mtx')
-    elif not sys.argv[1].endswith('.mtx'):
-        sys.exit(f'The input file must end in .mtx')
-    return sys.argv[1]
+    if len(sys.argv) < 2:
+        sys.exit(f'Usage: python GenerateInput.py directory_path <starting_string:optional>')
 
+    # Get the directory path
+    directoryPath = sys.argv[1]
+    
+    # Get the starting string, if none is provided, match all files
+    startingString = ''
+    if len(sys.argv) == 3:
+        startingString = sys.argv[2] # find all files that start with this string
+        
+    inputFilePaths = [] # list of .mtx files in the directory
+    
+    print("Starting string: " + startingString)
+    
+    # Get all the files in the directory
+    for filename in os.listdir(directoryPath):
+        if filename.endswith('.mtx') and filename.startswith(startingString):
+            inputFilePaths.append(os.path.join(directoryPath, filename))
+            
+    if len(inputFilePaths) == 0:
+        sys.exit(f'No .mtx files found in {directoryPath}')
+    
+    return inputFilePaths
 
 # Loads the input file into an adjacency list
 def SetGraph(inputFilePath: str) -> List[set]:
@@ -36,44 +53,34 @@ def SetGraph(inputFilePath: str) -> List[set]:
                 continue
             line = line.split()
             if firstLine:
-                nrows, ncols, nnz = int(line[0]), int(line[1]), float(line[2])
+                vertices, ncols, edges = int(line[0]), int(line[1]), int(line[2])
                 firstLine = False
-                graph = [set() for j in range(nrows)]
+                graph = [set() for j in range(vertices)]
             else:
                 i, j = int(line[0]), int(line[1])
                 graph[i - 1].add(j - 1)
 
-    return graph
+    return graph, vertices, edges
 
 
 # Writes to file_path.in
-def WriteOutput(inputFilePath: str, graph: List[str]):
+def WriteOutput(inputFilePath: str, graph: List[str], vertices: int, edges: int):
     outputFilePath = inputFilePath[:len(inputFilePath) - 4] + '.in'
     print(f'Writing to {outputFilePath}')
     with open(outputFilePath, 'w') as f:
-        # print(len(graph), file=f)
-        numVertices = len(graph)
-        numEdges = 0
-        edges = []
+        print(vertices, edges, file=f)
         for i, node in enumerate(graph):
-            # print(i,*node,file=f)
             for j in node:
-                edges.append((i, j))
-                print(i, j)
-                numEdges += 1
-                
-        # go to the beginning of the file, write the number of edges
-        f.seek(0, 0)
-        print(len(graph), numEdges, file=f)
-        for edge in edges:
-            print(edge[0], edge[1], file=f)
+                print(i, j, file=f)
     print('Done')
 
 
 def main() -> None:
-    inputFilePath = GetFilePath()
-    graph = SetGraph(inputFilePath)
-    WriteOutput(inputFilePath, graph)
+    inputPaths = GetFilePath()
+
+    for inputFilePath in inputPaths:
+        graph, vertices, edges = SetGraph(inputFilePath)
+        WriteOutput(inputFilePath, graph, vertices, edges)
 
 
 if __name__ == '__main__':
