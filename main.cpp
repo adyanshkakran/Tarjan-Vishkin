@@ -287,30 +287,45 @@ void dense_graphs()
     myfile << "Vertices, Edges, Average Degree, Tarjan Vishkin, Tarjan Vishkin with Union Find, Tarjan Vishkin Parallel, Tarjan Vishkin Parallel with Union Find" << endl;
 
     int n, m;
-    cout << "enter number of vertices" << endl;
+    cout << "enter number of vertices to start from" << endl;
     cin >> n;
-    cout << "enter number of edges" << endl;
-    cin >> m;
 
-    random_device rd;
-    mt19937 gen(rd());
-    uniform_int_distribution<> dis(0, n - 1);
-    vector<int> degrees(n, 0);
+    for(int i = 0; i < 5; i++){        
+        m = n * (n - 1) / 2;
 
-    graph *g = new graph();
-    g->n = n;
-    g->m = m;
+        graph *g = new graph();
+        g->n = n;
+        g->m = m;
 
-    generateRandomGraph(g, gen, dis, degrees);
+        // add n vertexes to g
+        for(int i = 0; i < n; i++){
+            vertex *v = new vertex();
+            v->id = i;
+            g->vertices.push_back(v);
+        }
 
-    double tv = 0, tvp = 0, tvuf = 0, tvpuf = 0;
-    int iterations = 20;
+        for(int i = 0; i < n; i++){
+            for(int j = i + 1; j < n; j++){
+                edge *e = new edge();
+                e->v1 = g->vertices[i];
+                e->v2 = g->vertices[j];
+                g->edges.push_back(e);
+                g->vertices[i]->edges.push_back(e);
+                g->vertices[j]->edges.push_back(e);
+            }
+        }
 
-    runAlgorithms(g, tv, tvp, tvuf, tvpuf, iterations);
+        double tv = 0, tvp = 0, tvuf = 0, tvpuf = 0;
+        int iterations = 10;
 
-    myfile << n << "," << m << "," << g->avgDegree << "," << tv / iterations << "," << tvuf / iterations << "," << tvp / iterations << "," << tvpuf / iterations << endl;
+        runAlgorithms(g, tv, tvp, tvuf, tvpuf, iterations);
 
-    destroyGraph(g);
+        myfile << n << "," << m << "," << g->avgDegree << "," << tv / iterations << "," << tvuf / iterations << "," << tvp / iterations << "," << tvpuf / iterations << endl;
+
+        destroyGraph(g);
+
+        n += 100;
+    }
 }
 
 void fileRead(char *path)
