@@ -10,7 +10,7 @@
 
 using namespace std;
 
-int THREADS = 8;
+int THREADS = 16;
 int PER_THREAD = 2000;
 
 string get_file_path(const char *path, const char *file_name)
@@ -163,13 +163,13 @@ void degree()
     myfile << "Vertices, Edges, Average Degree, Tarjan Vishkin, Tarjan Vishkin with Union Find, Tarjan Vishkin Parallel, Tarjan Vishkin Parallel with Union Find, Graph Name" << endl;
 
     int n;
-    cout << "enter number of vertices" << endl;
     cin >> n;
 
-    for (int graphN = 0; graphN < 10; graphN++)
-    {
-        int m = graphN * 50000 + n;
+    vector<float> degrees_to_test = {0.1, 0.2, 0.75, 1.5};
 
+    for (int graphN = 0; graphN < degrees_to_test.size(); graphN++)
+    {
+        int m = n * degrees_to_test[graphN] / 2;
         random_device rd;
         mt19937 gen(rd());
         uniform_int_distribution<> dis(0, n - 1);
@@ -217,7 +217,8 @@ void threads()
 
     generateRandomGraph(g, gen, dis, degrees);
 
-    for (int threads : numThreads){
+    for (int threads : numThreads)
+    {
         cout << "Running with " << threads << " threads." << endl;
         THREADS = threads;
         double tv = 0, tvp = 0, tvuf = 0, tvpuf = 0;
@@ -231,7 +232,8 @@ void threads()
     destroyGraph(g);
 }
 
-void fileRead(char* path) {
+void fileRead(char *path)
+{
     ofstream myfile;
     myfile.open("results.csv", ios::trunc);
     myfile << "Vertices, Edges, Average Degree, File Name, Tarjan Vishkin, Tarjan Vishkin with Union Find, Tarjan Vishkin Parallel, Tarjan Vishkin Parallel with Union Find, Graph Name" << endl;
@@ -279,6 +281,39 @@ void fileRead(char* path) {
     closedir(dir);
 }
 
+void dense_graphs()
+{
+    ofstream myfile;
+    myfile.open("results.csv", ios::trunc);
+    myfile << "Vertices, Edges, Average Degree, Tarjan Vishkin, Tarjan Vishkin with Union Find, Tarjan Vishkin Parallel, Tarjan Vishkin Parallel with Union Find" << endl;
+
+    int n, m;
+    cout << "enter number of vertices" << endl;
+    cin >> n;
+    cout << "enter number of edges" << endl;
+    cin >> m;
+
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<> dis(0, n - 1);
+    vector<int> degrees(n, 0);
+
+    graph *g = new graph();
+    g->n = n;
+    g->m = m;
+
+    generateRandomGraph(g, gen, dis, degrees);
+
+    double tv = 0, tvp = 0, tvuf = 0, tvpuf = 0;
+    int iterations = 20;
+
+    runAlgorithms(g, tv, tvp, tvuf, tvpuf, iterations);
+
+    myfile << n << "," << m << "," << g->avgDegree << "," << tv / iterations << "," << tvuf / iterations << "," << tvp / iterations << "," << tvpuf / iterations << endl;
+
+    destroyGraph(g);
+}
+
 int main(int argc, char **argv)
 {
     if (argc < 2)
@@ -287,33 +322,37 @@ int main(int argc, char **argv)
         return 0;
     }
 
-
     /* if argv is 1, we generate a random graph */
 
     if (strcmp(argv[1], "random") == 0)
     {
         if (argc > 3)
             THREADS = atoi(argv[3]);
-        if(argc < 3){
+        if (argc < 3)
+        {
             std::cout << "Usage: ./main random <random-operation>" << endl;
             return 0;
         }
-        switch(atoi(argv[2])){
-            case 1:
-                degree();
-                break;
-            case 2:
-                threads();
-                break;
-            default:
-                std::cout << "Usage: ./main random <random-operation>" << endl;
-                return 0;
+        switch (atoi(argv[2]))
+        {
+        case 1:
+            degree();
+            break;
+        case 2:
+            threads();
+            break;
+        case 3:
+            dense_graphs();
+            break;
+        default:
+            std::cout << "Usage: ./main random <random-operation>" << endl;
+            return 0;
         }
         return 0;
     }
 
     if (argc > 2)
-            THREADS = atoi(argv[2]);
+        THREADS = atoi(argv[2]);
 
     fileRead(argv[1]);
 

@@ -13,7 +13,7 @@ def printList(list):
         print(data)
 
 def degree_vs_time():
-    with open("results.csv") as f:
+    with open("plot_datas/avg_degree.csv") as f:
         # read csv file
         csv_reader = csv.reader(f, delimiter=',')
         # skip the header
@@ -27,7 +27,7 @@ def degree_vs_time():
         for row in csv_reader:
             num_vertices = int(row[0])
             num_edges = int(row[1])
-            avg_degree = float(row[2])
+            avg_degree = row[2]
             
             # create a dictionary to store the data in the format we want
             # for each type of time, we have a dictionary
@@ -38,7 +38,9 @@ def degree_vs_time():
                 data[headers[1]] = num_edges
                 data[headers[2]] = avg_degree
                 data["Algorithm"] = headers[i + 3]
-                data["Time (s)"] = float(row[i + 3])
+                # take logaritmic time
+                data["Time (s)"] = np.log(float(row[i + 3]))
+                
                 
                 datalist.append(data)
                 
@@ -153,4 +155,5 @@ def threads_vs_time():
         # plt.show()
 
 # vertices_vs_time()
-threads_vs_time()
+# threads_vs_time()
+degree_vs_time()

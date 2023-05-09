@@ -1,4 +1,4 @@
-Vertices, Edges, Average Degree, Name, Tarjan Vishkin, Tarjan Vishkin with Union Find, Tarjan Vishkin Parallel, Tarjan Vishkin Parallel with Union Find, Graph Name\n
+Vertices, Edges, Average Degree, Name, Tarjan Vishkin, Tarjan Vishkin with Union Find, Tarjan Vishkin Parallel, Tarjan Vishkin Parallel with Union Find
 144649,1074393,14.8552,Graphs/graphs//144.in,3.86011,3.66666,3.19656,3.06307
 110971,741934,13.3717,Graphs/graphs//598a.in,2.51618,2.44433,2.0578,2.00981
 45292,108549,4.7933,Graphs/graphs//ak2010.in,0.518314,0.526973,0.2188,0.218988
