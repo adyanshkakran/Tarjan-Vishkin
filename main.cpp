@@ -196,7 +196,7 @@ void threads()
 {
     ofstream myfile;
     myfile.open("results.csv", ios::trunc);
-    myfile << "Vertices, Edges, Average Degree, Number of Threads, Tarjan Vishkin, Tarjan Vishkin with Union Find, Tarjan Vishkin Parallel, Tarjan Vishkin Parallel with Union Find, Graph Name" << endl;
+    myfile << "Vertices, Edges, Average Degree, Number of Threads, Tarjan Vishkin, Tarjan Vishkin with Union Find, Tarjan Vishkin Parallel, Tarjan Vishkin Parallel with Union Find" << endl;
 
     int n, m;
     cout << "enter number of vertices" << endl;
@@ -217,7 +217,8 @@ void threads()
 
     generateRandomGraph(g, gen, dis, degrees);
 
-    for (int threads : numThreads){
+    for (int threads : numThreads)
+    {
         cout << "Running with " << threads << " threads." << endl;
         THREADS = threads;
         double tv = 0, tvp = 0, tvuf = 0, tvpuf = 0;
@@ -231,7 +232,8 @@ void threads()
     destroyGraph(g);
 }
 
-void fileRead(char* path) {
+void folderRead(char *path)
+{
     ofstream myfile;
     myfile.open("results.csv", ios::trunc);
     myfile << "Vertices, Edges, Average Degree, File Name, Tarjan Vishkin, Tarjan Vishkin with Union Find, Tarjan Vishkin Parallel, Tarjan Vishkin Parallel with Union Find, Graph Name" << endl;
@@ -279,14 +281,46 @@ void fileRead(char* path) {
     closedir(dir);
 }
 
+void fileRead(char *path)
+{
+    ifstream input(path);
+    cout << "Reading file: " << path << endl;
+
+    ofstream myfile;
+    myfile.open("results.csv", ios::app);
+
+    /* Read number of vertices and edges */
+    int n, m;
+    input >> n >> m;
+
+    /* Create graph */
+    graph *g = new graph();
+    g->n = n;
+    g->m = m;
+
+    loadGraph(g, input);
+    /* Close file */
+    input.close();
+
+    double tv = 0, tvp = 0, tvuf = 0, tvpuf = 0;
+    int iterations = 20;
+
+    runAlgorithms(g, tv, tvp, tvuf, tvpuf, iterations);
+
+    myfile << n << "," << m << "," << g->avgDegree << "," << path << "," << tv / iterations << "," << tvuf / iterations << "," << tvp / iterations << "," << tvpuf / iterations << endl;
+
+    myfile.close();
+
+    destroyGraph(g);
+}
+
 int main(int argc, char **argv)
 {
     if (argc < 2)
     {
-        std::cout << "Usage: ./main <path-to-folder>" << endl;
+        std::cout << "Usage: ./main <path-to-folder/file>" << endl;
         return 0;
     }
-
 
     /* if argv is 1, we generate a random graph */
 
@@ -294,28 +328,44 @@ int main(int argc, char **argv)
     {
         if (argc > 3)
             THREADS = atoi(argv[3]);
-        if(argc < 3){
+        if (argc < 3)
+        {
             std::cout << "Usage: ./main random <random-operation>" << endl;
             return 0;
         }
-        switch(atoi(argv[2])){
-            case 1:
-                degree();
-                break;
-            case 2:
-                threads();
-                break;
-            default:
-                std::cout << "Usage: ./main random <random-operation>" << endl;
-                return 0;
+        switch (atoi(argv[2]))
+        {
+        case 1:
+            degree();
+            break;
+        case 2:
+            threads();
+            break;
+        default:
+            std::cout << "Usage: ./main random <random-operation>" << endl;
+            return 0;
         }
         return 0;
     }
 
-    if (argc > 2)
+    else if (strcmp(argv[1], "file") == 0)
+    {
+        if (argc > 3)
+            THREADS = atoi(argv[3]);
+        if (argc < 3)
+        {
+            std::cout << "Usage: ./main file <path-to-file>" << endl;
+            return 0;
+        }
+
+        fileRead(argv[2]);
+    }
+    else
+    {
+        if (argc > 2)
             THREADS = atoi(argv[2]);
 
-    fileRead(argv[1]);
-
+        folderRead(argv[1]);
+    }
     exit(0);
 }
