@@ -147,8 +147,8 @@ void runAlgorithms(graph *g, double &tv, double &tvp, double &tvuf, double &tvpu
         // run parallel algos to find number of edges in aux graph
         for (int i = 0; i < iterations; i++)
         {
-            tv += int(tarjan_vishkin(g, edgeFlag));
-            tvuf += int(tarjan_vishkin_uf(g, edgeFlag));
+            tv += (tarjan_vishkin(g, false));
+            tvuf += (tarjan_vishkin_uf(g, false));
             // tvp += int(tarjan_vishkin_parallel(g, edgeFlag));
             // tvpuf += int(tarjan_vishkin_parallel_uf(g, edgeFlag));
         }
@@ -217,7 +217,7 @@ void aux_edges()
     cout << "Enter number of vertices: ";
     cin >> n;
 
-    vector<float> degrees_to_test = {0.25,0.5,1,2,2.25,2.5,2.75,3,4,5,6,7,8,9,10,12,14,16,20,24,32,48,64,96,128,142,196};
+    vector<float> degrees_to_test = {1,2,2.25,2.5,2.75,3,4,5,6,7,8,9,10,12,14,16,20,24,32,48,64,96,128,142,196};
 
     for (int graphN = 0; graphN < degrees_to_test.size(); graphN++)
     {
@@ -237,7 +237,7 @@ void aux_edges()
         // printGraph(g);
 
         double tv = 0, tvp = 0, tvuf = 0, tvpuf = 0;
-        int iterations = 1;
+        int iterations = 10;
 
         runAlgorithms(g, tv, tvp, tvuf, tvpuf, iterations, true);
 

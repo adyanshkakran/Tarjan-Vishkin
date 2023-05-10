@@ -39,8 +39,7 @@ def degree_vs_time():
                 data[headers[2]] = avg_degree
                 data["Algorithm"] = headers[i + 3]
                 # take logaritmic time
-                data["Time (s)"] = np.log(float(row[i + 3]))
-                
+                data["Time (s)"] = float(row[i + 3])
                 
                 datalist.append(data)
                 
@@ -154,6 +153,107 @@ def threads_vs_time():
         
         # plt.show()
 
-# vertices_vs_time()
+def aux_edges():
+    with open("plot_datas/aux_edges.csv") as f:
+        # read csv file
+        csv_reader = csv.reader(f, delimiter=',')
+        # skip the header
+        headers = next(csv_reader)
+        
+        # strip the headers of whitespaces
+        headers = [header.strip() for header in headers]
+        
+        datalist = []
+        
+        for row in csv_reader:
+            num_vertices = int(row[0])
+            num_edges = int(row[1])
+            avg_degree = row[2]
+            
+            # create a dictionary to store the data in the format we want
+            # for each type of time, we have a dictionary
+            for i in range(2):
+                data = {}
+                
+                data[headers[0]] = num_vertices
+                data[headers[1]] = num_edges
+                data[headers[2]] = avg_degree
+                data["Algorithm"] = headers[i + 3]
+                
+                if (float(row[i+3]) == 0):
+                    continue
+                
+                data["Edges"] = float(row[i + 3])
+                data["Edges (%)"] = float(row[i + 3])/float(row[3])
+            
+                datalist.append(data)
+                
+        # printList(datalist)
+
+        # convert to pandas dataframe
+        df = pd.DataFrame(datalist)
+        
+        print(df)
+        
+        # sns.catplot(data=df, x="Edges", y="Time", hue="Algorithm", kind="bar", ci=None)
+        
+        # add tooltips
+        fig = px.bar(df, x="Average Degree", y="Edges (%)", color="Algorithm", barmode="group", hover_data=["Vertices", "Edges", "Average Degree", "Edges (%)"])
+        fig.update_layout(title="Edges in the auxiliary graph as a percentage by Tarjan-Vishkin and its variants")
+        fig.show()
+
+def aux_times():
+    with open("plot_datas/aux_times.csv") as f:
+        # read csv file
+        csv_reader = csv.reader(f, delimiter=',')
+        # skip the header
+        headers = next(csv_reader)
+        
+        # strip the headers of whitespaces
+        headers = [header.strip() for header in headers]
+        
+        datalist = []
+        
+        for row in csv_reader:
+            num_vertices = int(row[0])
+            num_edges = int(row[1])
+            avg_degree = row[2]
+            
+            # create a dictionary to store the data in the format we want
+            # for each type of time, we have a dictionary
+            for i in range(2):
+                data = {}
+                
+                data[headers[0]] = num_vertices
+                data[headers[1]] = num_edges
+                data[headers[2]] = avg_degree
+                data["Algorithm"] = headers[i + 3]
+                
+                if (float(row[i+3]) == 0):
+                    continue
+                
+                data["Time (s)"] = float(row[i + 3])
+                data["Time (%)"] = float(row[i + 3])/float(row[3])
+            
+                datalist.append(data)
+                
+        # printList(datalist)
+
+        # convert to pandas dataframe
+        df = pd.DataFrame(datalist)
+        
+        print(df)
+        
+        # sns.catplot(data=df, x="Edges", y="Time", hue="Algorithm", kind="bar", ci=None)
+        
+        # add tooltips
+        fig = px.bar(df, x="Average Degree", y="Time (%)", color="Algorithm", barmode="group", hover_data=["Vertices", "Edges", "Average Degree", "Time (s)"])
+        fig.update_layout(title="Time taken as a percentage by Tarjan-Vishkin and its variants")
+        fig.show()
+
+
+# degree_vs_time()
 # threads_vs_time()
-degree_vs_time()
+# degree_vs_time()
+# aux_edges()
+aux_times()
