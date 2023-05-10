@@ -49,5 +49,6 @@ double tarjan_vishkin_parallel_uf(graph* g, bool edgeFlag = false) {
         return aux_edges;
     }
 
+    cout << "Components(TVPUF): " << biconnected.size() << endl;
     return (chrono::duration_cast<chrono::nanoseconds>(end - start).count())/ 1e9;
 }

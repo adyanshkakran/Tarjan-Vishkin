@@ -144,15 +144,11 @@ void runAlgorithms(graph *g, double &tv, double &tvp, double &tvuf, double &tvpu
 {
     if (edgeFlag)
     {
-        // run parallel algos to find number of edges in aux graph
         for (int i = 0; i < iterations; i++)
         {
-            tv += (tarjan_vishkin(g, false));
-            tvuf += (tarjan_vishkin_uf(g, false));
-            // tvp += int(tarjan_vishkin_parallel(g, edgeFlag));
-            // tvpuf += int(tarjan_vishkin_parallel_uf(g, edgeFlag));
+            tv += (tarjan_vishkin(g, true));
+            tvuf += (tarjan_vishkin_uf(g, true));
         }
-
         return;
     }
 
@@ -167,6 +163,19 @@ void runAlgorithms(graph *g, double &tv, double &tvp, double &tvuf, double &tvpu
         tvpuf += tarjan_vishkin_parallel_uf(g);
 
         cout << "Iteration " << i << " done." << endl;
+    }
+}
+
+void runOtherAlgorithms(graph *g, double &tvpuf, double t, int iterations)
+{
+    for (int i = 0; i < iterations; i++)
+    {
+        tvpuf += tarjan_vishkin(g);
+
+        int temp = tarjan(g);
+        t += temp;
+
+        cout << "Iteration " << i << " done." << temp << endl;
     }
 }
 
@@ -217,7 +226,7 @@ void aux_edges()
     cout << "Enter number of vertices: ";
     cin >> n;
 
-    vector<float> degrees_to_test = {1,2,2.25,2.5,2.75,3,4,5,6,7,8,9,10,12,14,16,20,24,32,48,64,96,128,142,196};
+    vector<float> degrees_to_test = {1, 2, 2.25, 2.5, 2.75, 3, 4, 5, 6, 7, 8, 9, 10, 12, 14, 16, 20, 24, 32, 48, 64, 96, 128, 142, 196};
 
     for (int graphN = 0; graphN < degrees_to_test.size(); graphN++)
     {
@@ -247,7 +256,7 @@ void aux_edges()
     }
 }
 
-void aux_edges_file(char* path)
+void aux_edges_file(char *path)
 {
     ifstream input(path);
     cout << "Reading file: " << path << endl;
@@ -451,6 +460,75 @@ void fileRead(char *path)
     destroyGraph(g);
 }
 
+void other()
+{
+    ofstream myfile;
+    myfile.open("results.csv", ios::trunc);
+    myfile << "Vertices, Edges, Average Degree, Tarjan Vishkin Parallel With Union Find, Tarjan" << endl;
+
+    int n;
+    cout << "Enter number of vertices: ";
+    cin >> n;
+
+    // vector<float> degrees_to_test = {0.25, 0.5, 0.75, 1, 2, 4, 8, 12, 16, 32, 48, 96, 128, 256};
+    vector<float> degrees_to_test = {1};
+
+    for (int graphN = 0; graphN < degrees_to_test.size(); graphN++)
+    {
+        int m = n * degrees_to_test[graphN] / 2;
+        random_device rd;
+        mt19937 gen(rd());
+        uniform_int_distribution<> dis(0, n - 1);
+        vector<int> degrees(n, 0);
+
+        graph *g = new graph();
+        g->n = n;
+        g->m = m;
+
+        generateRandomGraph(g, gen, dis, degrees);
+
+        printGraph(g);
+
+        double tvpuf = 0, t = 0;
+        int iterations = 1;
+
+        runOtherAlgorithms(g, tvpuf, t, iterations);
+
+        myfile << n << "," << m << "," << g->avgDegree << "," << tvpuf / iterations << "," << t / iterations << endl;
+
+        destroyGraph(g);
+    }
+}
+
+void other_file(char *path)
+{
+    ifstream input(path);
+    cout << "Reading file: " << path << endl;
+
+    ofstream myfile;
+    myfile.open("results.csv", ios::app);
+
+    int n, m;
+    input >> n >> m;
+
+    graph *g = new graph();
+    g->n = n;
+    g->m = m;
+
+    loadGraph(g, input);
+    input.close();
+
+    double tvpuf = 0, t = 0;
+    int iterations = 1;
+
+    runOtherAlgorithms(g, tvpuf, t, iterations);
+
+    myfile << n << "," << m << "," << g->avgDegree << "," << tvpuf / iterations << "," << t / iterations << endl;
+    myfile.close();
+
+    destroyGraph(g);
+}
+
 int main(int argc, char **argv)
 {
     if (argc < 2)
@@ -484,6 +562,9 @@ int main(int argc, char **argv)
         case 4:
             aux_edges();
             break;
+        case 5:
+            other();
+            break;
         default:
             std::cout << "Usage: ./main random <random-operation>" << endl;
             return 0;
@@ -502,7 +583,9 @@ int main(int argc, char **argv)
         }
 
         fileRead(argv[2]);
-    }else if (strcmp(argv[1],"file_aux") == 0){
+    }
+    else if (strcmp(argv[1], "file_aux") == 0)
+    {
         if (argc > 3)
             THREADS = atoi(argv[3]);
         if (argc < 3)
@@ -512,6 +595,18 @@ int main(int argc, char **argv)
         }
 
         aux_edges_file(argv[2]);
+    }
+    else if (strcmp(argv[1], "other") == 0)
+    {
+        if (argc > 3)
+            THREADS = atoi(argv[3]);
+        if (argc < 3)
+        {
+            std::cout << "Usage: ./main other <path-to-file>" << endl;
+            return 0;
+        }
+
+        other_file(argv[2]);
     }
     else
     {

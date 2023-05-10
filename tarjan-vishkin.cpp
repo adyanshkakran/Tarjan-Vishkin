@@ -49,6 +49,15 @@ double tarjan_vishkin(graph* g, bool edgeFlag = false)
     {
         return aux_edges;
     }
+
+    cout << "Components(TV): " << biconnected.size() << endl;
+    for(int i = 0; i < biconnected.size(); i++)
+    {
+        cout << "Component " << i << ": ";
+        for(auto it = biconnected[i].begin(); it != biconnected[i].end(); it++)
+            cout << *it << " ";
+        cout << endl;
+    }
     
     return (chrono::duration_cast<chrono::nanoseconds>(end - start).count())/ 1e9;
 }
