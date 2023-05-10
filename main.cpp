@@ -140,8 +140,22 @@ void printGraph(graph *g)
     }
 }
 
-void runAlgorithms(graph *g, double &tv, double &tvp, double &tvuf, double &tvpuf, int iterations)
+void runAlgorithms(graph *g, double &tv, double &tvp, double &tvuf, double &tvpuf, int iterations, bool edgeFlag = false)
 {
+    if (edgeFlag)
+    {
+        // run parallel algos to find number of edges in aux graph
+        for (int i = 0; i < iterations; i++)
+        {
+            tv += int(tarjan_vishkin(g, edgeFlag));
+            tvuf += int(tarjan_vishkin_uf(g, edgeFlag));
+            // tvp += int(tarjan_vishkin_parallel(g, edgeFlag));
+            // tvpuf += int(tarjan_vishkin_parallel_uf(g, edgeFlag));
+        }
+
+        return;
+    }
+
     for (int i = 0; i < iterations; i++)
     {
         tv += tarjan_vishkin(g);
@@ -160,16 +174,17 @@ void degree()
 {
     ofstream myfile;
     myfile.open("results.csv", ios::trunc);
-    myfile << "Vertices, Edges, Average Degree, Tarjan Vishkin, Tarjan Vishkin with Union Find, Tarjan Vishkin Parallel, Tarjan Vishkin Parallel with Union Find, Graph Name" << endl;
+    myfile << "Vertices, Edges, Average Degree, Tarjan Vishkin, Tarjan Vishkin with Union Find, Tarjan Vishkin Parallel, Tarjan Vishkin Parallel with Union Find" << endl;
 
     int n;
-    cout << "enter number of vertices" << endl;
+    cout << "Enter number of vertices: ";
     cin >> n;
 
-    for (int graphN = 0; graphN < 10; graphN++)
-    {
-        int m = graphN * 50000 + n;
+    vector<float> degrees_to_test = {0.1, 0.2, 0.5, 0.75, 1, 2, 4, 16, 64, 96, 128, 192, 256};
 
+    for (int graphN = 0; graphN < degrees_to_test.size(); graphN++)
+    {
+        int m = n * degrees_to_test[graphN] / 2;
         random_device rd;
         mt19937 gen(rd());
         uniform_int_distribution<> dis(0, n - 1);
@@ -187,6 +202,46 @@ void degree()
         runAlgorithms(g, tv, tvp, tvuf, tvpuf, iterations);
 
         myfile << n << "," << m << "," << g->avgDegree << "," << tv / iterations << "," << tvuf / iterations << "," << tvp / iterations << "," << tvpuf / iterations << endl;
+
+        destroyGraph(g);
+    }
+}
+
+void aux_edges()
+{
+    ofstream myfile;
+    myfile.open("results.csv", ios::trunc);
+    myfile << "Vertices, Edges, Average Degree, Tarjan Vishkin, Tarjan Vishkin with Union Find" << endl;
+
+    int n;
+    cout << "Enter number of vertices: ";
+    cin >> n;
+
+    vector<float> degrees_to_test = {1,2,3,4,6,8,10,12,14,16,20,24,32,48,64,96,128};
+
+    for (int graphN = 0; graphN < degrees_to_test.size(); graphN++)
+    {
+        int m = n * degrees_to_test[graphN] / 2;
+        random_device rd;
+        mt19937 gen(rd());
+        uniform_int_distribution<> dis(0, n - 1);
+        vector<int> degrees(n, 0);
+
+        graph *g = new graph();
+        g->n = n;
+        g->m = m;
+
+        generateRandomGraph(g, gen, dis, degrees);
+
+        // print the graph
+        // printGraph(g);
+
+        double tv = 0, tvp = 0, tvuf = 0, tvpuf = 0;
+        int iterations = 1;
+
+        runAlgorithms(g, tv, tvp, tvuf, tvpuf, iterations, true);
+
+        myfile << n << "," << m << "," << g->avgDegree << "," << tv << "," << tvuf << endl;
 
         destroyGraph(g);
     }
@@ -217,7 +272,8 @@ void threads()
 
     generateRandomGraph(g, gen, dis, degrees);
 
-    for (int threads : numThreads){
+    for (int threads : numThreads)
+    {
         cout << "Running with " << threads << " threads." << endl;
         THREADS = threads;
         double tv = 0, tvp = 0, tvuf = 0, tvpuf = 0;
@@ -290,7 +346,8 @@ void dense_graphs()
     cout << "enter number of vertices to start from" << endl;
     cin >> n;
 
-    for(int i = 0; i < 5; i++){        
+    for (int i = 0; i < 5; i++)
+    {
         m = n * (n - 1) / 2;
 
         graph *g = new graph();
@@ -298,14 +355,17 @@ void dense_graphs()
         g->m = m;
 
         // add n vertexes to g
-        for(int i = 0; i < n; i++){
+        for (int i = 0; i < n; i++)
+        {
             vertex *v = new vertex();
             v->id = i;
             g->vertices.push_back(v);
         }
 
-        for(int i = 0; i < n; i++){
-            for(int j = i + 1; j < n; j++){
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = i + 1; j < n; j++)
+            {
                 edge *e = new edge();
                 e->v1 = g->vertices[i];
                 e->v2 = g->vertices[j];
@@ -390,6 +450,9 @@ int main(int argc, char **argv)
             break;
         case 3:
             dense_graphs();
+            break;
+        case 4:
+            aux_edges();
             break;
         default:
             std::cout << "Usage: ./main random <random-operation>" << endl;

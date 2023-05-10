@@ -6,7 +6,7 @@
 
 using namespace std;
 
-double tarjan_vishkin_parallel(graph* g);
+double tarjan_vishkin_parallel(graph* g, bool edgeFlag = false);
 
 
 #endif // TARJAN_VISHKIN_H

@@ -6,6 +6,6 @@
 
 using namespace std;
 
-double tarjan_vishkin(graph* g);
+double tarjan_vishkin(graph* g, bool edgeFlag = false);
 
 #endif // TARJAN_VISHKIN_H

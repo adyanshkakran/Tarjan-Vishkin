@@ -3,7 +3,7 @@
 
 using namespace std;
 
-double tarjan_vishkin_parallel(graph* g) {
+double tarjan_vishkin_parallel(graph* g, bool edgeFlag = false) {
     graph *t = new graph(), *nt = new graph();
     t->n = g->n;
     nt->n = g->n;
@@ -49,6 +49,7 @@ double tarjan_vishkin_parallel(graph* g) {
     // for (size_t i = 0; i < aux->edges.size(); i++) {
     //     cout << aux->edges[i]->v1->id << " " << aux->edges[i]->v2->id << endl;
     // }
+    int aux_edges = aux->edges.size();
 
     vector<vector<ll>> connected;
     findConnectedComponents(aux, connected);
@@ -91,5 +92,12 @@ double tarjan_vishkin_parallel(graph* g) {
     destroyGraph(t);
     destroyGraph(nt);
     destroyGraph(aux);
+
+    if (edgeFlag)
+    {
+        return aux_edges;
+    }
+    
+
     return (chrono::duration_cast<chrono::nanoseconds>(end - start).count())/ 1e9;
 }

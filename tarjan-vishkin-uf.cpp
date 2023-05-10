@@ -4,7 +4,8 @@
 
 using namespace std;
 
-double tarjan_vishkin_uf(graph *g){
+double tarjan_vishkin_uf(graph *g, bool edgeFlag = false)
+{
     graph *t = new graph(), *nt = new graph();
     t->n = g->n;
     nt->n = g->n;
@@ -30,7 +31,7 @@ double tarjan_vishkin_uf(graph *g){
     find_low(t, nt, low, level);
 
     graph *aux = auxillary_graph_uf(g, t, nt, low, level, parent, pre);
-    // cout << aux->edges.size() << endl;
+    int aux_edges = aux->edges.size();
 
     vector<vector<ll>> connected;
     findConnectedComponents(aux, connected);
@@ -56,5 +57,12 @@ double tarjan_vishkin_uf(graph *g){
     destroyGraph(t);
     destroyGraph(nt);
     destroyGraph(aux);
+
+    if (edgeFlag)
+    {
+        return aux_edges;
+    }
+    
+
     return (chrono::duration_cast<chrono::nanoseconds>(end - start).count())/ 1e9;
 }

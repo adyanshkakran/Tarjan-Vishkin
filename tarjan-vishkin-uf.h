@@ -4,6 +4,6 @@
 #include <bits/stdc++.h>
 #include "utils.h"
 
-double tarjan_vishkin_uf(graph *g);
+double tarjan_vishkin_uf(graph *g, bool edgeFlag = false);
 
 #endif // TARJAN_VISHKIN_UF_H
