@@ -498,26 +498,38 @@ graph *auxillary_graph_parallel(graph *g, graph *t, graph *nt, vector<ll> &low, 
 void remap_aux_graph_parallel(graph *t, vector<set<ll>> &bi, vector<vector<ll>> &components, vector<ll> &parent)
 {
     bi.resize(components.size() - 1);
-#pragma omp parallel for num_threads(THREADS)
-    for (ll k = 1; k < ceil(components.size(), PER_THREAD); k++)
+#pragma omp parallel num_threads(THREADS)
     {
-        for (ll x = 0; x < PER_THREAD; x++)
+        vector<set<ll>> bi_private(components.size() - 1);
+#pragma omp for
+        for (ll k = 1; k < ceil(components.size(), PER_THREAD); k++)
         {
-            ll i = PER_THREAD * k + x;
-            if (i >= components.size())
-                break;
-            for (ll j = 0; j < components[i].size(); j++)
+            for (ll x = 0; x < PER_THREAD; x++)
             {
-                if (components[i][j] < t->n)
+                ll i = PER_THREAD * k + x;
+                if (i >= components.size())
+                    break;
+                for (ll j = 0; j < components[i].size(); j++)
                 {
-#pragma omp critical
+                    if (components[i][j] < t->n)
                     {
-                        bi[i - 1].insert(components[i][j]);
-                        bi[i - 1].insert(parent[components[i][j]]);
+                        bi_private[i - 1].insert(components[i][j]);
+                        bi_private[i - 1].insert(parent[components[i][j]]);
                     }
                 }
             }
         }
+
+#pragma omp critical
+        {
+            for (ll i = 0; i < bi_private.size(); i++)
+            {
+                bi[i].insert(bi_private[i].begin(), bi_private[i].end());
+            }
+        }
+        for (ll i = 0; i < bi_private.size(); i++)
+            bi_private[i].clear();
+        bi_private.clear();
     }
 }
 
