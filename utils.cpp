@@ -193,7 +193,7 @@ bool findEdgeById(const vector<edge *> &edges, edge *e)
     }
     else
     {
-        return false; // Edge with given id not found
+        return false;
     }
 }
 
@@ -377,7 +377,7 @@ void find_low(graph *t, graph *nt, vector<ll> &low, vector<ll> &level)
 graph *auxillary_graph_parallel(graph *g, graph *t, graph *nt, vector<ll> &low, vector<ll> &level, vector<ll> &parent, vector<ll> &pre)
 {
     graph *aux = new graph();
-    aux->n = g->n + nt->m; // resizing the auxillary graph
+    aux->n = g->n + nt->m; 
     aux->vertices.resize(aux->n);
 
 #pragma omp parallel for num_threads(THREADS)
@@ -420,13 +420,8 @@ graph *auxillary_graph_parallel(graph *g, graph *t, graph *nt, vector<ll> &low, 
 
 #pragma omp parallel num_threads(THREADS)
     {
-
-        // master vector : aux->edges
-
-        // we now create child vectors for each thread, and then merge them into the master vector
-
         vector<edge *> edges;
-        vector<vector<edge *>> vertex_edges(aux->n, vector<edge *>(0)); // to store edges for each vertex in auxillary graph
+        vector<vector<edge *>> vertex_edges(aux->n, vector<edge *>(0));
 
 #pragma omp for
         for (ll k = 0; k < ceil(g->m, PER_THREAD); k++)
@@ -602,7 +597,6 @@ graph *auxillary_graph(graph *g, graph *t, graph *nt, vector<ll> &low, vector<ll
             nti++;
         }
     }
-    // cout << aux->edges.size() << endl;
     return aux;
 }
 
@@ -650,9 +644,6 @@ graph *auxillary_graph_uf(graph *g, graph *t, graph *nt, vector<ll> &low, vector
                 e->v2 = aux->vertices[v];
                 if (union_find->find(u) != union_find->find(v))
                 {
-                    // cout << "u: " << u << " v: " << v << "\n";
-                    // cout << "u: " << union_find.find(u) << " v: " << union_find.find(v) << "\n";
-                    // cout << "====\n";
                     union_find->unite(u, v);
                     aux->edges.push_back(e);
                     aux->vertices[u]->edges.push_back(e);
@@ -671,9 +662,6 @@ graph *auxillary_graph_uf(graph *g, graph *t, graph *nt, vector<ll> &low, vector
                 e->v2 = aux->vertices[pref[i] + g->n - 1];
                 if (union_find->find(u) != union_find->find(pref[i] + g->n - 1))
                 {
-                    // cout << "u: " << u << " v: " << v << "\n";
-                    // cout << "u: " << union_find.find(u) << " v: " << union_find.find(v) << "\n";
-                    // cout << "====\n";
                     union_find->unite(u, pref[i] + g->n - 1);
                     aux->edges.push_back(e);
                     aux->vertices[u]->edges.push_back(e);
@@ -687,9 +675,6 @@ graph *auxillary_graph_uf(graph *g, graph *t, graph *nt, vector<ll> &low, vector
                 e->v2 = aux->vertices[v];
                 if (union_find->find(u) != union_find->find(v))
                 {
-                    // cout << "u: " << u << " v: " << v << "\n";
-                    // cout << "u: " << union_find.find(u) << " v: " << union_find.find(v) << "\n";
-                    // cout << "====\n";
                     union_find->unite(u, v);
                     aux->edges.push_back(e);
                     aux->vertices[u]->edges.push_back(e);
@@ -708,7 +693,7 @@ graph *auxillary_graph_uf(graph *g, graph *t, graph *nt, vector<ll> &low, vector
 graph *auxillary_graph_parallel_uf(graph *g, graph *t, graph *nt, vector<ll> &low, vector<ll> &level, vector<ll> &parent, vector<ll> &pre)
 {
     graph *aux = new graph();
-    aux->n = g->n + nt->m; // resizing the auxillary graph
+    aux->n = g->n + nt->m;
     aux->vertices.resize(aux->n);
     UnionFind *union_find = new UnionFind(aux->n);
 
@@ -752,13 +737,8 @@ graph *auxillary_graph_parallel_uf(graph *g, graph *t, graph *nt, vector<ll> &lo
 
 #pragma omp parallel num_threads(THREADS)
     {
-
-        // master vector : aux->edges
-
-        // we now create child vectors for each thread, and then merge them into the master vector
-
         vector<edge *> edges;
-        vector<vector<edge *>> vertex_edges(aux->n, vector<edge *>(0)); // to store edges for each vertex in auxillary graph
+        vector<vector<edge *>> vertex_edges(aux->n, vector<edge *>(0));
 
 #pragma omp for
         for (ll k = 0; k < ceil(g->m, PER_THREAD); k++)

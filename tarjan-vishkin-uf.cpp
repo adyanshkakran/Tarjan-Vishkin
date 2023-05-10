@@ -21,9 +21,6 @@ double tarjan_vishkin_uf(graph *g, bool edgeFlag = false)
     t->m = t->edges.size();
     nt->m = nt->edges.size();
 
-    // for(ll i = 0; i < t->m; i++)
-    //     cout << t->edges[i]->v1->id << " " << t->edges[i]->v2->id << endl;
-
     euler_tour(t, succ);
 
     preOrderVertices(t, pre, succ);
@@ -44,16 +41,6 @@ double tarjan_vishkin_uf(graph *g, bool edgeFlag = false)
 
     auto end = chrono::high_resolution_clock::now();
 
-    // cout << t->n << " " << t->m << endl;
-    // cout << nt->n << " " << nt->m << endl;
-    // cout << aux->n << " " << aux->m << endl;
-    // for (set<ll> s : biconnected) {
-    //     for (ll i : s)
-    //         cout << i << " ";
-    //     cout << endl;
-    // }
-
-    // cout << "UF Sequential Time: " << chrono::duration_cast<chrono::nanoseconds>(end - start).count() / 1e9 << "s" << endl;
     destroyGraph(t);
     destroyGraph(nt);
     destroyGraph(aux);
@@ -62,7 +49,6 @@ double tarjan_vishkin_uf(graph *g, bool edgeFlag = false)
     {
         return aux_edges;
     }
-    
 
     return (chrono::duration_cast<chrono::nanoseconds>(end - start).count())/ 1e9;
 }

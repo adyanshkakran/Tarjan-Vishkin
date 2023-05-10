@@ -21,9 +21,6 @@ double tarjan_vishkin(graph* g, bool edgeFlag = false)
     t->m = t->edges.size();
     nt->m = nt->edges.size();
 
-    // for(ll i = 0; i < t->m; i++)
-    //     cout << t->edges[i]->v1->id << " " << t->edges[i]->v2->id << endl;
-
     euler_tour(t, succ);
 
     preOrderVertices(t, pre, succ);
@@ -31,7 +28,6 @@ double tarjan_vishkin(graph* g, bool edgeFlag = false)
     find_low(t, nt, low, level);
 
     graph* aux = auxillary_graph(g, t, nt, low, level, parent, pre);
-    // cout << aux->edges.size() << endl;
     int aux_edges = aux->edges.size();
 
     vector<vector<ll>> connected;
@@ -45,20 +41,6 @@ double tarjan_vishkin(graph* g, bool edgeFlag = false)
 
     auto end = chrono::high_resolution_clock::now();
 
-
-    // cout << t->n << " " << t->m << endl;
-    // cout << nt->n << " " << nt->m << endl;
-    // cout << aux->n << " " << aux->m << endl;
-    // int count = 0;
-    // for (set<ll> s : biconnected) {
-    //     count++;
-    //     // for (ll i : s)
-    //     //     cout << i << " ";
-    //     // cout << endl;
-    // }
-    // cout << count << endl;
-
-    // cout << "Sequential Time: " << chrono::duration_cast<chrono::nanoseconds>(end - start).count()/1e9 << "s" << endl;
     destroyGraph(t);
     destroyGraph(nt);
     destroyGraph(aux);
@@ -68,6 +50,5 @@ double tarjan_vishkin(graph* g, bool edgeFlag = false)
         return aux_edges;
     }
     
-
     return (chrono::duration_cast<chrono::nanoseconds>(end - start).count())/ 1e9;
 }

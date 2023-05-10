@@ -272,7 +272,7 @@ void aux_edges_file(char* path)
 
     runAlgorithms(g, tv, tvp, tvuf, tvpuf, iterations, true);
 
-    myfile << n << "," << m << "," << g->avgDegree << "," << tv << "," << tvuf << endl;
+    myfile << n << "," << m << "," << g->avgDegree << "," << path << "," << tv << "," << tvuf << endl;
 
     destroyGraph(g);
 }
