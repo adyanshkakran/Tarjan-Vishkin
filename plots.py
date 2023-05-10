@@ -38,8 +38,9 @@ def degree_vs_time():
                 data[headers[1]] = num_edges
                 data[headers[2]] = avg_degree
                 data["Algorithm"] = headers[i + 3]
-                # take logaritmic time
                 data["Time (s)"] = float(row[i + 3])
+                # normalize the time
+                data["Time (%)"] = float(row[i + 3]) / max(float(row[3]), float(row[4]), float(row[5]), float(row[6]))
                 
                 datalist.append(data)
                 
@@ -53,8 +54,8 @@ def degree_vs_time():
         # sns.catplot(data=df, x="Edges", y="Time", hue="Algorithm", kind="bar", ci=None)
         
         # add tooltips
-        fig = px.bar(df, x="Average Degree", y="Time (s)", color="Algorithm", barmode="group", hover_data=["Vertices", "Edges", "Average Degree", "Time (s)"])
-        fig.update_layout(title="Time taken by Tarjan-Vishkin and its variants")
+        fig = px.bar(df, x="Average Degree", y="Time (%)", color="Algorithm", barmode="group", hover_data=["Vertices", "Edges", "Average Degree", "Time (s)", "Time (%)"])
+        fig.update_layout(title="Time taken as percentage by Tarjan-Vishkin and its variants")
         fig.show()
         
         # plt.show()
@@ -232,7 +233,7 @@ def aux_times():
                 if (float(row[i+3]) == 0):
                     continue
                 
-                data["Time (s)"] = float(row[i + 3])
+                data["Time (s)"] = float(row[i + 3]) / 10
                 data["Time (%)"] = float(row[i + 3])/float(row[3])
             
                 datalist.append(data)
@@ -251,9 +252,8 @@ def aux_times():
         fig.update_layout(title="Time taken as a percentage by Tarjan-Vishkin and its variants")
         fig.show()
 
-
-# degree_vs_time()
+degree_vs_time()
 # threads_vs_time()
 # degree_vs_time()
 # aux_edges()
-aux_times()
+# aux_times()

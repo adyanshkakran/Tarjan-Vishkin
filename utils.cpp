@@ -522,6 +522,7 @@ void remap_aux_graph_parallel(graph *t, vector<set<ll>> &bi, vector<vector<ll>> 
                 bi[i].insert(bi_private[i].begin(), bi_private[i].end());
             }
         }
+#pragma omp for
         for (ll i = 0; i < bi_private.size(); i++)
             bi_private[i].clear();
         bi_private.clear();
