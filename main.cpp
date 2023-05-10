@@ -217,7 +217,7 @@ void aux_edges()
     cout << "Enter number of vertices: ";
     cin >> n;
 
-    vector<float> degrees_to_test = {1,2,3,4,6,8,10,12,14,16,20,24,32,48,64,96,128};
+    vector<float> degrees_to_test = {0.25,0.5,1,2,2.25,2.5,2.75,3,4,5,6,7,8,9,10,12,14,16,20,24,32,48,64,96,128,142,196};
 
     for (int graphN = 0; graphN < degrees_to_test.size(); graphN++)
     {
@@ -245,6 +245,36 @@ void aux_edges()
 
         destroyGraph(g);
     }
+}
+
+void aux_edges_file(char* path)
+{
+    ifstream input(path);
+    cout << "Reading file: " << path << endl;
+
+    ofstream myfile;
+    myfile.open("results.csv", ios::app);
+
+    /* Read number of vertices and edges */
+    int n, m;
+    input >> n >> m;
+
+    /* Create graph */
+    graph *g = new graph();
+    g->n = n;
+    g->m = m;
+
+    loadGraph(g, input);
+    input.close();
+
+    double tv = 0, tvp = 0, tvuf = 0, tvpuf = 0;
+    int iterations = 1;
+
+    runAlgorithms(g, tv, tvp, tvuf, tvpuf, iterations, true);
+
+    myfile << n << "," << m << "," << g->avgDegree << "," << tv << "," << tvuf << endl;
+
+    destroyGraph(g);
 }
 
 void threads()
@@ -472,6 +502,16 @@ int main(int argc, char **argv)
         }
 
         fileRead(argv[2]);
+    }else if (strcmp(argv[1],"file_aux") == 0){
+        if (argc > 3)
+            THREADS = atoi(argv[3]);
+        if (argc < 3)
+        {
+            std::cout << "Usage: ./main file_aux <path-to-file>" << endl;
+            return 0;
+        }
+
+        aux_edges_file(argv[2]);
     }
     else
     {

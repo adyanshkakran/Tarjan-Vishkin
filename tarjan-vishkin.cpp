@@ -31,7 +31,7 @@ double tarjan_vishkin(graph* g, bool edgeFlag = false)
     find_low(t, nt, low, level);
 
     graph* aux = auxillary_graph(g, t, nt, low, level, parent, pre);
-    cout << aux->edges.size() << endl;
+    // cout << aux->edges.size() << endl;
     int aux_edges = aux->edges.size();
 
     vector<vector<ll>> connected;

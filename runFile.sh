@@ -12,5 +12,5 @@ do
     continue
   fi
 
-  ./main file $entry 8
+  ./main file_aux $entry 8
 done
