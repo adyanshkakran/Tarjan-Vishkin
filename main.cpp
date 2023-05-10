@@ -38,15 +38,16 @@ void addEdgesFromFile(graph *g, ifstream &input, vector<int> &degrees)
         edge *e = new edge();
         e->v1 = g->vertices[u];
         e->v2 = g->vertices[v];
+        edge *rev = reverseEdge(e);
 
         /* update degrees */
         degrees[u]++;
         degrees[v]++;
 
         g->vertices[u]->edges.push_back(e);
-        g->vertices[v]->edges.push_back(e);
+        g->vertices[v]->edges.push_back(rev);
         g->edges.push_back(e);
-        g->edges.push_back(reverseEdge(e));
+        g->edges.push_back(rev);
     }
 }
 
@@ -486,8 +487,6 @@ void other()
         g->m = m;
 
         generateRandomGraph(g, gen, dis, degrees);
-
-        printGraph(g);
 
         double tvpuf = 0, t = 0;
         int iterations = 1;

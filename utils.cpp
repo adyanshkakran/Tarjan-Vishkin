@@ -338,7 +338,7 @@ void find_low(graph *t, graph *nt, vector<ll> &low, vector<ll> &level, vector<ll
     low.resize(nt->n);
 
     for (ll i = 0; i < nt->n; i++)
-        low[i] = pre[i];
+        low[i] = i;
 
     bool changed = true;
     int it = 0;
@@ -578,8 +578,10 @@ graph *auxillary_graph(graph *g, graph *t, graph *nt, vector<ll> &low, vector<ll
         v->id = i;
         aux->vertices.push_back(v);
     }
+
     vector<ll> num(g->m, 0), pref(g->m, 0);
     ll nti = 0, ti = 0;
+    
     for (ll i = 0; i < g->m; i++)
     {
         if (nti >= nt->m || (ti < t->m && g->edges[i]->v1->id == t->edges[ti]->v1->id && g->edges[i]->v2->id == t->edges[ti]->v2->id))
@@ -591,9 +593,32 @@ graph *auxillary_graph(graph *g, graph *t, graph *nt, vector<ll> &low, vector<ll
         }
     }
 
-    pref[0] = num[0];
-    for (ll i = 1; i < g->m; i++)
-        pref[i] = pref[i - 1] + num[i];
+#ifdef DEBUG
+    cout << "num: ";
+    for (ll i = 0; i < g->m; i++)
+        cout << num[i] << " ";
+    cout << endl;
+#endif
+
+    // pref[0] = num[0];
+    // for (ll i = 1; i < g->m; i++)
+    //     pref[i] = pref[i - 1] + num[i];
+
+    // calculate prefix sum
+    ll sum = num[0];
+    for (ll i = 0; i < num.size(); i++)
+    {
+        sum += num[i];
+        pref[i] = sum;
+    }
+
+#ifdef DEBUG
+    cout << "pref: ";
+    for (ll i = 0; i < g->m; i++)
+        cout << pref[i] << " ";
+    cout << endl;
+#endif
+
 
     ti = 0;
     nti = 0;
