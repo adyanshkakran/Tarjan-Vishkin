@@ -6,10 +6,6 @@ using namespace std;
 
 double tarjan_vishkin(graph *g, bool edgeFlag = false)
 {
-    graph *t = new graph(), *nt = new graph();
-    t->n = g->n;
-    nt->n = g->n;
-    vector<ll> pre, succ, low, parent(g->n, -1), level(g->n, -1);
 
     auto start = chrono::high_resolution_clock::now();
 
@@ -52,12 +48,18 @@ double tarjan_vishkin(graph *g, bool edgeFlag = false)
             cout << subg->edges[j]->v1->id << " " << subg->edges[j]->v2->id << endl;
         }
 
-        continue;
+        graph *t = new graph(), *nt = new graph();
+        t->n = subg->n;
+        nt->n = subg->n;
+        vector<ll> pre, succ, low, parent(subg->n, -1), level(subg->n, -1);
 
-        bfs(g, t, nt, parent, level);
-        sort(g->edges.begin(), g->edges.end(), cmp);
+
+        bfs(subg, t, nt, parent, level);
+        sort(subg->edges.begin(), subg->edges.end(), cmp);
         sort(t->edges.begin(), t->edges.end(), cmp);
         sort(nt->edges.begin(), nt->edges.end(), cmp);
+
+        cout << "bfs done\n";
 
         t->m = t->edges.size();
         nt->m = nt->edges.size();
@@ -129,7 +131,7 @@ double tarjan_vishkin(graph *g, bool edgeFlag = false)
         cout << endl;
 #endif
 
-        graph *aux = auxillary_graph(g, t, nt, low, level, parent, pre);
+        graph *aux = auxillary_graph(subg, t, nt, low, level, parent, pre);
         int aux_edges = aux->edges.size();
 
         vector<vector<ll>> connected;
