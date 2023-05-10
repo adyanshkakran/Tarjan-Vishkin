@@ -84,7 +84,7 @@ bool findEdgeById(const vector<Edge*>& edges, ll id);
 void euler_tour(Graph* t, vector<ll>& succ);
 void euler_tour_parallel(Graph* t, vector<ll>& succ);
 void preOrderVertices(graph* t, vector<ll>& pre, vector<ll>& succ);
-void find_low(graph* t, graph* nt, vector<ll>& low, vector<ll>& level);
+void find_low(graph* t, graph* nt, vector<ll>& low, vector<ll>& level, vector<ll> &pre, vector<ll> &parent);
 void find_low_parallel(graph* t, graph* nt, vector<ll>& low, vector<ll>& level);
 graph* auxillary_graph_parallel(graph* g, graph* t, graph *nt,vector<ll>& low, vector<ll>& level, vector<ll>& parent, vector<ll>& pre);
 void remap_aux_graph_parallel(graph* t, vector<set<ll>>& bi, vector<vector<ll>>& components, vector<ll>& parent);

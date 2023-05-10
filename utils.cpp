@@ -333,16 +333,20 @@ void find_low_parallel(graph *t, graph *nt, vector<ll> &low, vector<ll> &level)
     }
 }
 
-void find_low(graph *t, graph *nt, vector<ll> &low, vector<ll> &level)
+void find_low(graph *t, graph *nt, vector<ll> &low, vector<ll> &level, vector<ll> &pre, vector<ll> &parent)
 {
     low.resize(nt->n);
 
     for (ll i = 0; i < nt->n; i++)
-        low[i] = i;
+        low[i] = pre[i];
 
     bool changed = true;
+    int it = 0;
     while (changed)
     {
+#ifdef DEBUG
+        cout << "Iteration: " << it++ << endl<<endl;
+#endif
         changed = false;
 
         for (ll i = 0; i < nt->n; i++)
@@ -352,24 +356,59 @@ void find_low(graph *t, graph *nt, vector<ll> &low, vector<ll> &level)
 
                 ll j = e->v1->id == i ? e->v2->id : e->v1->id;
 
+#ifdef DEBUG
+                cout << "i: " << i << " j: " << j << endl; 
+                cout << "low[i]: " << low[i] << " low[j]: " << low[j] << endl;
+#endif
+
                 if (level[i] < level[j] && level[low[j]] < level[low[i]])
                 {
                     low[i] = low[j];
                     changed = true;
+#ifdef DEBUG
+                    // cout << "changed" << endl;
+#endif
                 }
+
+//                 if(j != parent[i] && low[j] < low[i])
+//                 {
+//                     low[i] = low[j];
+//                     changed = true;
+// #ifdef DEBUG
+//                     cout << "changed" << endl;
+// #endif
+                // }
             }
 
             for (edge *e : nt->vertices[i]->edges)
             {
 
                 ll j = e->v1->id == i ? e->v2->id : e->v1->id;
+#ifdef DEBUG
+                cout << "i: " << i << " j: " << j << endl;
+                cout << "low[i]: " << low[i] << " low[j]: " << low[j] << endl;
+#endif
 
-                if (level[low[j]] < level[low[i]])
-                {
-                    low[i] = low[j];
-                    changed = true;
-                }
+//                 if (pre[j] < low[i])
+//                 {
+//                     low[i] = pre[j];
+//                     changed = true;
+// #ifdef DEBUG
+//                     cout << "changed" << endl;
+// #endif
+//                 }
+
+                    if (level[low[j]] < level[low[i]])
+                    {
+                        low[i] = low[j];
+                        changed = true;
+#ifdef DEBUG
+                        cout << "changed" << endl;
+#endif
+                    }
             }
+
+
         }
     }
 }
