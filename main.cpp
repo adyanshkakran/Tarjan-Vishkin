@@ -7,6 +7,8 @@
 #include "tarjan.h"
 #include "tarjan-vishkin-parallel.h"
 #include "tv-parallel-union-find.h"
+#include <sys/time.h>
+#include <sys/resource.h> 
 
 using namespace std;
 
@@ -170,7 +172,7 @@ void runOtherAlgorithms(graph *g, double &tvpuf, double t, int iterations)
 {
     for (int i = 0; i < iterations; i++)
     {
-        tvpuf += tarjan_vishkin(g);
+        // tvpuf += tarjan_vishkin(g);
 
         int temp = tarjan(g);
         t += temp;
@@ -487,7 +489,7 @@ void other()
 
         generateRandomGraph(g, gen, dis, degrees);
 
-        printGraph(g);
+        // printGraph(g);
 
         double tvpuf = 0, t = 0;
         int iterations = 1;
@@ -531,6 +533,11 @@ void other_file(char *path)
 
 int main(int argc, char **argv)
 {
+    struct rlimit64 rlim;
+    rlim.rlim_cur = 1024 * 1024 * 1024;
+    rlim.rlim_max = 1024 * 1024 * 1024;
+    setrlimit64(RLIMIT_STACK, &rlim);
+
     if (argc < 2)
     {
         std::cout << "Usage: ./main <path-to-folder/file>" << endl;

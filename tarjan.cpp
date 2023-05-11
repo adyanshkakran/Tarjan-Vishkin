@@ -7,7 +7,7 @@ typedef long long ll;
 ll timer = 0;
 stack<ll> s;
 
-void dfs(int curr, int parent, graph* g, vector<vector<ll>>& components, vector<ll>& low, vector<ll>& d) {
+void dfs(ll curr, ll parent, graph* g, vector<vector<ll>>& components, vector<ll>& low, vector<ll>& d) {
     if(d[curr] != -1) return;
     low[curr] = d[curr] = timer++;
     s.push(curr);
@@ -46,7 +46,7 @@ double tarjan(graph *g) {
 
     for (int i = 0; i < g->n; i++) {
         if (d[i] == -1) {
-            dfs(i,-1, g, components, low, d);
+            dfs(i, -1, g, components, low, d);
         }
     }
 
@@ -63,12 +63,12 @@ double tarjan(graph *g) {
     auto end = chrono::high_resolution_clock::now();
 
     cout << "Components(T): " << components.size() << endl;
-    for(int i = 0; i < components.size(); i++)
-    {
-        cout << "Component " << i << ": ";
-        for(auto it = components[i].begin(); it != components[i].end(); it++)
-            cout << *it << " ";
-        cout << endl;
-    }
+    // for(int i = 0; i < components.size(); i++)
+    // {
+    //     cout << "Component " << i << ": ";
+    //     for(auto it = components[i].begin(); it != components[i].end(); it++)
+    //         cout << *it << " ";
+    //     cout << endl;
+    // }
     return (chrono::duration_cast<chrono::nanoseconds>(end - start).count())/ 1e9;
 }
