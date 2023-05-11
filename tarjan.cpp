@@ -62,8 +62,8 @@ double tarjan(graph *g) {
 
     auto end = chrono::high_resolution_clock::now();
 
-    cout << "Components(T): " << components.size() << endl;
 #ifdef DEBUG
+    cout << "Components(T): " << components.size() << endl;
     for(int i = 0; i < components.size(); i++)
     {
         cout << "Component " << i << ": ";

@@ -252,8 +252,101 @@ def aux_times():
         fig.update_layout(title="Time taken as a percentage by Tarjan-Vishkin and its variants")
         fig.show()
 
-degree_vs_time()
+def combine_time_aux():
+    
+    edge_df = None
+    time_df = None
+    
+    with open("plot_datas/aux_named.csv") as f:
+        # read csv file
+        csv_reader = csv.reader(f, delimiter=',')
+        # skip the header
+        headers = next(csv_reader)
+        
+        # strip the headers of whitespaces
+        headers = [header.strip() for header in headers]
+        
+        datalist = []
+        
+        for row in csv_reader:
+            num_vertices = int(row[0])
+            num_edges = int(row[1])
+            avg_degree = row[2]
+            
+            # create a dictionary to store the data in the format we want
+            # for each type of time, we have a dictionary
+            for i in range(2):
+                data = {}
+                
+                data[headers[0]] = num_vertices
+                data[headers[1]] = num_edges
+                data[headers[2]] = avg_degree
+                data["Graph Name"] = row[3]
+                data["Algorithm"] = headers[i + 4]
+                
+                if (float(row[i+4]) == 0):
+                    continue
+                
+                data["Edges"] = float(row[i + 4])
+                data["Edges (%)"] = float(row[i + 4])/float(row[4])
+            
+                datalist.append(data)
+                
+        # printList(datalist)
+
+        # convert to pandas dataframe
+        df = pd.DataFrame(datalist)
+        
+        print(df.head())
+        
+        edge_df = df
+        
+    with open("plot_datas/named_graphs.csv") as f:
+        # read csv file
+        csv_reader = csv.reader(f, delimiter=',')
+        # skip the header
+        headers = next(csv_reader)
+        
+        # strip the headers of whitespaces
+        headers = [header.strip() for header in headers]
+        
+        datalist = []
+        
+        for row in csv_reader:
+            num_vertices = int(row[0])
+            num_edges = int(row[1])
+            avg_degree = row[2]
+            
+            # create a dictionary to store the data in the format we want
+            # for each type of time, we have a dictionary
+            for i in range(2):
+                data = {}
+                
+                data[headers[0]] = num_vertices
+                data[headers[1]] = num_edges
+                data[headers[2]] = avg_degree
+                data["Graph Name"] = row[3]
+                data["Algorithm"] = headers[i + 4]
+                
+                if (float(row[i+4]) == 0):
+                    continue
+                
+                data["Time (s)"] = float(row[i + 4])
+                data["Time (%)"] = float(row[i + 4])/float(row[4])
+            
+                datalist.append(data)
+                
+        # printList(datalist)
+
+        # convert to pandas dataframe
+        df = pd.DataFrame(datalist)
+        
+        print(df.head())
+    
+
+# degree_vs_time()
 # threads_vs_time()
 # degree_vs_time()
 # aux_edges()
 # aux_times()
+combine_time_aux()

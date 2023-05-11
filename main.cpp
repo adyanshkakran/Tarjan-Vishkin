@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <dirent.h>
+#include "./TestingAlgos/algosTest.h"
 #include "utils.h"
 #include "tarjan-vishkin.h"
 #include "tarjan-vishkin-uf.h"
@@ -207,7 +208,7 @@ void runOtherAlgorithms(graph *g, double &tvpuf, double &t, int iterations)
 {
     for (int i = 0; i < iterations; i++)
     {
-        // tvpuf += tarjan_vishkin(g);
+        tvpuf += tarjan_vishkin_parallel_uf(g);
 
         t += tarjan(g);
         // t += temp;
@@ -560,7 +561,16 @@ void other_file(char *path)
 
     runOtherAlgorithms(g, tvpuf, t, iterations);
 
-    myfile << n << "," << m << "," << g->avgDegree << "," << tvpuf / iterations << "," << t / iterations << endl;
+    vector<double> test_times = testAlgos(path);
+
+    myfile << n << "," << m << "," << g->avgDegree << "," << path << "," << tvpuf / iterations << "," << t / iterations;
+
+    for(int i; i < test_times.size(); i++)
+    {
+        myfile << "," << test_times[i];
+    }
+    myfile << endl;
+
     myfile.close();
 
     destroyGraph(g);
@@ -571,6 +581,7 @@ int main(int argc, char **argv)
     struct rlimit64 rlim;
     rlim.rlim_cur = 1024 * 1024 * 1024;
     rlim.rlim_max = 1024 * 1024 * 1024;
+    
     setrlimit64(RLIMIT_STACK, &rlim);
 
     if (argc < 2)
