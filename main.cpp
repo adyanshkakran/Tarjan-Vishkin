@@ -1,7 +1,6 @@
 #include <iostream>
 #include <fstream>
 #include <dirent.h>
-#include "./TestingAlgos/algosTest.h"
 #include "utils.h"
 #include "tarjan-vishkin.h"
 #include "tarjan-vishkin-uf.h"
