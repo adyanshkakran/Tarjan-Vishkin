@@ -338,7 +338,7 @@ void find_low(graph *t, graph *nt, vector<ll> &low, vector<ll> &level, vector<ll
     low.resize(nt->n);
 
     for (ll i = 0; i < nt->n; i++)
-        low[i] = pre[i];
+        low[i] = i;
 
     bool changed = true;
     int it = 0;

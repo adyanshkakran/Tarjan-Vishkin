@@ -25,13 +25,15 @@ double tarjan_vishkin(graph *g, bool edgeFlag = false)
 
         for (int j = 0; j < components[i].size(); j++)
         {
-            for (int k = 0; k < g->vertices[components[i][j]]->edges.size(); k++)
+            vertex *v = g->vertices[components[i][j]];
+            for (int k = 0; k < v->edges.size(); k++)
             {
-                if (find(components[i].begin(), components[i].end(), g->vertices[components[i][j]]->edges[k]->v2->id) != components[i].end())
-                {
-                    subg->edges.push_back(g->vertices[components[i][j]]->edges[k]);
-                    subg->m++;
-                }
+                subg->edges.push_back(v->edges[k]);
+                edge *e = v->edges[k];
+                cout << e->v1->id << " " << e->v2->id << endl;
+                subg->vertices[e->v1->id]->edges.push_back(e);
+                subg->vertices[e->v2->id]->edges.push_back(e);
+                subg->m++;
             }
         }
 
