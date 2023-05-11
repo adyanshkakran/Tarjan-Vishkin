@@ -24,8 +24,15 @@ double tarjan_vishkin(graph* g, bool edgeFlag = false)
     euler_tour(t, succ);
 
     preOrderVertices(t, pre, succ);
- 
+
     find_low(t, nt, low, level);
+
+    // print pre
+    for(int i = 0; i < pre.size(); i++)
+        if(pre[i] == -1)
+            cout << pre[i] << " ";
+    cout << endl;
+
 
     graph* aux = auxillary_graph(g, t, nt, low, level, parent, pre);
     int aux_edges = aux->edges.size();
@@ -51,6 +58,8 @@ double tarjan_vishkin(graph* g, bool edgeFlag = false)
     }
 
     cout << "Components(TV): " << biconnected.size() << endl;
+
+#ifdef DEBUG
     for(int i = 0; i < biconnected.size(); i++)
     {
         cout << "Component " << i << ": ";
@@ -58,6 +67,7 @@ double tarjan_vishkin(graph* g, bool edgeFlag = false)
             cout << *it << " ";
         cout << endl;
     }
+#endif
     
     return (chrono::duration_cast<chrono::nanoseconds>(end - start).count())/ 1e9;
 }
