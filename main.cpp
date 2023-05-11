@@ -31,6 +31,26 @@ string get_file_path(const char *path, const char *file_name)
     return file_path;
 }
 
+void makeConnected(graph *g){
+    vector<vector<ll>> connected;
+    findConnectedComponents(g, connected);
+
+    for(int i = 1; i < connected.size(); i++){
+        ll u = connected[i][0];
+        ll v = connected[i-1][0];
+        edge *e = new edge();
+        e->v1 = g->vertices[u];
+        e->v2 = g->vertices[v];
+        edge *rev = reverseEdge(e);
+        g->vertices[u]->edges.push_back(e);
+        g->vertices[v]->edges.push_back(rev);
+        g->edges.push_back(e);
+        g->edges.push_back(rev);
+    }
+
+    g->m = g->edges.size();
+}
+
 void addEdgesFromFile(graph *g, ifstream &input, vector<int> &degrees)
 {
     int u, v;
@@ -40,15 +60,16 @@ void addEdgesFromFile(graph *g, ifstream &input, vector<int> &degrees)
         edge *e = new edge();
         e->v1 = g->vertices[u];
         e->v2 = g->vertices[v];
+        edge *rev = reverseEdge(e);
 
         /* update degrees */
         degrees[u]++;
         degrees[v]++;
 
         g->vertices[u]->edges.push_back(e);
-        g->vertices[v]->edges.push_back(e);
+        g->vertices[v]->edges.push_back(rev);
         g->edges.push_back(e);
-        g->edges.push_back(reverseEdge(e));
+        g->edges.push_back(rev);
     }
 }
 
@@ -66,7 +87,9 @@ void loadGraph(graph *g, ifstream &input)
 
     addEdgesFromFile(g, input, degrees);
 
-    g->m *= 2; // undirected graph
+    makeConnected(g);
+
+    // g->m *= 2; // undirected graph
 
     /* Calculate average degree */
     g->avgDegree = 0;
@@ -113,12 +136,16 @@ void generateRandomGraph(graph *g, mt19937 &gen, uniform_int_distribution<> &dis
         e->v2 = g->vertices[v];
         degrees[u]++;
         degrees[v]++;
+        edge* rev = reverseEdge(e);
         g->vertices[u]->edges.push_back(e);
-        g->vertices[v]->edges.push_back(e);
+        g->vertices[v]->edges.push_back(rev);
         g->edges.push_back(e);
-        g->edges.push_back(reverseEdge(e));
+        g->edges.push_back(rev);
     }
-    g->m *= 2;
+
+    makeConnected(g);
+
+    // g->m *= 2;
     g->avgDegree = 0;
     for (int i = 0; i < g->n; i++)
     {
@@ -131,14 +158,22 @@ void generateRandomGraph(graph *g, mt19937 &gen, uniform_int_distribution<> &dis
 
 void printGraph(graph *g)
 {
-    for (int i = 0; i < g->n; i++)
+    ofstream out;
+    out.open("graph.in", ios::trunc);
+    // for (int i = 0; i < g->n; i++)
+    // {
+    //     cout << g->vertices[i]->id << ": ";
+    //     for (int j = 0; j < g->vertices[i]->edges.size(); j++)
+    //     {
+    //         cout << g->vertices[i]->edges[j]->v1->id << " " << g->vertices[i]->edges[j]->v2->id << " | ";
+    //     }
+    //     cout << endl;
+    // }
+    out << g->n << " " << g->m << endl;
+    // print the edges of the graph
+    for (int i = 0; i < g->edges.size(); i+=2)
     {
-        cout << g->vertices[i]->id << ": ";
-        for (int j = 0; j < g->vertices[i]->edges.size(); j++)
-        {
-            cout << g->vertices[i]->edges[j]->v1->id << " " << g->vertices[i]->edges[j]->v2->id << " | ";
-        }
-        cout << endl;
+        out << g->edges[i]->v1->id << " " << g->edges[i]->v2->id << endl;
     }
 }
 
@@ -168,16 +203,16 @@ void runAlgorithms(graph *g, double &tv, double &tvp, double &tvuf, double &tvpu
     }
 }
 
-void runOtherAlgorithms(graph *g, double &tvpuf, double t, int iterations)
+void runOtherAlgorithms(graph *g, double &tvpuf, double &t, int iterations)
 {
     for (int i = 0; i < iterations; i++)
     {
         // tvpuf += tarjan_vishkin(g);
 
-        int temp = tarjan(g);
-        t += temp;
+        t += tarjan(g);
+        // t += temp;
 
-        cout << "Iteration " << i << " done." << temp << endl;
+        cout << "Iteration " << i << " done." << endl;
     }
 }
 
@@ -466,14 +501,14 @@ void other()
 {
     ofstream myfile;
     myfile.open("results.csv", ios::trunc);
-    myfile << "Vertices, Edges, Average Degree, Tarjan Vishkin Parallel With Union Find, Tarjan" << endl;
+    myfile << "Vertices, Edges, Average Degree, Tarjan Vishki, Tarjan" << endl;
 
     int n;
     cout << "Enter number of vertices: ";
     cin >> n;
 
     // vector<float> degrees_to_test = {0.25, 0.5, 0.75, 1, 2, 4, 8, 12, 16, 32, 48, 96, 128, 256};
-    vector<float> degrees_to_test = {1};
+    vector<float> degrees_to_test = {2};
 
     for (int graphN = 0; graphN < degrees_to_test.size(); graphN++)
     {
